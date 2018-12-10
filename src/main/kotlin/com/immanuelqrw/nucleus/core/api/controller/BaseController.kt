@@ -59,7 +59,7 @@ abstract class BaseController<T : BaseEntity> : Crudable<T> {
     override fun removeAll(
         @RequestParam("page")
         @PageableDefault(size = 100)
-        @SortDefault(sort = arrayOf("id"))
+        @SortDefault(sort = ["id"])
         page: Pageable,
         @RequestParam("search")
         search: String
