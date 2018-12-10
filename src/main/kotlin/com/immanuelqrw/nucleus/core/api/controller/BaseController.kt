@@ -1,5 +1,6 @@
 package com.immanuelqrw.nucleus.core.api.controller
 
+import com.immanuelqrw.nucleus.core.api.filter.SearchSpecificationsBuilder
 import com.immanuelqrw.nucleus.core.api.model.BaseEntity
 import com.immanuelqrw.nucleus.core.api.repository.BaseRepository
 import org.springframework.data.domain.Page
@@ -10,12 +11,33 @@ import org.springframework.data.web.SortDefault
 import org.springframework.web.bind.annotation.RequestBody
 import org.springframework.web.bind.annotation.RequestParam
 import org.springframework.web.bind.annotation.ResponseBody
+import java.util.regex.Pattern
+
 
 /**
  * Abstract controller class
  */
 abstract class BaseController<T : BaseEntity> : Crudable<T> {
     abstract val repository: BaseRepository<T>
+
+    fun parseSearch(search: String): Specification<T>? {
+
+        val builder = SearchSpecificationsBuilder<T>()
+
+        // TODO Move Pattern to configuration file
+        val pattern = Pattern.compile("(\\w+?)([~:<>])(\\w+?);")
+        val matcher = pattern.matcher("$search;")
+
+        while (matcher.find()) {
+            val key: String = matcher.group(1)
+            val operation: String = matcher.group(2)
+            val value: Any = matcher.group(3)
+
+            builder.with(key, operation, value)
+        }
+
+        return builder.build()
+    }
 
     @ResponseBody
     override fun find(id: Long): T {
@@ -31,7 +53,7 @@ abstract class BaseController<T : BaseEntity> : Crudable<T> {
         @RequestParam("search")
         search: String
     ): Page<T> {
-        val searchSpecification: Specification<T>
+        val searchSpecification: Specification<T>? = parseSearch(search)
         return repository.findAll(searchSpecification, page)
     }
 
@@ -64,8 +86,8 @@ abstract class BaseController<T : BaseEntity> : Crudable<T> {
         @RequestParam("search")
         search: String
     ) {
-        val searchSpecification: Specification<T>
-        val removableEntities: List<T> = repository.findAll(searchSpecification, page)
+        val searchSpecification: Specification<T>? = parseSearch(search)
+        val removableEntities: Page<T> = repository.findAll(searchSpecification, page)
         return repository.deleteAll(removableEntities)
     }
 }
