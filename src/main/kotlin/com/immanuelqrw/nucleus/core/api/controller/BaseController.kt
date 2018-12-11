@@ -1,8 +1,11 @@
 package com.immanuelqrw.nucleus.core.api.controller
 
+import com.fasterxml.jackson.module.kotlin.convertValue
+import com.fasterxml.jackson.module.kotlin.readValue
 import com.immanuelqrw.nucleus.core.api.filter.SearchSpecificationsBuilder
 import com.immanuelqrw.nucleus.core.api.model.BaseEntity
 import com.immanuelqrw.nucleus.core.api.repository.BaseRepository
+import com.immanuelqrw.nucleus.core.api.utility.Utility
 import org.springframework.data.domain.Page
 import org.springframework.data.domain.Pageable
 import org.springframework.data.jpa.domain.Specification
@@ -12,13 +15,19 @@ import org.springframework.web.bind.annotation.RequestBody
 import org.springframework.web.bind.annotation.RequestParam
 import org.springframework.web.bind.annotation.ResponseBody
 import java.util.regex.Pattern
+import org.springframework.core.GenericTypeResolver
+
+
 
 
 /**
  * Abstract controller class
  */
 abstract class BaseController<T : BaseEntity> : FullyControllable<T> {
+
     abstract val repository: BaseRepository<T>
+
+    var classType: Class<T> = GenericTypeResolver.resolveTypeArgument(javaClass, BaseEntity::class.java) as Class<T>
 
     fun parseSearch(search: String): Specification<T>? {
 
@@ -65,13 +74,18 @@ abstract class BaseController<T : BaseEntity> : FullyControllable<T> {
         return repository.save(entity)
     }
 
-    // TODO implement patch functionality
-    /*
-    override fun modify(id: Long, @RequestBody updates: Map<String, Any>): T {
-        entity.id = id
-        return repository.save(entity)
+    override fun modify(id: Long, @RequestBody patches: Map<String, Any>): T {
+        val originalEntity: T = repository.getOne(id)
+
+        val mapper = Utility.MAPPER
+        val originalMap: Map<String, Any> = mapper.convertValue(originalEntity)
+        val patchedMap: Map<String, Any> = originalMap.plus(patches)
+
+        val patchedEntity: T = mapper.convertValue(patchedMap, classType)
+
+        return repository.save(patchedEntity)
     }
-    */
+
 
     override fun remove(id: Long) {
         return repository.deleteById(id)
