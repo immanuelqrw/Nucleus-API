@@ -5,7 +5,6 @@ import com.immanuelqrw.nucleus.core.api.model.BaseEntity
 import com.immanuelqrw.nucleus.core.api.repository.BaseRepository
 import com.immanuelqrw.nucleus.core.api.service.SearchService
 import com.immanuelqrw.nucleus.core.api.utility.Utility
-import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.data.domain.Page
 import org.springframework.data.domain.Pageable
 import org.springframework.data.jpa.domain.Specification
@@ -21,7 +20,7 @@ import org.springframework.core.GenericTypeResolver
  */
 abstract class BaseController<T : BaseEntity> : FullyControllable<T> {
 
-    var classType: Class<T> = GenericTypeResolver.resolveTypeArgument(javaClass, BaseEntity::class.java) as Class<T>
+    private val classType: Class<T> = GenericTypeResolver.resolveTypeArgument(javaClass, BaseEntity::class.java) as Class<T>
 
     abstract val repository: BaseRepository<T>
 
@@ -35,7 +34,7 @@ abstract class BaseController<T : BaseEntity> : FullyControllable<T> {
     override fun findAll(
         @RequestParam("page")
         @PageableDefault(size = 100)
-        @SortDefault(sort = arrayOf("id"))
+        @SortDefault(sort = ["id"])
         page: Pageable,
         @RequestParam("search")
         search: String
@@ -56,11 +55,11 @@ abstract class BaseController<T : BaseEntity> : FullyControllable<T> {
     override fun modify(id: Long, @RequestBody patches: Map<String, Any>): T {
         val originalEntity: T = repository.getOne(id)
 
-        val mapper = Utility.MAPPER
-        val originalMap: Map<String, Any> = mapper.convertValue(originalEntity)
+        val objectMapper = Utility.OBJECT_MAPPER
+        val originalMap: Map<String, Any> = objectMapper.convertValue(originalEntity)
         val patchedMap: Map<String, Any> = originalMap.plus(patches)
 
-        val patchedEntity: T = mapper.convertValue(patchedMap, classType)
+        val patchedEntity: T = objectMapper.convertValue(patchedMap, classType)
 
         return repository.save(patchedEntity)
     }

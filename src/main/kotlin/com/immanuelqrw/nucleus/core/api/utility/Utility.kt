@@ -17,7 +17,7 @@ object Utility {
      * Object Mapper used for parsing JSON into data classes
      */
     // TODO Fix Expansion of YAML templates -- or write conversion method
-    val MAPPER = ObjectMapper(YAMLFactory()).registerKotlinModule()
+    val OBJECT_MAPPER = ObjectMapper(YAMLFactory()).registerKotlinModule()
 
     /**
      * Loads resource from filename
@@ -41,7 +41,7 @@ object Utility {
      */
     private inline fun <reified T> loadResourceFromFile(resourceName: String): T {
         val inputStream: InputStream = loadResource(name = resourceName)
-        return parseObjectFromInput(inputStream = inputStream, objectMapper = MAPPER)
+        return parseObjectFromInput(inputStream = inputStream, objectMapper = OBJECT_MAPPER)
     }
 
     /**
