@@ -1,11 +1,11 @@
 package com.immanuelqrw.nucleus.core.api.controller
 
 import com.fasterxml.jackson.module.kotlin.convertValue
-import com.fasterxml.jackson.module.kotlin.readValue
-import com.immanuelqrw.nucleus.core.api.filter.SearchSpecificationsBuilder
 import com.immanuelqrw.nucleus.core.api.model.BaseEntity
 import com.immanuelqrw.nucleus.core.api.repository.BaseRepository
+import com.immanuelqrw.nucleus.core.api.service.SearchService
 import com.immanuelqrw.nucleus.core.api.utility.Utility
+import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.data.domain.Page
 import org.springframework.data.domain.Pageable
 import org.springframework.data.jpa.domain.Specification
@@ -14,39 +14,18 @@ import org.springframework.data.web.SortDefault
 import org.springframework.web.bind.annotation.RequestBody
 import org.springframework.web.bind.annotation.RequestParam
 import org.springframework.web.bind.annotation.ResponseBody
-import java.util.regex.Pattern
 import org.springframework.core.GenericTypeResolver
-
-
-
 
 /**
  * Abstract controller class
  */
 abstract class BaseController<T : BaseEntity> : FullyControllable<T> {
 
-    abstract val repository: BaseRepository<T>
-
     var classType: Class<T> = GenericTypeResolver.resolveTypeArgument(javaClass, BaseEntity::class.java) as Class<T>
 
-    fun parseSearch(search: String): Specification<T>? {
+    abstract val repository: BaseRepository<T>
 
-        val builder = SearchSpecificationsBuilder<T>()
-
-        // TODO Move Pattern to configuration file
-        val pattern = Pattern.compile("(\\w+?)([~:<>])(\\w+?);")
-        val matcher = pattern.matcher("$search;")
-
-        while (matcher.find()) {
-            val key: String = matcher.group(1)
-            val operation: String = matcher.group(2)
-            val value: Any = matcher.group(3)
-
-            builder.with(key, operation, value)
-        }
-
-        return builder.build()
-    }
+    abstract val searchService: SearchService<T>
 
     @ResponseBody
     override fun find(id: Long): T {
@@ -61,7 +40,7 @@ abstract class BaseController<T : BaseEntity> : FullyControllable<T> {
         @RequestParam("search")
         search: String
     ): Page<T> {
-        val searchSpecification: Specification<T>? = parseSearch(search)
+        val searchSpecification: Specification<T>? = searchService.generateSpecification(search)
         return repository.findAll(searchSpecification, page)
     }
 
@@ -99,7 +78,7 @@ abstract class BaseController<T : BaseEntity> : FullyControllable<T> {
         @RequestParam("search")
         search: String
     ) {
-        val searchSpecification: Specification<T>? = parseSearch(search)
+        val searchSpecification: Specification<T>? = searchService.generateSpecification(search)
         val removableEntities: Page<T> = repository.findAll(searchSpecification, page)
         return repository.deleteAll(removableEntities)
     }
