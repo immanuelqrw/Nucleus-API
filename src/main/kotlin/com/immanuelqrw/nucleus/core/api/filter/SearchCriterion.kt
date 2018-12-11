@@ -7,7 +7,7 @@ package com.immanuelqrw.nucleus.core.api.filter
  * @property operation Filtering action
  * @property value Value to filter
  */
-data class SearchCriteria(
+data class SearchCriterion(
     val key: String,
     val operation: String,
     val value: Any

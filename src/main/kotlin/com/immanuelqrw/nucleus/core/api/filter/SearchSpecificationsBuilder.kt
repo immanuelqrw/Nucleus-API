@@ -5,10 +5,10 @@ import org.springframework.data.jpa.domain.Specification
 
 class SearchSpecificationsBuilder<T : BaseEntity> {
 
-    private val params: MutableList<SearchCriteria> = mutableListOf()
+    private val params: MutableList<SearchCriterion> = mutableListOf()
 
     fun with(key: String, operation: String, value: Any): SearchSpecificationsBuilder<T> {
-        params.add(SearchCriteria(key, operation, value))
+        params.add(SearchCriterion(key, operation, value))
         return this
     }
 
@@ -17,9 +17,8 @@ class SearchSpecificationsBuilder<T : BaseEntity> {
             return null
         }
 
-        // FIXME Issue with generating specifications from criteria
-        val specifications: List<Specification<T>> = params.map {
-            SearchSpecification<T>()
+        val specifications: List<Specification<T>> = params.map { searchCriterion ->
+            SearchSpecification<T>(searchCriterion)
         }
 
 

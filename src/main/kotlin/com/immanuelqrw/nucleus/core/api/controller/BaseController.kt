@@ -17,7 +17,7 @@ import java.util.regex.Pattern
 /**
  * Abstract controller class
  */
-abstract class BaseController<T : BaseEntity> : Crudable<T> {
+abstract class BaseController<T : BaseEntity> : FullyControllable<T> {
     abstract val repository: BaseRepository<T>
 
     fun parseSearch(search: String): Specification<T>? {
@@ -44,7 +44,6 @@ abstract class BaseController<T : BaseEntity> : Crudable<T> {
         return repository.getOne(id)
     }
 
-    // TODO Add specification
     override fun findAll(
         @RequestParam("page")
         @PageableDefault(size = 100)

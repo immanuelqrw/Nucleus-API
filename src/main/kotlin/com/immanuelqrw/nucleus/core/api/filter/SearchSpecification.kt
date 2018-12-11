@@ -5,19 +5,19 @@ import org.springframework.data.jpa.domain.Specification
 import com.immanuelqrw.nucleus.core.api.model.BaseEntity
 import javax.persistence.criteria.*
 
-class SearchSpecification<T: BaseEntity> : Specification<T> {
+class SearchSpecification<T: BaseEntity>(searchCriterion: SearchCriterion) : Specification<T> {
 
-    private lateinit var criteria: SearchCriteria
+    private val criterion: SearchCriterion = searchCriterion
 
     override fun toPredicate(root: Root<T>, query: CriteriaQuery<*>, builder: CriteriaBuilder): Predicate? {
-        val key: Path<String> = root.get(criteria.key)
-        val operation = criteria.operation
-        val value = criteria.value.toString()
+        val key: Path<String> = root.get(criterion.key)
+        val operation = criterion.operation
+        val value = criterion.value.toString()
 
         return  when (operation) {
             ">" -> builder.greaterThanOrEqualTo(key, value)
             "<" -> builder.lessThanOrEqualTo(key, value)
-            ":" -> builder.equal(key, criteria.value)
+            ":" -> builder.equal(key, criterion.value)
             "~" -> builder.like(key, value.replace("*", "%"))
             else -> null
         }
