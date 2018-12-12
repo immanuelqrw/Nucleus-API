@@ -21,8 +21,6 @@ class SearchSpecificationsBuilder<T : BaseEntity> {
             SearchSpecification<T>(searchCriterion)
         }
 
-
-
         return specifications.reduce { groupedSpecification, specification ->
             groupedSpecification.and(specification)
         }
