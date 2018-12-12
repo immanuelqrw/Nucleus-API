@@ -52,18 +52,17 @@ abstract class BaseController<T : BaseEntity> : FullyControllable<T> {
         return repository.save(entity)
     }
 
-    override fun modify(id: Long, @RequestBody patches: Map<String, Any>): T {
+    override fun modify(id: Long, @RequestBody patchedFields: Map<String, Any>): T {
         val originalEntity: T = repository.getOne(id)
 
         val objectMapper = Utility.OBJECT_MAPPER
         val originalMap: Map<String, Any> = objectMapper.convertValue(originalEntity)
-        val patchedMap: Map<String, Any> = originalMap.plus(patches)
+        val patchedMap: Map<String, Any> = originalMap.plus(patchedFields)
 
         val patchedEntity: T = objectMapper.convertValue(patchedMap, classType)
 
         return repository.save(patchedEntity)
     }
-
 
     override fun remove(id: Long) {
         return repository.deleteById(id)
