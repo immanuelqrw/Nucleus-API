@@ -14,7 +14,7 @@ class SearchSpecification<T: BaseEntity>(searchCriterion: SearchCriterion) : Spe
         val operation = criterion.operation
         val value = criterion.value.toString()
 
-        return  when (operation) {
+        return when (operation) {
             ">" -> builder.greaterThanOrEqualTo(key, value)
             "<" -> builder.lessThanOrEqualTo(key, value)
             ":" -> builder.equal(key, criterion.value)

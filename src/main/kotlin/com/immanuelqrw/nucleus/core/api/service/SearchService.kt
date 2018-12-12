@@ -15,7 +15,7 @@ class SearchService<T : BaseEntity> {
      * @param search Query parameter to parse
      * @return Specification
      */
-    fun generateSpecification(search: String): Specification<T>? {
+    fun generateSpecification(search: String?): Specification<T>? {
 
         val builder = SearchSpecificationsBuilder<T>()
 

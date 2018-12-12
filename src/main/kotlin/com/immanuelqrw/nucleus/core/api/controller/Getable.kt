@@ -24,5 +24,5 @@ interface Getable<T> {
      * @param search Used for specifying entities to retrieve
      * @return [Page] of entities
      */
-    fun findAll(page: Pageable, search: String): Page<T>
+    fun findAll(page: Pageable?, search: String?): Page<T>
 }

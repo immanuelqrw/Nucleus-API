@@ -35,9 +35,9 @@ abstract class BaseController<T : BaseEntity> : FullyControllable<T> {
         @RequestParam("page")
         @PageableDefault(size = 100)
         @SortDefault(sort = ["id"])
-        page: Pageable,
+        page: Pageable?,
         @RequestParam("search")
-        search: String
+        search: String?
     ): Page<T> {
         val searchSpecification: Specification<T>? = searchService.generateSpecification(search)
         return repository.findAll(searchSpecification, page)
@@ -72,9 +72,9 @@ abstract class BaseController<T : BaseEntity> : FullyControllable<T> {
         @RequestParam("page")
         @PageableDefault(size = 100)
         @SortDefault(sort = ["id"])
-        page: Pageable,
+        page: Pageable?,
         @RequestParam("search")
-        search: String
+        search: String?
     ) {
         val searchSpecification: Specification<T>? = searchService.generateSpecification(search)
         val removableEntities: Page<T> = repository.findAll(searchSpecification, page)
