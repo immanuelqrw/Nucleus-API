@@ -28,6 +28,7 @@ dependencies {
     compile("org.springframework", "spring-webmvc", "5.1.3.RELEASE")
     compile( "org.postgresql", "postgresql", "42.2.5")
     compile("org.hibernate", "hibernate-core", "5.3.7.Final")
+    compile("org.hibernate.validator", "hibernate-validator", "6.0.13.Final")
     testCompile("org.hibernate", "hibernate-testing", "5.3.7.Final")
     testCompile("org.junit.jupiter", "junit-jupiter-api", "5.3.1")
     testCompile("org.junit.jupiter", "junit-jupiter-params", "5.3.1")
