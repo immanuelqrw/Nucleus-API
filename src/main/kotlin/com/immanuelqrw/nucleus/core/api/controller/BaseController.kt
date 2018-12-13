@@ -1,20 +1,9 @@
 package com.immanuelqrw.nucleus.core.api.controller
 
-import com.fasterxml.jackson.module.kotlin.convertValue
 import com.immanuelqrw.nucleus.core.api.model.BaseEntity
-import com.immanuelqrw.nucleus.core.api.repository.BaseRepository
 import com.immanuelqrw.nucleus.core.api.service.BaseService
-import com.immanuelqrw.nucleus.core.api.service.SearchService
-import com.immanuelqrw.nucleus.core.api.utility.Utility
 import org.springframework.data.domain.Page
 import org.springframework.data.domain.Pageable
-import org.springframework.data.jpa.domain.Specification
-import org.springframework.data.web.PageableDefault
-import org.springframework.data.web.SortDefault
-import org.springframework.web.bind.annotation.RequestBody
-import org.springframework.web.bind.annotation.RequestParam
-import org.springframework.web.bind.annotation.ResponseBody
-import org.springframework.core.GenericTypeResolver
 
 /**
  * Abstract controller class
