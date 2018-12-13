@@ -6,6 +6,9 @@ import org.springframework.data.jpa.domain.Specification
 import org.springframework.stereotype.Service
 import java.util.regex.Pattern
 
+/**
+ * Service which parses search query parameter
+ */
 @Service
 class SearchService<T : BaseEntity> {
 
