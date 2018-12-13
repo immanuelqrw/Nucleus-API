@@ -10,8 +10,8 @@ interface Patchable<T> {
      * Modifies fields on entity with [id]
      *
      * @param id ID of entity to modify
-     * @param patches Map of fields to change
+     * @param patchedFields Map of fields to change
      * @return Modified entity
      */
-    fun modify(id: Long, patches: Map<String, Any>): T
+    fun modify(id: Long, patchedFields: Map<String, Any>): T
 }
