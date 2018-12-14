@@ -1,6 +1,8 @@
 package com.immanuelqrw.nucleus.core.api.filter
 
+import com.immanuelqrw.nucleus.core.api.Testable
 import com.immanuelqrw.nucleus.core.api.model.BaseEntity
+import org.junit.jupiter.api.BeforeAll
 import org.junit.jupiter.api.BeforeEach
 import org.junit.jupiter.api.Nested
 import org.junit.jupiter.api.Test
@@ -8,11 +10,15 @@ import org.junit.jupiter.api.Test
 /**
  * Unit tests for SearchSpecification
  */
-abstract class SearchSpecificationTest<T : BaseEntity> {
+abstract class SearchSpecificationTest<T : BaseEntity> : Testable {
 
     // TODO Setup input data for test use cases
+
+    @BeforeAll
+    override fun prepare() {}
+
     @BeforeEach
-    fun setUp() {}
+    override fun setUp() {}
 
     // TODO Find out how to test Predicate
     @Nested

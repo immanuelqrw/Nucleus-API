@@ -1,6 +1,8 @@
 package com.immanuelqrw.nucleus.core.api.service
 
+import com.immanuelqrw.nucleus.core.api.Testable
 import com.immanuelqrw.nucleus.core.api.model.BaseEntity
+import org.junit.jupiter.api.BeforeAll
 import org.junit.jupiter.api.BeforeEach
 import org.junit.jupiter.api.Nested
 import org.junit.jupiter.api.Test
@@ -8,12 +10,15 @@ import org.junit.jupiter.api.Test
 /**
  * Unit tests for SearchService
  */
-abstract class SearchServiceTest<T : BaseEntity> {
+abstract class SearchServiceTest<T : BaseEntity> : Testable {
 
     // TODO Setup input data for test use cases
-    @BeforeEach
-    fun setUp() {}
 
+    @BeforeAll
+    override fun prepare() {}
+
+    @BeforeEach
+    override fun setUp() {}
 
     @Nested
     inner class Success {
