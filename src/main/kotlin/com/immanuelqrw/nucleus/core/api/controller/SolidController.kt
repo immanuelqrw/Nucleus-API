@@ -37,7 +37,7 @@
 //        return service.findAll(page, search)
 //    }
 //
-//    @PostMapping(name = "/{id}", produces = [MediaType.APPLICATION_JSON_VALUE], consumes = [MediaType.APPLICATION_JSON_VALUE])
+//    @PostMapping(produces = [MediaType.APPLICATION_JSON_VALUE], consumes = [MediaType.APPLICATION_JSON_VALUE])
 //    override fun create(@RequestBody entity: T): T {
 //        return service.create(entity)
 //    }
