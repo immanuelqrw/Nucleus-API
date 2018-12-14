@@ -48,12 +48,12 @@ abstract class BaseServiceIT<T : BaseEntity> : Testable {
         }
 
         @Test
-        fun `given valid id - when DELETE entity - removes entity`() {
+        fun `given valid id - when DELETE entity - sets entity removedOn to now`() {
             assert(false)
         }
 
         @Test
-        fun `given valid page, sort, and search parameters - when DELETE entities - removes entities`() {
+        fun `given valid page, sort, and search parameters - when DELETE entities - sets entities' removedOn to now`() {
             assert(false)
         }
     }
