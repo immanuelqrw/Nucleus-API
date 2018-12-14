@@ -9,8 +9,7 @@ import java.util.regex.Pattern
 /**
  * Service which parses search query parameter
  */
-@Service
-class SearchService<T : BaseEntity> {
+abstract class SearchService<T : BaseEntity> {
 
     /**
      * Parses search query parameter to generate Specification

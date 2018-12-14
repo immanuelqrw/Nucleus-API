@@ -17,8 +17,6 @@
 //@RequestMapping("/solid")
 //class SolidController<T : BaseEntity> : BaseController<T>(), FullyControllable<T> {
 //
-//    private val classType: Class<T> = GenericTypeResolver.resolveTypeArgument(javaClass, BaseEntity::class.java) as Class<T>
-//
 //    @Autowired
 //    val service: SolidService
 //

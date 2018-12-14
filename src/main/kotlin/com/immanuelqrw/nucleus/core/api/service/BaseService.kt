@@ -8,6 +8,7 @@ import com.immanuelqrw.nucleus.core.api.utility.Utility
 import org.springframework.data.domain.Page
 import org.springframework.data.domain.Pageable
 import org.springframework.data.jpa.domain.Specification
+import java.time.LocalDateTime
 
 /**
  * Abstract base service
@@ -32,7 +33,8 @@ abstract class BaseService<T : BaseEntity>(
     }
 
     override fun replace(id: Long, entity: T): T {
-        entity.id = id
+        val originalEntity: T = repository.getOne(id)
+        entity.id = originalEntity.id
         return repository.save(entity)
     }
 
@@ -48,14 +50,24 @@ abstract class BaseService<T : BaseEntity>(
         return repository.save(patchedEntity)
     }
 
+    private fun removeEntity(removableEntity: T?) {
+        removableEntity?.let { _removableEntity ->
+            _removableEntity.removedOn = LocalDateTime.now()
+            repository.save(_removableEntity)
+        }
+    }
+
     override fun remove(id: Long) {
-        return repository.deleteById(id)
+        val removableEntity: T = repository.getOne(id)
+        removeEntity(removableEntity)
     }
 
     override fun removeAll(page: Pageable?, search: String?) {
         val searchSpecification: Specification<T>? = searchService.generateSpecification(search)
         val removableEntities: Page<T> = repository.findAll(searchSpecification, page)
-        return repository.deleteAll(removableEntities)
+        removableEntities.forEach { removableEntity ->
+            removeEntity(removableEntity)
+        }
     }
 
 }
