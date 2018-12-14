@@ -5,6 +5,7 @@ import com.immanuelqrw.nucleus.core.api.controller.FullyControllable
 import com.immanuelqrw.nucleus.core.api.model.BaseEntity
 import com.immanuelqrw.nucleus.core.api.repository.BaseRepository
 import com.immanuelqrw.nucleus.core.api.utility.Utility
+import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.data.domain.Page
 import org.springframework.data.domain.Pageable
 import org.springframework.data.jpa.domain.Specification
@@ -13,7 +14,8 @@ import java.time.LocalDateTime
 /**
  * Abstract base service
  */
-abstract class BaseService<T : BaseEntity>(
+abstract class BaseService<T : BaseEntity>
+@Autowired constructor(
     private val repository: BaseRepository<T>,
     private val searchService: SearchService<T>,
     private val classType: Class<T>
