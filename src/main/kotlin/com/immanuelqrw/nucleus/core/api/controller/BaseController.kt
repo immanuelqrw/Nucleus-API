@@ -2,41 +2,70 @@ package com.immanuelqrw.nucleus.core.api.controller
 
 import com.immanuelqrw.nucleus.core.api.model.BaseEntity
 import com.immanuelqrw.nucleus.core.api.service.BaseService
+import com.immanuelqrw.nucleus.core.api.utility.Utility.DEFAULT_PAGE_SIZE
+import com.immanuelqrw.nucleus.core.api.utility.Utility.DEFAULT_SORT_FIELD
+import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.data.domain.Page
 import org.springframework.data.domain.Pageable
+import org.springframework.data.web.PageableDefault
+import org.springframework.data.web.SortDefault
+import org.springframework.http.MediaType
+import org.springframework.web.bind.annotation.*
 
 /**
  * Abstract controller class
  */
-abstract class BaseController<T : BaseEntity> : FullyControllable<T> {
+abstract class BaseController<T : BaseEntity>
+@Autowired constructor(
+    private val service: BaseService<T>
+): FullyControllable<T> {
 
-    abstract val service: BaseService<T>
-
-    override fun find(id: Long): T {
+    @GetMapping(name = "/{id}", produces = [MediaType.APPLICATION_JSON_VALUE])
+    override fun find(@PathVariable("id") id: Long): T {
         return service.find(id)
     }
 
-    override fun findAll(page: Pageable?, search: String?): Page<T> {
+    @GetMapping(produces = [MediaType.APPLICATION_JSON_VALUE])
+    override fun findAll(
+        @RequestParam("page")
+        @PageableDefault(size = DEFAULT_PAGE_SIZE)
+        @SortDefault(sort = [DEFAULT_SORT_FIELD])
+        page: Pageable?,
+        @RequestParam("search")
+        search: String?
+    ): Page<T> {
         return service.findAll(page, search)
     }
 
-    override fun create(entity: T): T {
+    @PostMapping(produces = [MediaType.APPLICATION_JSON_VALUE], consumes = [MediaType.APPLICATION_JSON_VALUE])
+    override fun create(@RequestBody entity: T): T {
         return service.create(entity)
     }
 
-    override fun replace(id: Long, entity: T): T {
+    @PutMapping(name = "/{id}", produces = [MediaType.APPLICATION_JSON_VALUE], consumes = [MediaType.APPLICATION_JSON_VALUE])
+    override fun replace(@PathVariable("id") id: Long, @RequestBody entity: T): T {
         return service.replace(id, entity)
     }
 
-    override fun modify(id: Long, patchedFields: Map<String, Any>): T {
+    @PatchMapping(name = "/{id}", produces = [MediaType.APPLICATION_JSON_VALUE], consumes = [MediaType.APPLICATION_JSON_VALUE])
+    override fun modify(@PathVariable("id") id: Long, @RequestBody patchedFields: Map<String, Any>): T {
         return service.modify(id, patchedFields)
     }
 
-    override fun remove(id: Long) {
+    @DeleteMapping(name = "/{id}", produces = [MediaType.APPLICATION_JSON_VALUE])
+    override fun remove(@PathVariable("id") id: Long) {
         return service.remove(id)
     }
 
-    override fun removeAll(page: Pageable?, search: String?) {
+    @DeleteMapping(produces = [MediaType.APPLICATION_JSON_VALUE])
+    override fun removeAll(
+        @RequestParam("page")
+        @PageableDefault(size = DEFAULT_PAGE_SIZE)
+        @SortDefault(sort = [DEFAULT_SORT_FIELD])
+        page: Pageable?,
+        @RequestParam("search")
+        search: String?
+    ) {
         return service.removeAll(page, search)
     }
 }

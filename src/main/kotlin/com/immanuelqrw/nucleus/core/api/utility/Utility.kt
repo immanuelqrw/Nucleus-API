@@ -56,4 +56,7 @@ object Utility {
     private inline fun <reified T> parseObjectFromInput(inputStream: InputStream, objectMapper: ObjectMapper): T {
         return objectMapper.readValue(inputStream)
     }
+
+    const val DEFAULT_PAGE_SIZE: Int = 100
+    const val DEFAULT_SORT_FIELD: String = "id"
 }
