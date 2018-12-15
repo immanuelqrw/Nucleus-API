@@ -30,7 +30,7 @@ abstract class BaseController<T : BaseEntity>
         @RequestParam("page")
         @PageableDefault(size = DEFAULT_PAGE_SIZE)
         @SortDefault(sort = [DEFAULT_SORT_FIELD])
-        page: Pageable?,
+        page: Pageable,
         @RequestParam("search")
         search: String?
     ): Page<T> {
@@ -62,7 +62,7 @@ abstract class BaseController<T : BaseEntity>
         @RequestParam("page")
         @PageableDefault(size = DEFAULT_PAGE_SIZE)
         @SortDefault(sort = [DEFAULT_SORT_FIELD])
-        page: Pageable?,
+        page: Pageable,
         @RequestParam("search")
         search: String?
     ) {

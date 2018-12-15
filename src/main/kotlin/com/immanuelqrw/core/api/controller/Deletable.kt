@@ -21,5 +21,5 @@ interface Deletable<T> {
      * @param page [Pageable] instance that allows pagination and sorting
      * @param search Used for specifying entities to remove
      */
-    fun removeAll(page: Pageable?, search: String?)
+    fun removeAll(page: Pageable, search: String?)
 }

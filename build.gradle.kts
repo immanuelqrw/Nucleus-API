@@ -20,6 +20,7 @@ repositories {
 
 dependencies {
     compile(kotlin("stdlib-jdk8"))
+    compile("org.jetbrains.kotlin", "kotlin-reflect", "1.3.11")
 
     compile("com.fasterxml.jackson.module", "jackson-module-kotlin", "2.9.7")
     compile("com.fasterxml.jackson.dataformat", "jackson-dataformat-yaml", "2.9.0")

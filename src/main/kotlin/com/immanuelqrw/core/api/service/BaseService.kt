@@ -25,7 +25,7 @@ abstract class BaseService<T : BaseEntity>
         return repository.getOne(id)
     }
 
-    override fun findAll(page: Pageable?, search: String?): Page<T> {
+    override fun findAll(page: Pageable, search: String?): Page<T> {
         val searchSpecification: Specification<T>? = searchService.generateSpecification(search)
         return repository.findAll(searchSpecification, page)
     }
@@ -64,7 +64,7 @@ abstract class BaseService<T : BaseEntity>
         removeEntity(removableEntity)
     }
 
-    override fun removeAll(page: Pageable?, search: String?) {
+    override fun removeAll(page: Pageable, search: String?) {
         val searchSpecification: Specification<T>? = searchService.generateSpecification(search)
         val removableEntities: Page<T> = repository.findAll(searchSpecification, page)
         removableEntities.forEach { removableEntity ->

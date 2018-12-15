@@ -18,7 +18,7 @@ abstract class ReadController<T : BaseEntity>
         return service.find(id)
     }
 
-    override fun findAll(page: Pageable?, search: String?): Page<T> {
+    override fun findAll(page: Pageable, search: String?): Page<T> {
         return service.findAll(page, search)
     }
 }
