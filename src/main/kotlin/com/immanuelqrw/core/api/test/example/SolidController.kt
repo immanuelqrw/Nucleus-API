@@ -1,4 +1,4 @@
-package com.immanuelqrw.nucleus.core.api.test.example
+package com.immanuelqrw.core.api.test.example
 
 import com.immanuelqrw.core.api.controller.BaseController
 import com.immanuelqrw.core.api.model.BaseEntity

@@ -6,7 +6,7 @@ import com.fasterxml.jackson.module.kotlin.readValue
 import com.fasterxml.jackson.module.kotlin.registerKotlinModule
 import java.io.InputStream
 
-// TODO Move into nucleus.core.utility package
+// TODO Move into core.utility package
 /**
  * Configuration
  *

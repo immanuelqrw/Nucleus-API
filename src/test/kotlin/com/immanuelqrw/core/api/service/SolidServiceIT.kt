@@ -1,7 +1,7 @@
 package com.immanuelqrw.core.api.service
 
 import com.immanuelqrw.core.api.test.service.BaseServiceIT
-import com.immanuelqrw.nucleus.core.api.test.example.Solid
+import com.immanuelqrw.core.api.test.example.Solid
 import org.junit.jupiter.api.TestInstance
 
 /**
