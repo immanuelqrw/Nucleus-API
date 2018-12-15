@@ -10,8 +10,8 @@ plugins {
     id("io.spring.dependency-management") version "1.0.6.RELEASE"
 }
 
-group = "com.immanuelqrw.nucleus.core.api"
-version = "0.0.1-Pre-Alpha"
+group = "com.immanuelqrw.core"
+version = "0.0.1-pre-alpha"
 
 repositories {
     mavenCentral()
