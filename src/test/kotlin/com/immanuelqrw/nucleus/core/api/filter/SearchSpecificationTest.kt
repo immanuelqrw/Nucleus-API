@@ -1,6 +1,6 @@
 package com.immanuelqrw.nucleus.core.api.filter
 
-import com.immanuelqrw.nucleus.core.api.Testable
+import com.immanuelqrw.nucleus.core.api.test.Testable
 import com.immanuelqrw.nucleus.core.api.model.BaseEntity
 import org.junit.jupiter.api.BeforeAll
 import org.junit.jupiter.api.BeforeEach

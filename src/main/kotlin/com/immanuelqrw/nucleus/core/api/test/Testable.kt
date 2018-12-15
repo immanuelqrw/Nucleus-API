@@ -1,4 +1,4 @@
-package com.immanuelqrw.nucleus.core.api
+package com.immanuelqrw.nucleus.core.api.test
 
 /**
  * Interface specifying methods required for tests

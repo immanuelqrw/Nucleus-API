@@ -12,7 +12,7 @@ import javax.persistence.MappedSuperclass
  * @property removedOn When entity's entry was removed
  */
 @MappedSuperclass
-abstract class BaseEntity : Identifiable, Entryable {
+abstract class BaseEntity : Entityable {
     abstract override var id: Long?
     abstract override var createdOn: LocalDateTime
     abstract override var modifiedOn: LocalDateTime

@@ -18,7 +18,7 @@ import org.springframework.web.bind.annotation.*
 abstract class BaseController<T : BaseEntity>
 @Autowired constructor(
     private val service: BaseService<T>
-): FullyControllable<T> {
+) : FullyControllable<T> {
 
     @GetMapping(name = "/{id}", produces = [MediaType.APPLICATION_JSON_VALUE])
     override fun find(@PathVariable("id") id: Long): T {

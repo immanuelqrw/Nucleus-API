@@ -11,4 +11,4 @@ import javax.persistence.EntityManager
  *
  * @property T Entity type being manipulated
  */
-interface BaseRepository<T : BaseEntity>: JpaRepositoryImplementation<T, Long>
+interface BaseRepository<T : BaseEntity> : JpaRepositoryImplementation<T, Long>

@@ -12,7 +12,7 @@ import org.springframework.data.domain.Pageable
 abstract class WriteController<T : BaseEntity>
 @Autowired constructor(
     private val service: BaseService<T>
-): Writable<T> {
+) : Writable<T> {
 
     override fun create(entity: T): T {
         return service.create(entity)

@@ -1,3 +1,5 @@
+package com.immanuelqrw.nucleus.core.api.test.example
+
 //package com.immanuelqrw.nucleus.core.api.service
 //
 ///**
