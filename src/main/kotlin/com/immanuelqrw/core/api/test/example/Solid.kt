@@ -1,7 +1,7 @@
 package com.immanuelqrw.nucleus.core.api.test.example
 
-import com.immanuelqrw.nucleus.core.api.model.BaseEntity
-import com.immanuelqrw.nucleus.core.api.utility.DateTimeFormatter
+import com.immanuelqrw.core.api.model.BaseEntity
+import com.immanuelqrw.core.api.utility.DateTimeFormatter
 import org.hibernate.annotations.CreationTimestamp
 import org.hibernate.annotations.UpdateTimestamp
 import org.springframework.data.annotation.CreatedDate

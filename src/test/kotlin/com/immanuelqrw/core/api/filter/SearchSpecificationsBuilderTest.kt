@@ -1,7 +1,7 @@
-package com.immanuelqrw.nucleus.core.api.filter
+package com.immanuelqrw.core.api.filter
 
-import com.immanuelqrw.nucleus.core.api.test.Testable
-import com.immanuelqrw.nucleus.core.api.model.BaseEntity
+import com.immanuelqrw.core.api.test.Testable
+import com.immanuelqrw.core.api.model.BaseEntity
 import org.junit.jupiter.api.BeforeAll
 import org.junit.jupiter.api.BeforeEach
 import org.junit.jupiter.api.Nested

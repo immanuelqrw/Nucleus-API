@@ -10,8 +10,7 @@ import org.junit.jupiter.api.Test
 /**
  * Unit tests for SearchService
  */
-abstract class SearchServiceTest<T : BaseEntity> :
-    Testable {
+abstract class SearchServiceTest<T : BaseEntity> : Testable {
 
     // TODO Setup input data for test use cases
 

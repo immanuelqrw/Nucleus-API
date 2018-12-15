@@ -1,8 +1,8 @@
 package com.immanuelqrw.nucleus.core.api.test.example
 
-import com.immanuelqrw.nucleus.core.api.controller.BaseController
-import com.immanuelqrw.nucleus.core.api.model.BaseEntity
-import com.immanuelqrw.nucleus.core.api.service.BaseService
+import com.immanuelqrw.core.api.controller.BaseController
+import com.immanuelqrw.core.api.model.BaseEntity
+import com.immanuelqrw.core.api.service.BaseService
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.web.bind.annotation.*
 

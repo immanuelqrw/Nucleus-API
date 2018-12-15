@@ -1,4 +1,4 @@
-package com.immanuelqrw.core.api.controller
+package com.immanuelqrw.core.api.test.service
 
 import com.immanuelqrw.core.api.test.Testable
 import com.immanuelqrw.core.api.model.BaseEntity
@@ -8,10 +8,9 @@ import org.junit.jupiter.api.Nested
 import org.junit.jupiter.api.Test
 
 /**
- * Integration tests for Controller
+ * Integration tests for Service
  */
-abstract class BaseControllerIT<T : BaseEntity> :
-    Testable {
+abstract class BaseServiceIT<T : BaseEntity> : Testable {
 
     // TODO Setup input data for test use cases
 

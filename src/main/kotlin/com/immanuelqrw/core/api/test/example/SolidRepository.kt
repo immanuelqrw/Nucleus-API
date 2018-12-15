@@ -1,6 +1,6 @@
 package com.immanuelqrw.nucleus.core.api.test.example
 
-import com.immanuelqrw.nucleus.core.api.repository.BaseRepository
+import com.immanuelqrw.core.api.repository.BaseRepository
 
 /**
  * Solid Repository interface
