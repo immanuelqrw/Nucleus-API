@@ -13,7 +13,7 @@ import javax.persistence.MappedSuperclass
  */
 @MappedSuperclass
 abstract class BaseEntity : Identifiable, Entryable {
-    abstract override var id: Long
+    abstract override var id: Long?
     abstract override var createdOn: LocalDateTime
     abstract override var modifiedOn: LocalDateTime
     abstract override var removedOn: LocalDateTime?
