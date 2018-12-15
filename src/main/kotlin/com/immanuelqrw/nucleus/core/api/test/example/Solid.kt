@@ -1,5 +1,6 @@
-package com.immanuelqrw.nucleus.core.api.model
+package com.immanuelqrw.nucleus.core.api.test.example
 
+import com.immanuelqrw.nucleus.core.api.model.BaseEntity
 import com.immanuelqrw.nucleus.core.api.utility.DateTimeFormatter
 import org.hibernate.annotations.CreationTimestamp
 import org.hibernate.annotations.UpdateTimestamp
@@ -19,7 +20,7 @@ import javax.persistence.*
  */
 @Entity
 @Table(name = "`Solid`")
-internal data class Solid (
+data class Solid (
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "`id`")
@@ -40,4 +41,4 @@ internal data class Solid (
     @DateTimeFormat(pattern = DateTimeFormatter.DATE_TIME_PATTERN)
     @Column(name = "`removedOn`")
     override var removedOn: LocalDateTime?
-) : Entityable
+) : BaseEntity()

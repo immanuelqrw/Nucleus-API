@@ -1,5 +1,6 @@
-package com.immanuelqrw.nucleus.core.api.controller
+package com.immanuelqrw.nucleus.core.api.test.example
 
+import com.immanuelqrw.nucleus.core.api.controller.BaseController
 import com.immanuelqrw.nucleus.core.api.model.BaseEntity
 import com.immanuelqrw.nucleus.core.api.service.BaseService
 import org.springframework.beans.factory.annotation.Autowired
@@ -11,4 +12,4 @@ import org.springframework.web.bind.annotation.*
 @RestController
 @RequestMapping("/solid")
 class SolidController<T : BaseEntity>
-@Autowired constructor(val service: BaseService<T>): BaseController<T>(service)
+@Autowired constructor(val service: BaseService<T>) : BaseController<T>(service)
