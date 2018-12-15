@@ -1,7 +1,13 @@
 package com.immanuelqrw.core.api.model
 
+import com.immanuelqrw.core.api.utility.DateTimeFormatter
+import org.hibernate.annotations.CreationTimestamp
+import org.hibernate.annotations.UpdateTimestamp
+import org.springframework.data.annotation.CreatedDate
+import org.springframework.data.annotation.LastModifiedDate
+import org.springframework.format.annotation.DateTimeFormat
 import java.time.LocalDateTime
-import javax.persistence.MappedSuperclass
+import javax.persistence.*
 
 /**
  * Abstract class for the base of entities
@@ -13,8 +19,24 @@ import javax.persistence.MappedSuperclass
  */
 @MappedSuperclass
 abstract class BaseEntity : Entityable {
-    abstract override var id: Long?
-    abstract override var createdOn: LocalDateTime
-    abstract override var modifiedOn: LocalDateTime
-    abstract override var removedOn: LocalDateTime?
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @Column(name = "`id`")
+    override var id: Long? = null
+
+    @DateTimeFormat(pattern = DateTimeFormatter.DATE_TIME_PATTERN)
+    @CreatedDate
+    @CreationTimestamp
+    @Column(name = "`createdOn`", updatable = false)
+    override var createdOn: LocalDateTime? = null
+
+    @DateTimeFormat(pattern = DateTimeFormatter.DATE_TIME_PATTERN)
+    @LastModifiedDate
+    @UpdateTimestamp
+    @Column(name = "`modifiedOn`")
+    override var modifiedOn: LocalDateTime? = null
+
+    @DateTimeFormat(pattern = DateTimeFormatter.DATE_TIME_PATTERN)
+    @Column(name = "`removedOn`")
+    override var removedOn: LocalDateTime? = null
 }

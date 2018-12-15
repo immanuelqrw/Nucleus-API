@@ -20,25 +20,4 @@ import javax.persistence.*
  */
 @Entity
 @Table(name = "`Solid`")
-data class Solid (
-    @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Column(name = "`id`")
-    override var id: Long?,
-
-    @DateTimeFormat(pattern = DateTimeFormatter.DATE_TIME_PATTERN)
-    @CreatedDate
-    @CreationTimestamp
-    @Column(name = "`createdOn`", updatable = false)
-    override var createdOn: LocalDateTime,
-
-    @DateTimeFormat(pattern = DateTimeFormatter.DATE_TIME_PATTERN)
-    @LastModifiedDate
-    @UpdateTimestamp
-    @Column(name = "`modifiedOn`")
-    override var modifiedOn: LocalDateTime,
-
-    @DateTimeFormat(pattern = DateTimeFormatter.DATE_TIME_PATTERN)
-    @Column(name = "`removedOn`")
-    override var removedOn: LocalDateTime?
-) : BaseEntity()
+class Solid : BaseEntity()

@@ -10,7 +10,7 @@ import java.time.LocalDateTime
  * @property removedOn When entity's entry was removed
  */
 interface Entryable {
-    val createdOn: LocalDateTime
-    val modifiedOn: LocalDateTime
+    val createdOn: LocalDateTime?
+    val modifiedOn: LocalDateTime?
     val removedOn: LocalDateTime?
 }
