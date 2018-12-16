@@ -14,6 +14,13 @@ plugins {
 group = "com.immanuelqrw.core"
 version = "0.0.1-pre-alpha"
 
+val kotlinVersion = "1.3.11"
+val junitVersion = "5.3.2"
+val jacksonVersion = "2.9.7"
+val springDataVersion = "2.1.3.RELEASE"
+val springBootVersion = "2.1.1.RELEASE"
+val springVersion = "5.1.3.RELEASE"
+
 repositories {
     mavenCentral()
     jcenter()
@@ -29,37 +36,37 @@ val integrationTestImplementation by configurations.creating {
 
 dependencies {
     compile(kotlin("stdlib-jdk8"))
-    compile("org.jetbrains.kotlin", "kotlin-reflect", "1.3.11")
+    compile("org.jetbrains.kotlin", "kotlin-reflect", kotlinVersion)
 
-    compile("com.fasterxml.jackson.module", "jackson-module-kotlin", "2.9.7")
-    compile("com.fasterxml.jackson.dataformat", "jackson-dataformat-yaml", "2.9.0")
+    compile("com.fasterxml.jackson.module", "jackson-module-kotlin", jacksonVersion)
+    compile("com.fasterxml.jackson.dataformat", "jackson-dataformat-yaml", jacksonVersion)
 
-    compile("org.springframework.data", "spring-data-jpa", "2.1.3.RELEASE")
-    compile("org.springframework", "spring-orm", "5.1.3.RELEASE")
-    compile("org.springframework", "spring-web", "5.1.3.RELEASE")
-    compile("org.springframework", "spring-webmvc", "5.1.3.RELEASE")
+    compile("org.springframework.data", "spring-data-jpa", springDataVersion)
+    compile("org.springframework", "spring-orm", springVersion)
+    compile("org.springframework", "spring-web", springVersion)
+    compile("org.springframework", "spring-webmvc", springVersion)
 
     compile( "org.postgresql", "postgresql", "42.2.5")
     compile("org.hibernate", "hibernate-core", "5.3.7.Final")
     compile("org.hibernate.validator", "hibernate-validator", "6.0.13.Final")
 
-    compile("org.junit.jupiter", "junit-jupiter-api", "5.3.2")
-    compile("org.junit.jupiter", "junit-jupiter-params", "5.3.2")
-    compile("org.junit.jupiter", "junit-jupiter-engine", "5.3.2")
+    compile("org.junit.jupiter", "junit-jupiter-api", junitVersion)
+    compile("org.junit.jupiter", "junit-jupiter-params", junitVersion)
+    compile("org.junit.jupiter", "junit-jupiter-engine", junitVersion)
 
 
-    implementation("org.junit.jupiter", "junit-jupiter-api", "5.3.2")
+    implementation("org.junit.jupiter", "junit-jupiter-api", junitVersion)
     implementation("io.mockk", "mockk", "1.8.13")
     implementation("org.amshove.kluent", "kluent", "1.42")
 
 
     testCompile("org.hibernate", "hibernate-testing", "5.3.7.Final")
 
-    testCompile("org.junit.jupiter", "junit-jupiter-api", "5.3.2")
-    testCompile("org.junit.jupiter", "junit-jupiter-params", "5.3.2")
-    testRuntime("org.junit.jupiter", "junit-jupiter-engine", "5.3.2")
+    testCompile("org.junit.jupiter", "junit-jupiter-api", junitVersion)
+    testCompile("org.junit.jupiter", "junit-jupiter-params", junitVersion)
+    testRuntime("org.junit.jupiter", "junit-jupiter-engine", junitVersion)
 
-    testImplementation("org.junit.jupiter", "junit-jupiter-api", "5.3.2")
+    testImplementation("org.junit.jupiter", "junit-jupiter-api", junitVersion)
     testImplementation("io.mockk", "mockk", "1.8.13")
     testImplementation("org.amshove.kluent", "kluent", "1.42")
 }
