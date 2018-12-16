@@ -1,6 +1,6 @@
 package com.immanuelqrw.core.api.controller
 
-import com.immanuelqrw.core.api.test.controller.BaseControllerIntegrationTest
+import com.immanuelqrw.core.api.test.integration.controller.BaseControllerIntegrationTest
 import com.immanuelqrw.core.api.test.example.Solid
 import org.junit.jupiter.api.TestInstance
 
