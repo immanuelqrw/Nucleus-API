@@ -8,6 +8,7 @@ plugins {
     id("org.jetbrains.kotlin.plugin.allopen") version "1.3.11"
     id("org.jetbrains.kotlin.plugin.spring") version "1.3.11"
     id("io.spring.dependency-management") version "1.0.6.RELEASE"
+    idea
 }
 
 group = "com.immanuelqrw.core"
@@ -16,6 +17,14 @@ version = "0.0.1-pre-alpha"
 repositories {
     mavenCentral()
     jcenter()
+}
+
+val integrationTestCompile by configurations.creating {
+    extendsFrom(configurations["testCompile"])
+}
+
+val integrationTestImplementation by configurations.creating {
+    extendsFrom(configurations["testImplementation"])
 }
 
 dependencies {
@@ -72,3 +81,21 @@ tasks.withType<Test> {
 tasks.withType<Wrapper> {
     gradleVersion = "4.8"
 }
+
+sourceSets.create("integrationTest") {
+    java.srcDir(file("src/integrationTest/java"))
+    java.srcDir(file("src/integrationTest/kotlin"))
+    resources.srcDir(file("src/integrationTest/resources"))
+    compileClasspath += sourceSets["main"].output + configurations["testRuntimeClasspath"]
+    runtimeClasspath += output + compileClasspath
+}
+
+task<Test>("integrationTest") {
+    description = "Runs the integration tests."
+    group = "verification"
+    testClassesDirs = sourceSets["integrationTest"].output.classesDirs
+    classpath = sourceSets["integrationTest"].runtimeClasspath
+    mustRunAfter(tasks["test"])
+}
+
+tasks["check"].dependsOn("integrationTest")

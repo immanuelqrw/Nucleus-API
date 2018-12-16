@@ -1,7 +1,7 @@
 package com.immanuelqrw.core.api.test.controller
 
-import com.immanuelqrw.core.api.test.Testable
 import com.immanuelqrw.core.api.model.BaseEntity
+import com.immanuelqrw.core.api.test.Testable
 import org.junit.jupiter.api.BeforeAll
 import org.junit.jupiter.api.BeforeEach
 import org.junit.jupiter.api.Nested
@@ -10,7 +10,7 @@ import org.junit.jupiter.api.Test
 /**
  * Integration tests for Controller
  */
-abstract class BaseControllerIT<T : BaseEntity> : Testable {
+abstract class BaseControllerIntegrationTest<T : BaseEntity> : Testable {
 
     // TODO Setup input data for test use cases
 

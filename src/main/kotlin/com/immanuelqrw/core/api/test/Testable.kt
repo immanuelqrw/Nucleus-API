@@ -5,6 +5,7 @@ package com.immanuelqrw.core.api.test
  */
 interface Testable {
 
+    // TODO Write documentation
     fun prepare()
 
     fun setUp()

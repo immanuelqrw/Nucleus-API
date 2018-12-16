@@ -10,7 +10,7 @@ import java.time.LocalDateTime
 import javax.persistence.*
 
 /**
- * Abstract class for the base of entities
+ * Abstract class for the base of an entity
  *
  * @property id Unique identifier for entity
  * @property createdOn When entity's entry was created
