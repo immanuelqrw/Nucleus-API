@@ -8,6 +8,7 @@ plugins {
     id("org.jetbrains.kotlin.plugin.allopen") version "1.3.11"
     id("org.jetbrains.kotlin.plugin.spring") version "1.3.11"
     id("io.spring.dependency-management") version "1.0.6.RELEASE"
+    id("org.sonarqube") version "2.6"
     idea
 }
 
@@ -106,3 +107,21 @@ task<Test>("integrationTest") {
 }
 
 tasks["check"].dependsOn("integrationTest")
+
+val sonarHostUrl: String by project
+val sonarOrganization: String by project
+val sonarLogin: String by project
+
+sonarqube {
+    properties {
+        property("sonar.host.url", sonarHostUrl)
+        property("sonar.organization", sonarOrganization)
+        property("sonar.login", sonarLogin)
+
+        property("sonar.projectKey", "immanuelqrw_Nucleus-API")
+        property("sonar.projectName", "Nucleus-API")
+        property("sonar.projectVersion", version)
+    }
+}
+
+tasks["check"].dependsOn("sonarqube")
