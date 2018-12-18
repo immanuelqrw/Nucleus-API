@@ -1,11 +1,14 @@
 package com.immanuelqrw.core.api.test.integration.controller
 
 import com.immanuelqrw.core.api.model.BaseEntity
+import com.immanuelqrw.core.api.service.BaseService
 import com.immanuelqrw.core.api.test.Testable
 import org.junit.jupiter.api.BeforeAll
 import org.junit.jupiter.api.BeforeEach
 import org.junit.jupiter.api.Nested
 import org.junit.jupiter.api.Test
+import org.mockito.Mock
+import org.springframework.data.domain.Pageable
 
 /**
  * Integration tests for Controller
@@ -13,6 +16,18 @@ import org.junit.jupiter.api.Test
 abstract class BaseControllerTest<T : BaseEntity> : Testable {
 
     // TODO Setup input data for test use cases
+
+    protected abstract val validId: Long
+    protected abstract val invalidId: Long
+    protected abstract val validEntity: T
+    protected abstract val invalidEntity: T
+    protected abstract val validPage: Pageable
+    protected abstract val invalidPage: Pageable
+    protected abstract val validSearch: String
+    protected abstract val invalidSearch: String
+
+    @Mock
+    lateinit var service: BaseService<T>
 
     @BeforeAll
     override fun prepare() {}

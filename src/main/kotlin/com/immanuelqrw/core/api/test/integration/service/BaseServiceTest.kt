@@ -2,10 +2,14 @@ package com.immanuelqrw.core.api.test.integration.service
 
 import com.immanuelqrw.core.api.test.Testable
 import com.immanuelqrw.core.api.model.BaseEntity
+import com.immanuelqrw.core.api.repository.BaseRepository
+import com.immanuelqrw.core.api.service.SearchService
 import org.junit.jupiter.api.BeforeAll
 import org.junit.jupiter.api.BeforeEach
 import org.junit.jupiter.api.Nested
 import org.junit.jupiter.api.Test
+import org.mockito.Mock
+import org.springframework.data.domain.Pageable
 
 /**
  * Integration tests for Service
@@ -13,6 +17,21 @@ import org.junit.jupiter.api.Test
 abstract class BaseServiceTest<T : BaseEntity> : Testable {
 
     // TODO Setup input data for test use cases
+
+    protected abstract val validId: Long
+    protected abstract val invalidId: Long
+    protected abstract val validEntity: T
+    protected abstract val invalidEntity: T
+    protected abstract val validPage: Pageable
+    protected abstract val invalidPage: Pageable
+    protected abstract val validSearch: String
+    protected abstract val invalidSearch: String
+
+    @Mock
+    lateinit var repository: BaseRepository<T>
+
+    @Mock
+    lateinit var searchService: SearchService<T>
 
     @BeforeAll
     override fun prepare() {}
