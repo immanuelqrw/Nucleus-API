@@ -1,4 +1,4 @@
-package com.immanuelqrw.core.api.controller
+package com.immanuelqrw.core.api
 
 /**
  * Interface which supports all CU actions

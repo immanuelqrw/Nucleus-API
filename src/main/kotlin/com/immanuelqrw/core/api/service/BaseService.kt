@@ -1,7 +1,7 @@
 package com.immanuelqrw.core.api.service
 
 import com.fasterxml.jackson.module.kotlin.convertValue
-import com.immanuelqrw.core.api.controller.FullyControllable
+import com.immanuelqrw.core.api.FullyControllable
 import com.immanuelqrw.core.api.model.BaseEntity
 import com.immanuelqrw.core.api.repository.BaseRepository
 import com.immanuelqrw.core.api.utility.Utility

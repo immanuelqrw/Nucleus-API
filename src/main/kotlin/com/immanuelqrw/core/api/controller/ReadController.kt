@@ -1,5 +1,6 @@
 package com.immanuelqrw.core.api.controller
 
+import com.immanuelqrw.core.api.Getable
 import com.immanuelqrw.core.api.model.BaseEntity
 import com.immanuelqrw.core.api.service.BaseService
 import org.springframework.beans.factory.annotation.Autowired

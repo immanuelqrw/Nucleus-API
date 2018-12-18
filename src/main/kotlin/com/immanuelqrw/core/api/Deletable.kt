@@ -1,4 +1,4 @@
-package com.immanuelqrw.core.api.controller
+package com.immanuelqrw.core.api
 
 import org.springframework.data.domain.Pageable
 

@@ -1,4 +1,4 @@
-package com.immanuelqrw.core.api.controller
+package com.immanuelqrw.core.api
 
 /**
  * Methods which allow PATCH on endpoint

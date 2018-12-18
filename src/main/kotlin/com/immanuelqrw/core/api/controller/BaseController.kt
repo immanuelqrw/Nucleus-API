@@ -1,5 +1,6 @@
 package com.immanuelqrw.core.api.controller
 
+import com.immanuelqrw.core.api.FullyControllable
 import com.immanuelqrw.core.api.model.BaseEntity
 import com.immanuelqrw.core.api.service.BaseService
 import com.immanuelqrw.core.api.utility.Utility.DEFAULT_PAGE_SIZE
