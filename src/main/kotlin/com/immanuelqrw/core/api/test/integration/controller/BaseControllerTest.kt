@@ -10,7 +10,7 @@ import org.junit.jupiter.api.Test
 /**
  * Integration tests for Controller
  */
-abstract class BaseControllerIntegrationTest<T : BaseEntity> : Testable {
+abstract class BaseControllerTest<T : BaseEntity> : Testable {
 
     // TODO Setup input data for test use cases
 
