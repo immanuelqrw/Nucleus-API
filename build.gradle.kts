@@ -1,4 +1,5 @@
 import org.jetbrains.kotlin.gradle.tasks.KotlinCompile
+import org.jetbrains.dokka.gradle.DokkaTask
 
 
 plugins {
@@ -9,6 +10,7 @@ plugins {
     id("org.jetbrains.kotlin.plugin.spring") version "1.3.11"
     id("io.spring.dependency-management") version "1.0.6.RELEASE"
     id("org.sonarqube") version "2.6"
+    id("org.jetbrains.dokka") version "0.9.17"
     idea
 }
 
@@ -21,6 +23,7 @@ val jacksonVersion = "2.9.7"
 val springDataVersion = "2.1.3.RELEASE"
 val springBootVersion = "2.1.1.RELEASE"
 val springVersion = "5.1.3.RELEASE"
+val dokkaVersion = "0.9.17"
 
 repositories {
     mavenCentral()
@@ -38,6 +41,7 @@ val integrationTestImplementation by configurations.creating {
 dependencies {
     compile(kotlin("stdlib-jdk8"))
     compile("org.jetbrains.kotlin", "kotlin-reflect", kotlinVersion)
+    compile("org.jetbrains.dokka", "dokka-gradle-plugin", dokkaVersion)
 
     compile("com.fasterxml.jackson.module", "jackson-module-kotlin", jacksonVersion)
     compile("com.fasterxml.jackson.dataformat", "jackson-dataformat-yaml", jacksonVersion)
@@ -125,3 +129,9 @@ sonarqube {
 }
 
 tasks["check"].dependsOn("sonarqube")
+
+
+tasks.withType<DokkaTask> {
+    outputFormat = "html"
+    outputDirectory = "$buildDir/docs/dokka"
+}
