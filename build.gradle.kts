@@ -1,6 +1,16 @@
 import org.jetbrains.kotlin.gradle.tasks.KotlinCompile
 import org.jetbrains.dokka.gradle.DokkaTask
 
+group = "com.immanuelqrw.core"
+version = "0.0.1-pre-alpha"
+
+val kotlinVersion = "1.3.11"
+val junitVersion = "5.3.2"
+val jacksonVersion = "2.9.7"
+val springDataVersion = "2.1.3.RELEASE"
+val springBootVersion = "2.1.1.RELEASE"
+val springVersion = "5.1.3.RELEASE"
+val dokkaVersion = "0.9.17"
 
 plugins {
     java
@@ -14,28 +24,19 @@ plugins {
     idea
 }
 
-group = "com.immanuelqrw.core"
-version = "0.0.1-pre-alpha"
-
-val kotlinVersion = "1.3.11"
-val junitVersion = "5.3.2"
-val jacksonVersion = "2.9.7"
-val springDataVersion = "2.1.3.RELEASE"
-val springBootVersion = "2.1.1.RELEASE"
-val springVersion = "5.1.3.RELEASE"
-val dokkaVersion = "0.9.17"
-
 repositories {
     mavenCentral()
     jcenter()
 }
 
+val testCompile by configurations
 val integrationTestCompile by configurations.creating {
-    extendsFrom(configurations["testCompile"])
+    extendsFrom(testCompile)
 }
 
+val testImplementation by configurations
 val integrationTestImplementation by configurations.creating {
-    extendsFrom(configurations["testImplementation"])
+    extendsFrom(testImplementation)
 }
 
 dependencies {
@@ -79,6 +80,7 @@ dependencies {
 configure<JavaPluginConvention> {
     sourceCompatibility = JavaVersion.VERSION_1_8
 }
+
 tasks.withType<KotlinCompile> {
     kotlinOptions.jvmTarget = "1.8"
 }
@@ -102,15 +104,15 @@ sourceSets.create("integrationTest") {
     runtimeClasspath += output + compileClasspath
 }
 
-task<Test>("integrationTest") {
+val test: Test by tasks
+val integrationTest by tasks.creating(Test::class) {
     description = "Runs the integration tests."
     group = "verification"
     testClassesDirs = sourceSets["integrationTest"].output.classesDirs
     classpath = sourceSets["integrationTest"].runtimeClasspath
-    mustRunAfter(tasks["test"])
+    mustRunAfter(test)
 }
 
-tasks["check"].dependsOn("integrationTest")
 
 val sonarHostUrl: String by project
 val sonarOrganization: String by project
@@ -128,7 +130,10 @@ sonarqube {
     }
 }
 
-tasks["check"].dependsOn("sonarqube")
+val check by tasks.getting {
+    dependsOn(integrationTest)
+    dependsOn("sonarqube")
+}
 
 
 tasks.withType<DokkaTask> {
