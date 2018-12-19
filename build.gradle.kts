@@ -52,7 +52,7 @@ dependencies {
     compile("org.springframework", "spring-web", springVersion)
     compile("org.springframework", "spring-webmvc", springVersion)
 
-    compile( "org.postgresql", "postgresql", "42.2.5")
+    compile("org.postgresql", "postgresql", "42.2.5")
     compile("org.hibernate", "hibernate-core", "5.3.7.Final")
     compile("org.hibernate.validator", "hibernate-validator", "6.0.13.Final")
 
