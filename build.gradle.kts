@@ -4,13 +4,7 @@ import org.jetbrains.dokka.gradle.DokkaTask
 group = "com.immanuelqrw.core"
 version = "0.0.1-pre-alpha"
 
-val kotlinVersion = "1.3.11"
-val junitVersion = "5.3.2"
-val jacksonVersion = "2.9.7"
-val springDataVersion = "2.1.3.RELEASE"
-val springBootVersion = "2.1.1.RELEASE"
-val springVersion = "5.1.3.RELEASE"
-val dokkaVersion = "0.9.17"
+apply(from = "gradle/constants.gradle.kts")
 
 plugins {
     java
@@ -29,48 +23,8 @@ repositories {
     jcenter()
 }
 
-val testImplementation by configurations
-val integrationTestImplementation by configurations.creating {
-    extendsFrom(testImplementation)
-}
 
-dependencies {
-    implementation(kotlin("stdlib-jdk8"))
-    implementation("org.jetbrains.kotlin", "kotlin-reflect", kotlinVersion)
-    implementation("org.jetbrains.dokka", "dokka-gradle-plugin", dokkaVersion)
-
-    implementation("com.fasterxml.jackson.module", "jackson-module-kotlin", jacksonVersion)
-    implementation("com.fasterxml.jackson.dataformat", "jackson-dataformat-yaml", jacksonVersion)
-
-    implementation("org.springframework.data", "spring-data-jpa", springDataVersion)
-    implementation("org.springframework", "spring-orm", springVersion)
-    implementation("org.springframework", "spring-web", springVersion)
-    implementation("org.springframework", "spring-webmvc", springVersion)
-
-    implementation("org.postgresql", "postgresql", "42.2.5")
-    implementation("org.hibernate", "hibernate-core", "5.3.7.Final")
-    implementation("org.hibernate.validator", "hibernate-validator", "6.0.13.Final")
-
-    implementation("org.junit.jupiter", "junit-jupiter-api", junitVersion)
-    implementation("org.junit.jupiter", "junit-jupiter-params", junitVersion)
-    implementation("org.junit.jupiter", "junit-jupiter-engine", junitVersion)
-
-
-    implementation("org.junit.jupiter", "junit-jupiter-api", junitVersion)
-    implementation("io.mockk", "mockk", "1.8.13")
-    implementation("org.amshove.kluent", "kluent", "1.42")
-
-
-    testImplementation("org.hibernate", "hibernate-testing", "5.3.7.Final")
-
-    testImplementation("org.junit.jupiter", "junit-jupiter-api", junitVersion)
-    testImplementation("org.junit.jupiter", "junit-jupiter-params", junitVersion)
-    testRuntime("org.junit.jupiter", "junit-jupiter-engine", junitVersion)
-
-    testImplementation("org.junit.jupiter", "junit-jupiter-api", junitVersion)
-    testImplementation("io.mockk", "mockk", "1.8.13")
-    testImplementation("org.amshove.kluent", "kluent", "1.42")
-}
+apply(from = "gradle/dependencies.gradle.kts")
 
 configure<JavaPluginConvention> {
     sourceCompatibility = JavaVersion.VERSION_1_8
@@ -88,7 +42,7 @@ tasks.withType<Test> {
 }
 
 tasks.withType<Wrapper> {
-    gradleVersion = "4.8"
+    gradleVersion = "5.0"
 }
 
 sourceSets.create("integrationTest") {
@@ -129,7 +83,6 @@ val check by tasks.getting {
     dependsOn(integrationTest)
     dependsOn("sonarqube")
 }
-
 
 tasks.withType<DokkaTask> {
     outputFormat = "html"
