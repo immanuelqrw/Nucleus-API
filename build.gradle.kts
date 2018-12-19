@@ -29,36 +29,31 @@ repositories {
     jcenter()
 }
 
-val testCompile by configurations
-val integrationTestCompile by configurations.creating {
-    extendsFrom(testCompile)
-}
-
 val testImplementation by configurations
 val integrationTestImplementation by configurations.creating {
     extendsFrom(testImplementation)
 }
 
 dependencies {
-    compile(kotlin("stdlib-jdk8"))
-    compile("org.jetbrains.kotlin", "kotlin-reflect", kotlinVersion)
-    compile("org.jetbrains.dokka", "dokka-gradle-plugin", dokkaVersion)
+    implementation(kotlin("stdlib-jdk8"))
+    implementation("org.jetbrains.kotlin", "kotlin-reflect", kotlinVersion)
+    implementation("org.jetbrains.dokka", "dokka-gradle-plugin", dokkaVersion)
 
-    compile("com.fasterxml.jackson.module", "jackson-module-kotlin", jacksonVersion)
-    compile("com.fasterxml.jackson.dataformat", "jackson-dataformat-yaml", jacksonVersion)
+    implementation("com.fasterxml.jackson.module", "jackson-module-kotlin", jacksonVersion)
+    implementation("com.fasterxml.jackson.dataformat", "jackson-dataformat-yaml", jacksonVersion)
 
-    compile("org.springframework.data", "spring-data-jpa", springDataVersion)
-    compile("org.springframework", "spring-orm", springVersion)
-    compile("org.springframework", "spring-web", springVersion)
-    compile("org.springframework", "spring-webmvc", springVersion)
+    implementation("org.springframework.data", "spring-data-jpa", springDataVersion)
+    implementation("org.springframework", "spring-orm", springVersion)
+    implementation("org.springframework", "spring-web", springVersion)
+    implementation("org.springframework", "spring-webmvc", springVersion)
 
-    compile("org.postgresql", "postgresql", "42.2.5")
-    compile("org.hibernate", "hibernate-core", "5.3.7.Final")
-    compile("org.hibernate.validator", "hibernate-validator", "6.0.13.Final")
+    implementation("org.postgresql", "postgresql", "42.2.5")
+    implementation("org.hibernate", "hibernate-core", "5.3.7.Final")
+    implementation("org.hibernate.validator", "hibernate-validator", "6.0.13.Final")
 
-    compile("org.junit.jupiter", "junit-jupiter-api", junitVersion)
-    compile("org.junit.jupiter", "junit-jupiter-params", junitVersion)
-    compile("org.junit.jupiter", "junit-jupiter-engine", junitVersion)
+    implementation("org.junit.jupiter", "junit-jupiter-api", junitVersion)
+    implementation("org.junit.jupiter", "junit-jupiter-params", junitVersion)
+    implementation("org.junit.jupiter", "junit-jupiter-engine", junitVersion)
 
 
     implementation("org.junit.jupiter", "junit-jupiter-api", junitVersion)
@@ -66,10 +61,10 @@ dependencies {
     implementation("org.amshove.kluent", "kluent", "1.42")
 
 
-    testCompile("org.hibernate", "hibernate-testing", "5.3.7.Final")
+    testImplementation("org.hibernate", "hibernate-testing", "5.3.7.Final")
 
-    testCompile("org.junit.jupiter", "junit-jupiter-api", junitVersion)
-    testCompile("org.junit.jupiter", "junit-jupiter-params", junitVersion)
+    testImplementation("org.junit.jupiter", "junit-jupiter-api", junitVersion)
+    testImplementation("org.junit.jupiter", "junit-jupiter-params", junitVersion)
     testRuntime("org.junit.jupiter", "junit-jupiter-engine", junitVersion)
 
     testImplementation("org.junit.jupiter", "junit-jupiter-api", junitVersion)
