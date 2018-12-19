@@ -30,19 +30,26 @@ configure<JavaPluginConvention> {
     sourceCompatibility = JavaVersion.VERSION_1_8
 }
 
-tasks.withType<KotlinCompile> {
-    kotlinOptions.jvmTarget = "1.8"
-}
-
-tasks.withType<Test> {
-    useJUnitPlatform()
-    testLogging {
-        events("passed", "skipped", "failed")
+tasks {
+    withType<KotlinCompile> {
+        kotlinOptions.jvmTarget = "1.8"
     }
-}
 
-tasks.withType<Wrapper> {
-    gradleVersion = "5.0"
+    withType<Test> {
+        useJUnitPlatform()
+        testLogging {
+            events("passed", "skipped", "failed")
+        }
+    }
+
+    withType<Wrapper> {
+        gradleVersion = "5.0"
+    }
+
+    withType<DokkaTask> {
+        outputFormat = "html"
+        outputDirectory = "$buildDir/docs/dokka"
+    }
 }
 
 sourceSets.create("integrationTest") {
@@ -78,13 +85,9 @@ sonarqube {
         property("sonar.projectVersion", version)
     }
 }
+val sonar: Task = tasks["sonarqube"]
 
 val check by tasks.getting {
     dependsOn(integrationTest)
-    dependsOn("sonarqube")
-}
-
-tasks.withType<DokkaTask> {
-    outputFormat = "html"
-    outputDirectory = "$buildDir/docs/dokka"
+    dependsOn(sonar)
 }
