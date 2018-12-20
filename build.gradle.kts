@@ -52,6 +52,16 @@ tasks {
     }
 }
 
+val databaseBuild by tasks.creating(Exec::class) {
+    workingDir("./script")
+    commandLine("python", "instantiate_database.py")
+}
+
+val testDatabaseBuild: Exec by tasks.creating(Exec::class) {
+    workingDir("./script")
+    commandLine("python", "construct_database.py")
+}
+
 sourceSets.create("integrationTest") {
     java.srcDir(file("src/integrationTest/java"))
     java.srcDir(file("src/integrationTest/kotlin"))
@@ -66,6 +76,7 @@ val integrationTest by tasks.creating(Test::class) {
     group = "verification"
     testClassesDirs = sourceSets["integrationTest"].output.classesDirs
     classpath = sourceSets["integrationTest"].runtimeClasspath
+    // dependsOn(testDatabaseBuild)
     mustRunAfter(test)
 }
 
