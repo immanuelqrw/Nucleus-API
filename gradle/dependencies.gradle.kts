@@ -31,12 +31,17 @@ val springPackages: Array<Package> = arrayOf(
     Package("org.springframework", "spring-webmvc", springVersion)
 )
 
+val springBootPackages: Array<Package> = arrayOf(
+    Package("org.springframework.boot", "spring-boot-autoconfigure", springBootVersion),
+    Package("org.springframework.boot", "spring-boot", springBootVersion),
+    Package("org.springframework.boot", "spring-starter-tomcat", springBootVersion)
+)
+
 val databasePackages: Array<Package> = arrayOf(
     Package("org.postgresql", "postgresql", "42.2.5"),
     Package("org.hibernate", "hibernate-core", "5.3.7.Final"),
     Package("org.hibernate.validator", "hibernate-validator", "6.0.13.Final")
 )
-
 
 val jUnitPackages: Array<Package> = arrayOf(
     Package("org.junit.jupiter", "junit-jupiter-api", junitVersion),
@@ -52,6 +57,7 @@ val packages: Array<Package> = arrayOf(
     Package("org.jetbrains.dokka", "dokka-gradle-plugin", dokkaVersion),
     *jacksonPackages,
     *springPackages,
+    *springBootPackages,
     *databasePackages,
     *jUnitPackages
 )
