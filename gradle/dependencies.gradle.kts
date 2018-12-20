@@ -1,6 +1,4 @@
 val implementation by configurations
-
-val testRuntime by configurations
 val testImplementation by configurations
 
 val integrationTestImplementation by configurations.creating {
@@ -15,40 +13,62 @@ val springBootVersion: String by extra
 val springVersion: String by extra
 val dokkaVersion : String by extra
 
+data class Package(
+    val groupId: String,
+    val artifactId: String,
+    val version: String
+)
+
+val jacksonPackages: Array<Package> = arrayOf(
+    Package("com.fasterxml.jackson.module", "jackson-module-kotlin", jacksonVersion),
+    Package("com.fasterxml.jackson.dataformat", "jackson-dataformat-yaml", jacksonVersion)
+)
+
+val springPackages: Array<Package> = arrayOf(
+    Package("org.springframework.data", "spring-data-jpa", springDataVersion),
+    Package("org.springframework", "spring-orm", springVersion),
+    Package("org.springframework", "spring-web", springVersion),
+    Package("org.springframework", "spring-webmvc", springVersion)
+)
+
+val databasePackages: Array<Package> = arrayOf(
+    Package("org.postgresql", "postgresql", "42.2.5"),
+    Package("org.hibernate", "hibernate-core", "5.3.7.Final"),
+    Package("org.hibernate.validator", "hibernate-validator", "6.0.13.Final")
+)
+
+
+val jUnitPackages: Array<Package> = arrayOf(
+    Package("org.junit.jupiter", "junit-jupiter-api", junitVersion),
+    Package("org.junit.jupiter", "junit-jupiter-params", junitVersion),
+    Package("org.junit.jupiter", "junit-jupiter-engine", junitVersion),
+
+    Package("io.mockk", "mockk", "1.8.13"),
+    Package("org.amshove.kluent", "kluent", "1.42")
+)
+
+val packages: Array<Package> = arrayOf(
+    Package("org.jetbrains.kotlin", "kotlin-reflect", kotlinVersion),
+    Package("org.jetbrains.dokka", "dokka-gradle-plugin", dokkaVersion),
+    *jacksonPackages,
+    *springPackages,
+    *databasePackages,
+    *jUnitPackages
+)
+
+val testPackages: Array<Package> = arrayOf(
+    Package("org.hibernate", "hibernate-testing", "5.3.7.Final"),
+    *jUnitPackages
+)
+
 dependencies {
     implementation(kotlin("stdlib-jdk8"))
-    implementation("org.jetbrains.kotlin", "kotlin-reflect", kotlinVersion)
-    implementation("org.jetbrains.dokka", "dokka-gradle-plugin", dokkaVersion)
 
-    implementation("com.fasterxml.jackson.module", "jackson-module-kotlin", jacksonVersion)
-    implementation("com.fasterxml.jackson.dataformat", "jackson-dataformat-yaml", jacksonVersion)
+    packages.forEach { `package` ->
+        implementation(`package`.groupId, `package`.artifactId, `package`.version)
+    }
 
-    implementation("org.springframework.data", "spring-data-jpa", springDataVersion)
-    implementation("org.springframework", "spring-orm", springVersion)
-    implementation("org.springframework", "spring-web", springVersion)
-    implementation("org.springframework", "spring-webmvc", springVersion)
-
-    implementation("org.postgresql", "postgresql", "42.2.5")
-    implementation("org.hibernate", "hibernate-core", "5.3.7.Final")
-    implementation("org.hibernate.validator", "hibernate-validator", "6.0.13.Final")
-
-    implementation("org.junit.jupiter", "junit-jupiter-api", junitVersion)
-    implementation("org.junit.jupiter", "junit-jupiter-params", junitVersion)
-    implementation("org.junit.jupiter", "junit-jupiter-engine", junitVersion)
-
-
-    implementation("org.junit.jupiter", "junit-jupiter-api", junitVersion)
-    implementation("io.mockk", "mockk", "1.8.13")
-    implementation("org.amshove.kluent", "kluent", "1.42")
-
-
-    testImplementation("org.hibernate", "hibernate-testing", "5.3.7.Final")
-
-    testImplementation("org.junit.jupiter", "junit-jupiter-api", junitVersion)
-    testImplementation("org.junit.jupiter", "junit-jupiter-params", junitVersion)
-    testRuntime("org.junit.jupiter", "junit-jupiter-engine", junitVersion)
-
-    testImplementation("org.junit.jupiter", "junit-jupiter-api", junitVersion)
-    testImplementation("io.mockk", "mockk", "1.8.13")
-    testImplementation("org.amshove.kluent", "kluent", "1.42")
+    testPackages.forEach { testPackage ->
+        testImplementation(testPackage.groupId, testPackage.artifactId, testPackage.version)
+    }
 }
