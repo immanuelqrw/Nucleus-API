@@ -12,17 +12,11 @@ from config import (
     FAKE_DATA_FILES,
     SEED_DATA_FILES
 )
+from utility import execute_scripts
 
 
 if __name__ == "__main__":
     with psy.connect(**DATABASE_CONNECTION) as connection:
         with connection.cursor() as cursor:
-            for DROP_DATABASE_FILE in DROP_DATABASE_FILES:
-                with DROP_DATABASE_FILE.open(mode="r") as ddf:
-                    try:
-                        cursor.execute(ddf.read())
-                    except Exception as e:
-                        continue
-            for CREATE_DATABASE_FILE in CREATE_DATABASE_FILES:
-                with CREATE_DATABASE_FILE.open(mode="r") as cdf:
-                    cursor.execute(cdf.read())
+            execute_scripts(cursor, DROP_DATABASE_FILES)
+            execute_scripts(cursor, CREATE_DATABASE_FILES)
