@@ -1,4 +1,4 @@
-package com.immanuelqrw.core.api.test.integration.controller
+package com.immanuelqrw.core.api.test.unit.controller
 
 import com.immanuelqrw.core.api.model.BaseEntity
 import com.immanuelqrw.core.api.service.BaseService
@@ -11,7 +11,7 @@ import org.mockito.Mock
 import org.springframework.data.domain.Pageable
 
 /**
- * Integration tests for Controller
+ * Unit tests for Controller
  */
 abstract class BaseControllerTest<T : BaseEntity> : Testable {
 
