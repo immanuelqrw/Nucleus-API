@@ -3,12 +3,14 @@ package com.immanuelqrw.core.api.test.unit.service
 import com.immanuelqrw.core.api.test.Testable
 import com.immanuelqrw.core.api.model.BaseEntity
 import com.immanuelqrw.core.api.repository.BaseRepository
+import com.immanuelqrw.core.api.service.BaseService
 import com.immanuelqrw.core.api.service.SearchService
 import org.junit.jupiter.api.BeforeAll
 import org.junit.jupiter.api.BeforeEach
 import org.junit.jupiter.api.Nested
 import org.junit.jupiter.api.Test
 import org.mockito.Mock
+import org.mockito.Mockito.`when`
 import org.springframework.data.domain.Pageable
 
 /**
@@ -27,11 +29,11 @@ abstract class BaseServiceTest<T : BaseEntity> : Testable {
     protected abstract val validSearch: String
     protected abstract val invalidSearch: String
 
-    @Mock
-    lateinit var repository: BaseRepository<T>
 
-    @Mock
-    lateinit var searchService: SearchService<T>
+    protected abstract val service: BaseService<T>
+
+    protected abstract val repository: BaseRepository<T>
+    protected abstract val searchService: SearchService<T>
 
     @BeforeAll
     override fun prepare() {}

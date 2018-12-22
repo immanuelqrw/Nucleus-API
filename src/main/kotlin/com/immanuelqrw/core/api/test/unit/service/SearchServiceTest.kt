@@ -1,4 +1,4 @@
-package com.immanuelqrw.core.api.service
+package com.immanuelqrw.core.api.test.unit.service
 
 import com.immanuelqrw.core.api.test.Testable
 import com.immanuelqrw.core.api.model.BaseEntity

@@ -1,5 +1,6 @@
 package com.immanuelqrw.core.api.test.unit.controller
 
+import com.immanuelqrw.core.api.controller.BaseController
 import com.immanuelqrw.core.api.model.BaseEntity
 import com.immanuelqrw.core.api.service.BaseService
 import com.immanuelqrw.core.api.test.Testable
@@ -7,7 +8,6 @@ import org.junit.jupiter.api.BeforeAll
 import org.junit.jupiter.api.BeforeEach
 import org.junit.jupiter.api.Nested
 import org.junit.jupiter.api.Test
-import org.mockito.Mock
 import org.springframework.data.domain.Pageable
 
 /**
@@ -26,8 +26,9 @@ abstract class BaseControllerTest<T : BaseEntity> : Testable {
     protected abstract val validSearch: String
     protected abstract val invalidSearch: String
 
-    @Mock
-    lateinit var service: BaseService<T>
+    protected abstract val controller: BaseController<T>
+
+    protected abstract val service: BaseService<T>
 
     @BeforeAll
     override fun prepare() {}
