@@ -11,5 +11,5 @@ import org.springframework.web.bind.annotation.*
  */
 @RestController
 @RequestMapping("/solid")
-class SolidController<T : BaseEntity>
-@Autowired constructor(val service: BaseService<T>) : BaseController<T>(service)
+class SolidController
+@Autowired constructor(val service: SolidService) : BaseController<Solid>(service)

@@ -12,7 +12,7 @@ import org.junit.jupiter.api.Test
  */
 abstract class SearchSpecificationsBuilderTest<T : BaseEntity> : Testable {
 
-    protected abstract val searchSpecificationBuilder: SearchSpecificationsBuilder<T>
+    protected abstract val searchSpecificationsBuilder: SearchSpecificationsBuilder<T>
 
     protected abstract val searchSpecification: SearchSpecification<T>
 

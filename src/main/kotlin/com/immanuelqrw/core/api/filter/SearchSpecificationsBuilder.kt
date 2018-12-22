@@ -3,7 +3,7 @@ package com.immanuelqrw.core.api.filter
 import com.immanuelqrw.core.api.model.BaseEntity
 import org.springframework.data.jpa.domain.Specification
 
-class SearchSpecificationsBuilder<T : BaseEntity> {
+abstract class SearchSpecificationsBuilder<T : BaseEntity> {
 
     private val params: MutableList<SearchCriterion> = mutableListOf()
 

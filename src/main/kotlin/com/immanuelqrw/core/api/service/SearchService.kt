@@ -1,9 +1,8 @@
 package com.immanuelqrw.core.api.service
 
-import com.immanuelqrw.core.api.filter.SearchSpecificationsBuilder
+import com.immanuelqrw.core.api.filter.SolidSearchSpecificationsBuilder
 import com.immanuelqrw.core.api.model.BaseEntity
 import org.springframework.data.jpa.domain.Specification
-import org.springframework.stereotype.Service
 import java.util.regex.Pattern
 
 /**
@@ -19,7 +18,7 @@ abstract class SearchService<T : BaseEntity> {
      */
     fun generateSpecification(search: String?): Specification<T>? {
 
-        val builder = SearchSpecificationsBuilder<T>()
+        val builder = SolidSearchSpecificationsBuilder<T>()
 
         // TODO Move Pattern to configuration file
         val pattern = Pattern.compile("(\\w+?)([~:<>])(\\w+?);")

@@ -52,6 +52,12 @@ val jUnitPackages: Array<Package> = arrayOf(
     Package("org.amshove.kluent", "kluent", "1.42")
 )
 
+val springTestPackages: Array<Package> = arrayOf(
+    Package("org.springframework", "spring-test", springVersion),
+    Package("org.springframework.boot", "spring-boot-test", springBootVersion),
+    Package("org.springframework.boot", "spring-boot-test-autoconfigure", springBootVersion)
+)
+
 val packages: Array<Package> = arrayOf(
     Package("org.jetbrains.kotlin", "kotlin-reflect", kotlinVersion),
     Package("org.jetbrains.dokka", "dokka-gradle-plugin", dokkaVersion),
@@ -64,7 +70,8 @@ val packages: Array<Package> = arrayOf(
 
 val testPackages: Array<Package> = arrayOf(
     Package("org.hibernate", "hibernate-testing", "5.3.7.Final"),
-    *jUnitPackages
+    *jUnitPackages,
+    *springTestPackages
 )
 
 dependencies {

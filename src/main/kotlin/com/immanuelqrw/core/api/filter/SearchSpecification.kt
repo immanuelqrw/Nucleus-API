@@ -5,7 +5,10 @@ import org.springframework.data.jpa.domain.Specification
 import com.immanuelqrw.core.api.model.BaseEntity
 import javax.persistence.criteria.*
 
-class SearchSpecification<T: BaseEntity>(searchCriterion: SearchCriterion) : Specification<T> {
+/**
+ * Search Specification class
+ */
+open class SearchSpecification<T: BaseEntity>(searchCriterion: SearchCriterion) : Specification<T> {
 
     private val criterion: SearchCriterion = searchCriterion
 
