@@ -15,6 +15,10 @@ import org.springframework.data.domain.Pageable
  */
 abstract class BaseControllerTest<T : BaseEntity> : Testable {
 
+    protected abstract val controller: BaseController<T>
+
+    protected abstract val service: BaseService<T>
+
     // TODO Setup input data for test use cases
 
     protected abstract val validId: Long
@@ -25,10 +29,6 @@ abstract class BaseControllerTest<T : BaseEntity> : Testable {
     protected abstract val invalidPage: Pageable
     protected abstract val validSearch: String
     protected abstract val invalidSearch: String
-
-    protected abstract val controller: BaseController<T>
-
-    protected abstract val service: BaseService<T>
 
     @BeforeAll
     override fun prepare() {}

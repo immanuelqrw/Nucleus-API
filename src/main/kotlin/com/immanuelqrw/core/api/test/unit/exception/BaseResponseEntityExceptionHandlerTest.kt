@@ -11,6 +11,8 @@ import org.junit.jupiter.api.Test
  */
 abstract class BaseResponseEntityExceptionHandlerTest<T : BaseEntity> : Testable {
 
+    // TODO Look into how to test ExceptionHandler
+
     @BeforeAll
     override fun prepare() {}
 

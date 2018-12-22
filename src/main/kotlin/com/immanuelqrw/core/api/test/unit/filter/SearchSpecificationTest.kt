@@ -12,6 +12,9 @@ import org.junit.jupiter.api.Test
  */
 abstract class SearchSpecificationTest<T : BaseEntity> : Testable {
 
+    protected abstract val searchSpecification: SearchSpecification<T>
+    // TODO Mock root, criteriaQuery, builder
+
     // TODO Setup input data for test use cases
 
     @BeforeAll
