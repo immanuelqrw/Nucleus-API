@@ -12,7 +12,7 @@ import javax.persistence.RollbackException
 /**
  * Abstract class for Exception Handling
  */
-abstract class RestResponseEntityExceptionHandler : ResponseEntityExceptionHandler() {
+abstract class BaseResponseEntityExceptionHandler : ResponseEntityExceptionHandler() {
 
     @ExceptionHandler(value = [ EntityNotFoundException::class ])
     fun handleNotFound(exception: RuntimeException, request: WebRequest): ResponseEntity<Any> {

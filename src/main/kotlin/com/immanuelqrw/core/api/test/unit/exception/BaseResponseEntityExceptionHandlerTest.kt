@@ -9,7 +9,7 @@ import org.junit.jupiter.api.Test
 /**
  * Unit tests for ExceptionHandler
  */
-abstract class RestResponseEntityExceptionHandlerTest<T : BaseEntity> : Testable {
+abstract class BaseResponseEntityExceptionHandlerTest<T : BaseEntity> : Testable {
 
     @BeforeAll
     override fun prepare() {}
