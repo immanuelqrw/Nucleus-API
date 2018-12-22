@@ -8,4 +8,4 @@ import org.junit.jupiter.api.*
  * Unit tests for SearchService
  */
 @TestInstance(TestInstance.Lifecycle.PER_CLASS)
-class SolidSearchServiceTest : SearchServiceTest<Solid>()
+internal class SolidSearchServiceTest : SearchServiceTest<Solid>()

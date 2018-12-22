@@ -8,4 +8,4 @@ import org.junit.jupiter.api.TestInstance
  * Unit tests for Solid ExceptionHandler
  */
 @TestInstance(TestInstance.Lifecycle.PER_CLASS)
-class SolidResponseEntityExceptionHandlerTest : BaseResponseEntityExceptionHandlerTest<Solid>()
+internal class SolidResponseEntityExceptionHandlerTest : BaseResponseEntityExceptionHandlerTest<Solid>()

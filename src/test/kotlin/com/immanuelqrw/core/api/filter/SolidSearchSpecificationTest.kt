@@ -7,4 +7,4 @@ import org.junit.jupiter.api.*
  * Unit tests for SolidSearchSpecification
  */
 @TestInstance(TestInstance.Lifecycle.PER_CLASS)
-class SolidSearchSpecificationTest: SearchSpecificationTest<Solid>()
+internal class SolidSearchSpecificationTest: SearchSpecificationTest<Solid>()
