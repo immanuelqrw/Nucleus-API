@@ -2,12 +2,10 @@ package com.immanuelqrw.core.api.service
 
 import com.immanuelqrw.core.api.test.example.Solid
 import com.immanuelqrw.core.api.test.example.SolidSearchService
-import com.immanuelqrw.core.api.test.example.SolidSearchSpecificationsBuilder
 import com.immanuelqrw.core.api.test.unit.service.SearchServiceTest
 import org.junit.jupiter.api.*
 import org.junit.jupiter.api.extension.ExtendWith
 import org.mockito.InjectMocks
-import org.springframework.boot.test.mock.mockito.MockBean
 import org.springframework.test.context.junit.jupiter.SpringExtension
 
 /**
@@ -20,6 +18,7 @@ internal class SolidSearchServiceTest : SearchServiceTest<Solid>() {
     @InjectMocks
     override lateinit var searchService: SolidSearchService
 
-    @MockBean
-    override lateinit var searchSpecificationsBuilder: SolidSearchSpecificationsBuilder
+    override val validSearch: String? = "id:2"
+    override val invalidSearch: String? = "id@2"
+    override val nullSearch: String? = null
 }

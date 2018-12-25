@@ -3,7 +3,7 @@ package com.immanuelqrw.core.api.filter
 import com.immanuelqrw.core.api.model.BaseEntity
 import org.springframework.data.jpa.domain.Specification
 
-abstract class SearchSpecificationsBuilder<T : BaseEntity> {
+open class SearchSpecificationsBuilder<T : BaseEntity> {
 
     private val params: MutableList<SearchCriterion> = mutableListOf()
 
@@ -12,7 +12,7 @@ abstract class SearchSpecificationsBuilder<T : BaseEntity> {
         return this
     }
 
-    fun build(): Specification<T>? {
+    open fun build(): Specification<T>? {
         if (params.isEmpty()) {
             return null
         }
