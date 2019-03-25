@@ -1,11 +1,16 @@
-package com.immanuelqrw.core.api.filter
+package com.immanuelqrw.core.api.test.unit.filter
 
+import com.immanuelqrw.core.api.filter.SearchCriterion
+import com.immanuelqrw.core.api.filter.SearchSpecification
+import com.immanuelqrw.core.api.filter.SearchSpecificationsBuilder
 import com.immanuelqrw.core.api.test.Testable
 import com.immanuelqrw.core.api.model.BaseEntity
-import org.junit.jupiter.api.BeforeAll
-import org.junit.jupiter.api.BeforeEach
-import org.junit.jupiter.api.Nested
-import org.junit.jupiter.api.Test
+import com.nhaarman.mockito_kotlin.doAnswer
+import com.nhaarman.mockito_kotlin.doThrow
+import org.amshove.kluent.shouldEqual
+import org.amshove.kluent.shouldThrow
+import org.junit.jupiter.api.*
+import org.mockito.Mockito.`when`
 
 /**
  * Unit tests for SearchSpecification
@@ -15,25 +20,38 @@ abstract class SearchSpecificationsBuilderTest<T : BaseEntity> : Testable {
     protected abstract val searchSpecificationsBuilder: SearchSpecificationsBuilder<T>
 
     protected abstract val searchSpecification: SearchSpecification<T>
+    protected abstract val searchSpecifications: List<SearchSpecification<T>>
 
-    // TODO Setup input data for test use cases
+    protected abstract val params: MutableList<SearchCriterion>
+
+    protected abstract val validSearchCriterion: SearchCriterion
+    protected abstract val invalidSearchCriterion: SearchCriterion
 
     @BeforeAll
-    override fun prepare() {}
+    override fun prepare() {
+        // Subclass implementation
+    }
 
     @BeforeEach
-    override fun setUp() {}
+    override fun setUp() {
+        // Subclass implementation
+    }
 
     @Nested
     inner class Success {
         @Test
         fun `given valid search parameters - when Specification built - returns Specification`() {
-            assert(false)
+            `when`(params.map<SearchCriterion, Any>{}).thenReturn(searchSpecifications)
+            `when`(searchSpecifications.reduce<Any, Any>{ _, _ ->}).thenReturn(searchSpecification)
+
+            searchSpecificationsBuilder.build() shouldEqual searchSpecification
         }
 
         @Test
         fun `given no search parameters - when Specification built - returns null`() {
-            assert(false)
+            `when`(searchSpecifications.reduce<Any, Any>{ _, _ ->}).thenReturn(null)
+
+            searchSpecificationsBuilder.build() shouldEqual null
         }
     }
 
@@ -41,7 +59,11 @@ abstract class SearchSpecificationsBuilderTest<T : BaseEntity> : Testable {
     inner class Failure {
         @Test
         fun `given invalid search parameters - when Specification built - throws RuntimeException`() {
-            assert(false)
+            `when`(params.map<SearchCriterion, Any>{}).doAnswer { throw RuntimeException() }
+
+            Assertions.assertThrows(RuntimeException::class.java) {
+                searchSpecificationsBuilder.build()
+            }
         }
     }
 }
