@@ -14,10 +14,14 @@ abstract class BaseResponseEntityExceptionHandlerTest<T : BaseEntity> : Testable
     // TODO Look into how to test ExceptionHandler
 
     @BeforeAll
-    override fun prepare() {}
+    override fun prepare() {
+        // Subclass implementation
+    }
 
     @BeforeEach
-    override fun setUp() {}
+    override fun setUp() {
+        // Subclass implementation
+    }
 
     @Test
     fun `given invalid request on entity - when EntityNotFoundException thrown - returns NotFound response`() {}

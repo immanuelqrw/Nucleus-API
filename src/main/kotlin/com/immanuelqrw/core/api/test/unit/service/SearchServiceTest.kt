@@ -22,10 +22,14 @@ abstract class SearchServiceTest<T : BaseEntity> : Testable {
     protected abstract val nullSearch: String?
 
     @BeforeAll
-    override fun prepare() {}
+    override fun prepare() {
+        // Subclass implementation
+    }
 
     @BeforeEach
-    override fun setUp() {}
+    override fun setUp() {
+        // Subclass implementation
+    }
 
     @Nested
     inner class Success {

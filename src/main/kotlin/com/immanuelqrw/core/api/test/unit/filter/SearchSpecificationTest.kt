@@ -36,10 +36,14 @@ abstract class SearchSpecificationTest<T : BaseEntity> : Testable {
     protected abstract val invalidOperationSearchCriterion: SearchCriterion
 
     @BeforeAll
-    override fun prepare() {}
+    override fun prepare() {
+        // Subclass implementation
+    }
 
     @BeforeEach
-    override fun setUp() {}
+    override fun setUp() {
+        // Subclass implementation
+    }
 
     @Nested
     inner class Success {
