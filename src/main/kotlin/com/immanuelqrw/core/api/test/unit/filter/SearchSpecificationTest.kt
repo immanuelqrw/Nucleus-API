@@ -7,10 +7,7 @@ import com.immanuelqrw.core.api.model.BaseEntity
 import org.amshove.kluent.shouldBeNull
 import org.amshove.kluent.shouldEqual
 import org.amshove.kluent.shouldThrow
-import org.junit.jupiter.api.BeforeAll
-import org.junit.jupiter.api.BeforeEach
-import org.junit.jupiter.api.Nested
-import org.junit.jupiter.api.Test
+import org.junit.jupiter.api.*
 import org.mockito.Mockito.`when`
 import javax.persistence.criteria.*
 
@@ -102,10 +99,9 @@ abstract class SearchSpecificationTest<T : BaseEntity> : Testable {
         fun `given invalid search key - when values processed - throws IllegalArgumentException`() {
             `when`(root.get<String>(invalidKeySearchCriterion.key)).thenThrow(IllegalArgumentException::class.java)
 
-            val searchSpecificationFunction = {SearchSpecification<T>(invalidKeySearchCriterion)}
-
-            // FIXME Test not throwing exception
-            searchSpecificationFunction.shouldThrow(IllegalArgumentException::class)
+            Assertions.assertThrows(IllegalArgumentException::class.java) {
+                SearchSpecification<T>(invalidKeySearchCriterion)
+            }
         }
 
         @Test

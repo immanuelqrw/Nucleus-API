@@ -59,7 +59,7 @@ abstract class SearchSpecificationsBuilderTest<T : BaseEntity> : Testable {
     inner class Failure {
         @Test
         fun `given invalid search parameters - when Specification built - throws RuntimeException`() {
-            `when`(params.map<SearchCriterion, Any>{}).doAnswer { throw RuntimeException() }
+            `when`(params.map<SearchCriterion, Any>{}).thenThrow(RuntimeException::class.java)
 
             Assertions.assertThrows(RuntimeException::class.java) {
                 searchSpecificationsBuilder.build()
