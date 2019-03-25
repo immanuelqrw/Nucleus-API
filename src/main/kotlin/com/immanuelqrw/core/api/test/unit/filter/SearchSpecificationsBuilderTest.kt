@@ -5,10 +5,7 @@ import com.immanuelqrw.core.api.filter.SearchSpecification
 import com.immanuelqrw.core.api.filter.SearchSpecificationsBuilder
 import com.immanuelqrw.core.api.test.Testable
 import com.immanuelqrw.core.api.model.BaseEntity
-import com.nhaarman.mockito_kotlin.doAnswer
-import com.nhaarman.mockito_kotlin.doThrow
 import org.amshove.kluent.shouldEqual
-import org.amshove.kluent.shouldThrow
 import org.junit.jupiter.api.*
 import org.mockito.Mockito.`when`
 

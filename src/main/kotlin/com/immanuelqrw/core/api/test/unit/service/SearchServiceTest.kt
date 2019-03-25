@@ -55,7 +55,6 @@ abstract class SearchServiceTest<T : BaseEntity> : Testable {
         }
     }
 
-    // TODO Find out if there are any possible cases of failure
     @Nested
     inner class Failure
 }

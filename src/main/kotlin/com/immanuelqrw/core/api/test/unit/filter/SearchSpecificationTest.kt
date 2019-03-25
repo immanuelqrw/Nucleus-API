@@ -6,7 +6,6 @@ import com.immanuelqrw.core.api.test.Testable
 import com.immanuelqrw.core.api.model.BaseEntity
 import org.amshove.kluent.shouldBeNull
 import org.amshove.kluent.shouldEqual
-import org.amshove.kluent.shouldThrow
 import org.junit.jupiter.api.*
 import org.mockito.Mockito.`when`
 import javax.persistence.criteria.*
