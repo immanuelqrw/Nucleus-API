@@ -99,7 +99,8 @@ abstract class SearchSpecificationTest<T : BaseEntity> : Testable {
             `when`(root.get<String>(invalidKeySearchCriterion.key)).thenThrow(IllegalArgumentException::class.java)
 
             Assertions.assertThrows(IllegalArgumentException::class.java) {
-                SearchSpecification<T>(invalidKeySearchCriterion)
+                val searchSpecification: SearchSpecification<T> = SearchSpecification(invalidKeySearchCriterion)
+                searchSpecification.toPredicate(root, query, builder)
             }
         }
 
