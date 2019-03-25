@@ -62,4 +62,6 @@ object Utility {
 
     const val DEFAULT_PAGE_SIZE: Int = 100
     const val DEFAULT_SORT_FIELD: String = "id"
+
+    const val SEARCH_PATTERN: String = "(\\w+?)([~:<>])(\\w+?);"
 }

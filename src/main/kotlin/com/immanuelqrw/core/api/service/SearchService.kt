@@ -2,6 +2,7 @@ package com.immanuelqrw.core.api.service
 
 import com.immanuelqrw.core.api.filter.SearchSpecificationsBuilder
 import com.immanuelqrw.core.api.model.BaseEntity
+import com.immanuelqrw.core.api.utility.Utility.SEARCH_PATTERN
 import org.springframework.data.jpa.domain.Specification
 import java.util.regex.Pattern
 
@@ -20,8 +21,7 @@ abstract class SearchService<T : BaseEntity> {
 
         val builder = SearchSpecificationsBuilder<T>()
 
-        // TODO Move Pattern to configuration file
-        val pattern = Pattern.compile("(\\w+?)([~:<>])(\\w+?);")
+        val pattern = Pattern.compile(SEARCH_PATTERN)
         val matcher = pattern.matcher("$search;")
 
         while (matcher.find()) {

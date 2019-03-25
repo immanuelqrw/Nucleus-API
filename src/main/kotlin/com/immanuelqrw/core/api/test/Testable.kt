@@ -5,8 +5,13 @@ package com.immanuelqrw.core.api.test
  */
 interface Testable {
 
-    // TODO Write documentation
+    /**
+     * Method to prepare data before test class
+     */
     fun prepare()
 
+    /**
+     * Method to prepare data before test
+     */
     fun setUp()
 }
