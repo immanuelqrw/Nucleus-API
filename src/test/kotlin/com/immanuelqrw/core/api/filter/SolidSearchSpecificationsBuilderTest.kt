@@ -28,6 +28,9 @@ internal class SolidSearchSpecificationsBuilderTest: SearchSpecificationsBuilder
     override lateinit var searchSpecification: SolidSearchSpecification
 
     @Mock
+    override lateinit var groupedSpecification: SolidSearchSpecification
+
+    @Mock
     override lateinit var params: MutableList<SearchCriterion>
 
     override val validSearchCriterion: SearchCriterion = SearchCriterion("id", ":", 2)
