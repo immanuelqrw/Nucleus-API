@@ -44,7 +44,10 @@ internal class SolidServiceTest : BaseServiceTest<Solid>() {
     override lateinit var replacedEntity: Solid
 
     @Mock
-    override lateinit var patchedFields: Map<String, Any>
+    override lateinit var validPatchedFields: Map<String, Any>
+
+    @Mock
+    override lateinit var invalidPatchedFields: Map<String, Any>
 
     @Mock
     override lateinit var validPageable: Pageable

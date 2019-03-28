@@ -32,7 +32,8 @@ abstract class BaseServiceTest<T : BaseEntity> : Testable {
     protected abstract val invalidEntity: T
     protected abstract val replacedEntity: T
 
-    protected abstract val patchedFields: Map<String, Any>
+    protected abstract val validPatchedFields: Map<String, Any>
+    protected abstract val invalidPatchedFields: Map<String, Any>
 
     protected abstract val validPageable: Pageable
     protected abstract val invalidPageable: Pageable
@@ -95,7 +96,7 @@ abstract class BaseServiceTest<T : BaseEntity> : Testable {
             // FIXME Add rest of logic for processing maps
             `when`(repository.save(replacedEntity)).thenReturn(replacedEntity)
 
-            service.modify(validId, patchedFields) shouldEqual replacedEntity
+            service.modify(validId, validPatchedFields) shouldEqual replacedEntity
         }
 
         @Test
@@ -149,7 +150,7 @@ abstract class BaseServiceTest<T : BaseEntity> : Testable {
                 `when`(repository.getOne(invalidId)).thenThrow(EntityNotFoundException::class.java)
 
                 Assertions.assertThrows(EntityNotFoundException::class.java) {
-                    service.modify(invalidId, patchedFields)
+                    service.modify(invalidId, validPatchedFields)
                 }
             }
 
@@ -189,7 +190,7 @@ abstract class BaseServiceTest<T : BaseEntity> : Testable {
                 `when`(repository.save(invalidEntity)).thenThrow()
 
                 Assertions.assertThrows() {
-                    service.modify(validId, patchedFields)
+                    service.modify(validId, invalidPatchedFields)
                 }
             }
         }
@@ -207,6 +208,7 @@ abstract class BaseServiceTest<T : BaseEntity> : Testable {
                 }
             }
 
+            // FIXME Look into if there is a way to make sort parameter fail separately
             @Test
             fun `given invalid sort parameter - when GET entities - returns BadRequest response`() {
                 `when`(searchService.generateSpecification(validSearch)).thenReturn((validSearchSpecification))
@@ -239,6 +241,7 @@ abstract class BaseServiceTest<T : BaseEntity> : Testable {
                 }
             }
 
+            // FIXME Look into if there is a way to make sort parameter fail separately
             @Test
             fun `given invalid sort parameter - when DELETE entities - returns BadRequest response`() {
                 `when`(searchService.generateSpecification(validSearch)).thenReturn((validSearchSpecification))
