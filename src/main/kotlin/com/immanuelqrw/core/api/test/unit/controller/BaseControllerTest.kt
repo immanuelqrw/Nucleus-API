@@ -17,6 +17,7 @@ import org.springframework.test.web.servlet.MvcResult
 import org.springframework.test.web.servlet.request.MockMvcRequestBuilders.*
 import org.springframework.test.web.servlet.result.MockMvcResultMatchers.status
 import javax.persistence.EntityNotFoundException
+import javax.persistence.RollbackException
 
 /**
  * Unit tests for Controller
@@ -233,12 +234,11 @@ abstract class BaseControllerTest<T : BaseEntity> : Testable {
             }
         }
 
-        // FIXME Find which error thrown by bad entity
         @Nested
         inner class InvalidBody {
             @Test
             fun `given invalid entity - when POST entity - returns BadRequest response`() {
-                `when`(service.create(invalidEntity)).thenThrow()
+                `when`(service.create(invalidEntity)).thenThrow(RollbackException::class.java)
 
                 mvc.perform(
                     post(baseUri)
@@ -250,7 +250,7 @@ abstract class BaseControllerTest<T : BaseEntity> : Testable {
 
             @Test
             fun `given invalid entity - when PUT entity - returns BadRequest response`() {
-                `when`(service.replace(validId, invalidEntity)).thenThrow()
+                `when`(service.replace(validId, invalidEntity)).thenThrow(RollbackException::class.java)
 
                 mvc.perform(
                     put(baseUri)
@@ -262,7 +262,7 @@ abstract class BaseControllerTest<T : BaseEntity> : Testable {
 
             @Test
             fun `given invalid partial entity - when PATCH entity - returns BadRequest response`() {
-                `when`(service.modify(validId, invalidPatchedFields)).thenThrow()
+                `when`(service.modify(validId, invalidPatchedFields)).thenThrow(RollbackException::class.java)
 
                 mvc.perform(
                     put(baseUri)
@@ -277,7 +277,7 @@ abstract class BaseControllerTest<T : BaseEntity> : Testable {
         inner class InvalidQueryParam {
             @Test
             fun `given invalid page parameter - when GET entities - returns BadRequest response`() {
-                `when`(service.findAll(invalidPageable, validSearch)).thenThrow()
+                `when`(service.findAll(invalidPageable, validSearch)).thenThrow(RuntimeException::class.java)
 
                 mvc.perform(
                     get(baseUri)
@@ -289,7 +289,7 @@ abstract class BaseControllerTest<T : BaseEntity> : Testable {
             // FIXME Look into if there is a way to make sort parameter fail separately
             @Test
             fun `given invalid sort parameter - when GET entities - returns BadRequest response`() {
-                `when`(service.findAll(invalidPageable, validSearch)).thenThrow()
+                `when`(service.findAll(invalidPageable, validSearch)).thenThrow(RuntimeException::class.java)
 
                 mvc.perform(
                     get(baseUri)
@@ -300,7 +300,7 @@ abstract class BaseControllerTest<T : BaseEntity> : Testable {
 
             @Test
             fun `given invalid search parameters - when GET entities - returns BadRequest response`() {
-                `when`(service.findAll(validPageable, invalidSearch)).thenThrow()
+                `when`(service.findAll(validPageable, invalidSearch)).thenThrow(RuntimeException::class.java)
 
                 mvc.perform(
                     get(baseUri)
@@ -311,7 +311,7 @@ abstract class BaseControllerTest<T : BaseEntity> : Testable {
 
             @Test
             fun `given invalid page parameter - when DELETE entities - returns BadRequest response`() {
-                `when`(service.findAll(invalidPageable, validSearch)).thenThrow()
+                `when`(service.findAll(invalidPageable, validSearch)).thenThrow(RuntimeException::class.java)
 
                 mvc.perform(
                     delete(baseUri)
@@ -323,7 +323,7 @@ abstract class BaseControllerTest<T : BaseEntity> : Testable {
             // FIXME Look into if there is a way to make sort parameter fail separately
             @Test
             fun `given invalid sort parameter - when DELETE entities - returns BadRequest response`() {
-                `when`(service.findAll(invalidPageable, validSearch)).thenThrow()
+                `when`(service.findAll(invalidPageable, validSearch)).thenThrow(RuntimeException::class.java)
 
                 mvc.perform(
                     delete(baseUri)
@@ -334,7 +334,7 @@ abstract class BaseControllerTest<T : BaseEntity> : Testable {
 
             @Test
             fun `given invalid search parameters - when DELETE entities - returns BadRequest response`() {
-                `when`(service.removeAll(validPageable, invalidSearch)).thenThrow()
+                `when`(service.removeAll(validPageable, invalidSearch)).thenThrow(RuntimeException::class.java)
 
                 mvc.perform(
                     delete(baseUri)
