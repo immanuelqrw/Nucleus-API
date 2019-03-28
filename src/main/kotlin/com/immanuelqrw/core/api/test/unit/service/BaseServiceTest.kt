@@ -25,8 +25,6 @@ abstract class BaseServiceTest<T : BaseEntity> : Testable {
     protected abstract val repository: BaseRepository<T>
     protected abstract val searchService: SearchService<T>
 
-    // TODO Setup input data for test use cases
-
     protected abstract val validId: Long
     protected abstract val invalidId: Long
 
