@@ -22,13 +22,15 @@ import org.springframework.test.context.junit.jupiter.SpringExtension
 @TestInstance(TestInstance.Lifecycle.PER_CLASS)
 internal class SolidServiceTest : BaseServiceTest<Solid>() {
 
+    override val classType: Class<Solid> = Solid::class.java
+
     @InjectMocks
     override lateinit var service: SolidService
 
-    @MockBean
+    @Mock
     override lateinit var repository: SolidRepository
 
-    @MockBean
+    @Mock
     override lateinit var searchService: SolidSearchService
 
     override val validId: Long = 1
@@ -48,6 +50,12 @@ internal class SolidServiceTest : BaseServiceTest<Solid>() {
 
     @Mock
     override lateinit var invalidPatchedFields: Map<String, Any>
+
+    @Mock
+    override lateinit var originalFields: Map<String, Any>
+
+    @Mock
+    override lateinit var patchedFields: Map<String, Any>
 
     @Mock
     override lateinit var validPageable: Pageable

@@ -5,11 +5,14 @@ import com.immanuelqrw.core.api.model.BaseEntity
 import com.immanuelqrw.core.api.repository.BaseRepository
 import com.immanuelqrw.core.api.service.BaseService
 import com.immanuelqrw.core.api.service.SearchService
+import com.immanuelqrw.core.api.utility.Utility
 import org.amshove.kluent.shouldEqual
 import org.amshove.kluent.shouldNotBeNull
 import org.junit.jupiter.api.*
 import org.mockito.Mockito.`when`
+import org.mockito.Mockito.doThrow
 import org.springframework.data.domain.Page
+import org.springframework.data.domain.PageImpl
 import org.springframework.data.domain.Pageable
 import org.springframework.data.jpa.domain.Specification
 import java.time.LocalDateTime
@@ -20,6 +23,8 @@ import javax.persistence.RollbackException
  * Unit tests for Service
  */
 abstract class BaseServiceTest<T : BaseEntity> : Testable {
+
+    protected abstract val classType: Class<T>
 
     protected abstract val service: BaseService<T>
 
@@ -35,6 +40,8 @@ abstract class BaseServiceTest<T : BaseEntity> : Testable {
 
     protected abstract val validPatchedFields: Map<String, Any>
     protected abstract val invalidPatchedFields: Map<String, Any>
+    protected abstract val originalFields: Map<String, Any>
+    protected abstract val patchedFields: Map<String, Any>
 
     protected abstract val validPageable: Pageable
     protected abstract val invalidPageable: Pageable
@@ -85,7 +92,7 @@ abstract class BaseServiceTest<T : BaseEntity> : Testable {
             `when`(repository.getOne(validId)).thenReturn(validEntity)
             `when`(validEntity.id).thenReturn(validId)
 
-            `when`(repository.save(replacedEntity)).thenReturn(replacedEntity)
+            `when`(repository.save(validEntity)).thenReturn(replacedEntity)
 
             service.replace(validId, validEntity) shouldEqual replacedEntity
         }
@@ -94,7 +101,10 @@ abstract class BaseServiceTest<T : BaseEntity> : Testable {
         fun `given valid id and fields to replace - when PATCH entity - modifies entity`() {
             `when`(repository.getOne(validId)).thenReturn(validEntity)
 
-            // FIXME Add rest of logic for processing maps
+            `when`(Utility.OBJECT_MAPPER.convertValue(validEntity, Map::class.java)).thenReturn(originalFields)
+            `when`(originalFields.plus(validPatchedFields)).thenReturn(patchedFields)
+            `when`(Utility.OBJECT_MAPPER.convertValue(patchedFields, classType)).thenReturn(replacedEntity)
+
             `when`(repository.save(replacedEntity)).thenReturn(replacedEntity)
 
             service.modify(validId, validPatchedFields) shouldEqual replacedEntity
@@ -114,13 +124,13 @@ abstract class BaseServiceTest<T : BaseEntity> : Testable {
         @Test
         fun `given valid page, sort, and search parameters - when DELETE entities - sets entities' removedOn to now`() {
             `when`(searchService.generateSpecification(validSearch)).thenReturn((validSearchSpecification))
-            `when`(repository.findAll(validSearchSpecification, validPageable)).thenReturn(validPage)
+
+            val validEntities: Page<T> = PageImpl<T>(listOf(validEntity))
+            `when`(repository.findAll(validSearchSpecification, validPageable)).thenReturn(validEntities)
 
             `when`(repository.save(validEntity)).thenReturn(validEntity)
 
             service.removeAll(validPageable, validSearch)
-
-            // FIXME Add rest of logic for iterating through page
         }
     }
 
@@ -130,36 +140,36 @@ abstract class BaseServiceTest<T : BaseEntity> : Testable {
         inner class InvalidUriPath {
             @Test
             fun `given invalid id - when GET entity - returns NotFound response`() {
-                `when`(repository.getOne(invalidId)).thenThrow(EntityNotFoundException::class.java)
+                doThrow(EntityNotFoundException::class.java).`when`(repository).getOne(invalidId)
 
-                Assertions.assertThrows(EntityNotFoundException::class.java) {
+                assertThrows<EntityNotFoundException> {
                     service.find(invalidId)
                 }
             }
 
             @Test
             fun `given invalid id - when PUT entity - returns NotFound response`() {
-                `when`(repository.getOne(invalidId)).thenThrow(EntityNotFoundException::class.java)
+                doThrow(EntityNotFoundException::class.java).`when`(repository).getOne(invalidId)
 
-                Assertions.assertThrows(EntityNotFoundException::class.java) {
+                assertThrows<EntityNotFoundException> {
                     service.replace(invalidId, validEntity)
                 }
             }
 
             @Test
             fun `given invalid id - when PATCH entity - returns NotFound response`() {
-                `when`(repository.getOne(invalidId)).thenThrow(EntityNotFoundException::class.java)
+                doThrow(EntityNotFoundException::class.java).`when`(repository).getOne(invalidId)
 
-                Assertions.assertThrows(EntityNotFoundException::class.java) {
+                assertThrows<EntityNotFoundException> {
                     service.modify(invalidId, validPatchedFields)
                 }
             }
 
             @Test
             fun `given invalid id - when DELETE entity - returns NotFound response`() {
-                `when`(repository.getOne(invalidId)).thenThrow(EntityNotFoundException::class.java)
+                doThrow(EntityNotFoundException::class.java).`when`(repository).getOne(invalidId)
 
-                Assertions.assertThrows(EntityNotFoundException::class.java) {
+                assertThrows<EntityNotFoundException> {
                     service.remove(invalidId)
                 }
             }
@@ -169,27 +179,36 @@ abstract class BaseServiceTest<T : BaseEntity> : Testable {
         inner class InvalidBody {
             @Test
             fun `given invalid entity - when POST entity - returns BadRequest response`() {
-                `when`(repository.save(invalidEntity)).thenThrow(RollbackException::class.java)
+                doThrow(RollbackException::class.java).`when`(repository).save(invalidEntity)
 
-                Assertions.assertThrows(RollbackException::class.java) {
+                assertThrows<RollbackException> {
                     service.create(invalidEntity)
                 }
             }
 
             @Test
             fun `given invalid entity - when PUT entity - returns BadRequest response`() {
-                `when`(repository.save(invalidEntity)).thenThrow(RollbackException::class.java)
+                `when`(repository.getOne(validId)).thenReturn(validEntity)
 
-                Assertions.assertThrows(RollbackException::class.java) {
+                `when`(validEntity.id).thenReturn(validId)
+                doThrow(RollbackException::class.java).`when`(repository).save(invalidEntity)
+
+                assertThrows<RollbackException> {
                     service.replace(validId, invalidEntity)
                 }
             }
 
             @Test
             fun `given invalid partial entity - when PATCH entity - returns BadRequest response`() {
-                `when`(repository.save(invalidEntity)).thenThrow(RollbackException::class.java)
+                `when`(repository.getOne(validId)).thenReturn(validEntity)
 
-                Assertions.assertThrows(RollbackException::class.java) {
+                `when`(Utility.OBJECT_MAPPER.convertValue(validEntity, Map::class.java)).thenReturn(originalFields)
+                `when`(originalFields.plus(invalidPatchedFields)).thenReturn(patchedFields)
+                `when`(Utility.OBJECT_MAPPER.convertValue(patchedFields, classType)).thenReturn(invalidEntity)
+
+                doThrow(RollbackException::class.java).`when`(repository).save(invalidEntity)
+
+                assertThrows<RollbackException> {
                     service.modify(validId, invalidPatchedFields)
                 }
             }
@@ -201,9 +220,9 @@ abstract class BaseServiceTest<T : BaseEntity> : Testable {
             @Test
             fun `given invalid page parameter - when GET entities - returns BadRequest response`() {
                 `when`(searchService.generateSpecification(validSearch)).thenReturn((validSearchSpecification))
-                `when`(repository.findAll(validSearchSpecification, invalidPageable)).thenThrow(RuntimeException::class.java)
+                doThrow(RuntimeException::class.java).`when`(repository).findAll(validSearchSpecification, invalidPageable)
 
-                Assertions.assertThrows(RuntimeException::class.java) {
+                assertThrows<RuntimeException> {
                     service.findAll(invalidPageable, validSearch)
                 }
             }
@@ -212,21 +231,20 @@ abstract class BaseServiceTest<T : BaseEntity> : Testable {
             @Test
             fun `given invalid sort parameter - when GET entities - returns BadRequest response`() {
                 `when`(searchService.generateSpecification(validSearch)).thenReturn((validSearchSpecification))
-                `when`(repository.findAll(validSearchSpecification, invalidPageable)).thenThrow(RuntimeException::class.java)
+                doThrow(RuntimeException::class.java).`when`(repository).findAll(validSearchSpecification, invalidPageable)
 
-                Assertions.assertThrows(RuntimeException::class.java) {
+                assertThrows<RuntimeException> {
                     service.findAll(invalidPageable, validSearch)
                 }
-                assert(false)
             }
 
             // TODO Consider splitting into invalid search key, operation, value
             @Test
             fun `given invalid search parameters - when GET entities - returns BadRequest response`() {
                 `when`(searchService.generateSpecification(invalidSearch)).thenReturn((invalidSearchSpecification))
-                `when`(repository.findAll(invalidSearchSpecification, invalidPageable)).thenThrow(RuntimeException::class.java)
+                doThrow(RuntimeException::class.java).`when`(repository).findAll(invalidSearchSpecification, invalidPageable)
 
-                Assertions.assertThrows(RuntimeException::class.java) {
+                assertThrows<RuntimeException> {
                     service.findAll(invalidPageable, validSearch)
                 }
             }
@@ -234,9 +252,9 @@ abstract class BaseServiceTest<T : BaseEntity> : Testable {
             @Test
             fun `given invalid page parameter - when DELETE entities - returns BadRequest response`() {
                 `when`(searchService.generateSpecification(validSearch)).thenReturn((validSearchSpecification))
-                `when`(repository.findAll(validSearchSpecification, invalidPageable)).thenThrow(RuntimeException::class.java)
+                doThrow(RuntimeException::class.java).`when`(repository).findAll(validSearchSpecification, invalidPageable)
 
-                Assertions.assertThrows(RuntimeException::class.java) {
+                assertThrows<RuntimeException> {
                     service.findAll(invalidPageable, validSearch)
                 }
             }
@@ -245,9 +263,9 @@ abstract class BaseServiceTest<T : BaseEntity> : Testable {
             @Test
             fun `given invalid sort parameter - when DELETE entities - returns BadRequest response`() {
                 `when`(searchService.generateSpecification(validSearch)).thenReturn((validSearchSpecification))
-                `when`(repository.findAll(validSearchSpecification, invalidPageable)).thenThrow(RuntimeException::class.java)
+                doThrow(RuntimeException::class.java).`when`(repository).findAll(validSearchSpecification, invalidPageable)
 
-                Assertions.assertThrows(RuntimeException::class.java) {
+                assertThrows<RuntimeException> {
                     service.findAll(invalidPageable, validSearch)
                 }
             }
@@ -255,9 +273,9 @@ abstract class BaseServiceTest<T : BaseEntity> : Testable {
             @Test
             fun `given invalid search parameters - when DELETE entities - returns BadRequest response`() {
                 `when`(searchService.generateSpecification(invalidSearch)).thenReturn((invalidSearchSpecification))
-                `when`(repository.findAll(invalidSearchSpecification, invalidPageable)).thenThrow(RuntimeException::class.java)
+                doThrow(RuntimeException::class.java).`when`(repository).findAll(invalidSearchSpecification, invalidPageable)
 
-                Assertions.assertThrows(RuntimeException::class.java) {
+                assertThrows<RuntimeException> {
                     service.findAll(invalidPageable, validSearch)
                 }
             }
