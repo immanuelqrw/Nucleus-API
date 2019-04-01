@@ -1,5 +1,6 @@
 package com.immanuelqrw.core.api.service
 
+import com.fasterxml.jackson.databind.ObjectMapper
 import com.immanuelqrw.core.api.test.example.Solid
 import com.immanuelqrw.core.api.test.example.SolidRepository
 import com.immanuelqrw.core.api.test.example.SolidSearchService
@@ -74,4 +75,7 @@ internal class SolidServiceTest : BaseServiceTest<Solid>() {
 
     @Mock
     override lateinit var invalidSearchSpecification: Specification<Solid>
+
+    @Mock
+    override lateinit var objectMapper: ObjectMapper
 }

@@ -1,5 +1,6 @@
 package com.immanuelqrw.core.api.test.unit.service
 
+import com.fasterxml.jackson.databind.ObjectMapper
 import com.immanuelqrw.core.api.test.Testable
 import com.immanuelqrw.core.api.model.BaseEntity
 import com.immanuelqrw.core.api.repository.BaseRepository
@@ -9,8 +10,7 @@ import com.immanuelqrw.core.api.utility.Utility
 import org.amshove.kluent.shouldEqual
 import org.amshove.kluent.shouldNotBeNull
 import org.junit.jupiter.api.*
-import org.mockito.Mockito.`when`
-import org.mockito.Mockito.doThrow
+import org.mockito.Mockito.*
 import org.springframework.data.domain.Page
 import org.springframework.data.domain.PageImpl
 import org.springframework.data.domain.Pageable
@@ -52,6 +52,8 @@ abstract class BaseServiceTest<T : BaseEntity> : Testable {
 
     protected abstract val validSearchSpecification: Specification<T>?
     protected abstract val invalidSearchSpecification: Specification<T>?
+
+    protected abstract val objectMapper: ObjectMapper
 
     @BeforeAll
     override fun prepare() {
@@ -101,9 +103,10 @@ abstract class BaseServiceTest<T : BaseEntity> : Testable {
         fun `given valid id and fields to replace - when PATCH entity - modifies entity`() {
             `when`(repository.getOne(validId)).thenReturn(validEntity)
 
-            `when`(Utility.OBJECT_MAPPER.convertValue(validEntity, Map::class.java)).thenReturn(originalFields)
-            `when`(originalFields.plus(validPatchedFields)).thenReturn(patchedFields)
-            `when`(Utility.OBJECT_MAPPER.convertValue(patchedFields, classType)).thenReturn(replacedEntity)
+            `when`(objectMapper.convertValue(validEntity, Map::class.java)).thenReturn(originalFields)
+            doReturn(patchedFields).`when`(originalFields).plus(validPatchedFields)
+            // `when`(originalFields.plus(validPatchedFields)).thenReturn(patchedFields)
+            `when`(objectMapper.convertValue(patchedFields, classType)).thenReturn(replacedEntity)
 
             `when`(repository.save(replacedEntity)).thenReturn(replacedEntity)
 
@@ -202,9 +205,9 @@ abstract class BaseServiceTest<T : BaseEntity> : Testable {
             fun `given invalid partial entity - when PATCH entity - returns BadRequest response`() {
                 `when`(repository.getOne(validId)).thenReturn(validEntity)
 
-                `when`(Utility.OBJECT_MAPPER.convertValue(validEntity, Map::class.java)).thenReturn(originalFields)
+                `when`(objectMapper.convertValue(validEntity, Map::class.java)).thenReturn(originalFields)
                 `when`(originalFields.plus(invalidPatchedFields)).thenReturn(patchedFields)
-                `when`(Utility.OBJECT_MAPPER.convertValue(patchedFields, classType)).thenReturn(invalidEntity)
+                `when`(objectMapper.convertValue(patchedFields, classType)).thenReturn(invalidEntity)
 
                 doThrow(RollbackException::class.java).`when`(repository).save(invalidEntity)
 
