@@ -21,7 +21,7 @@ abstract class BaseController<T : BaseEntity>
     private val service: BaseService<T>
 ) : FullyControllable<T> {
 
-    @GetMapping(name = "/{id}", produces = [MediaType.APPLICATION_JSON_VALUE])
+    @GetMapping(path = ["/{id}"], produces = [MediaType.APPLICATION_JSON_VALUE])
     override fun find(@PathVariable("id") id: Long): T {
         return service.find(id)
     }
@@ -43,17 +43,17 @@ abstract class BaseController<T : BaseEntity>
         return service.create(entity)
     }
 
-    @PutMapping(name = "/{id}", produces = [MediaType.APPLICATION_JSON_VALUE], consumes = [MediaType.APPLICATION_JSON_VALUE])
+    @PutMapping(path = ["/{id}"], produces = [MediaType.APPLICATION_JSON_VALUE], consumes = [MediaType.APPLICATION_JSON_VALUE])
     override fun replace(@PathVariable("id") id: Long, @RequestBody entity: T): T {
         return service.replace(id, entity)
     }
 
-    @PatchMapping(name = "/{id}", produces = [MediaType.APPLICATION_JSON_VALUE], consumes = [MediaType.APPLICATION_JSON_VALUE])
+    @PatchMapping(path = ["/{id}"], produces = [MediaType.APPLICATION_JSON_VALUE], consumes = [MediaType.APPLICATION_JSON_VALUE])
     override fun modify(@PathVariable("id") id: Long, @RequestBody patchedFields: Map<String, Any>): T {
         return service.modify(id, patchedFields)
     }
 
-    @DeleteMapping(name = "/{id}", produces = [MediaType.APPLICATION_JSON_VALUE])
+    @DeleteMapping(path = ["/{id}"], produces = [MediaType.APPLICATION_JSON_VALUE])
     override fun remove(@PathVariable("id") id: Long) {
         return service.remove(id)
     }
