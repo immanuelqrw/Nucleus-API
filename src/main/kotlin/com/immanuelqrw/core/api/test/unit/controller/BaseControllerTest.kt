@@ -1,14 +1,12 @@
 package com.immanuelqrw.core.api.test.unit.controller
 
-import com.immanuelqrw.core.api.controller.BaseController
 import com.immanuelqrw.core.api.model.BaseEntity
 import com.immanuelqrw.core.api.service.BaseService
 import com.immanuelqrw.core.api.test.Testable
 import com.immanuelqrw.core.api.utility.Utility.OBJECT_MAPPER
 import org.amshove.kluent.shouldEqual
 import org.junit.jupiter.api.*
-import org.mockito.Mockito.`when`
-import org.mockito.Mockito.doNothing
+import org.mockito.Mockito.*
 import org.springframework.data.domain.Page
 import org.springframework.data.domain.Pageable
 import org.springframework.http.MediaType
@@ -25,8 +23,6 @@ import javax.persistence.RollbackException
 abstract class BaseControllerTest<T : BaseEntity> : Testable {
 
     protected abstract val mvc: MockMvc
-
-    protected abstract val controller: BaseController<T>
 
     protected abstract val service: BaseService<T>
 
@@ -189,7 +185,7 @@ abstract class BaseControllerTest<T : BaseEntity> : Testable {
         inner class InvalidUriPath {
             @Test
             fun `given invalid id - when GET entity - returns NotFound response`() {
-                `when`(service.find(invalidId)).thenThrow(EntityNotFoundException::class.java)
+                doThrow(EntityNotFoundException::class.java).`when`(service).find(invalidId)
 
                 mvc.perform(
                     get(idUri, invalidId)
@@ -200,7 +196,7 @@ abstract class BaseControllerTest<T : BaseEntity> : Testable {
 
             @Test
             fun `given invalid id - when PUT entity - returns NotFound response`() {
-                `when`(service.replace(invalidId, validEntity)).thenThrow(EntityNotFoundException::class.java)
+                doThrow(EntityNotFoundException::class.java).`when`(service).replace(invalidId, validEntity)
 
                 mvc.perform(
                     put(idUri, invalidId)
@@ -212,7 +208,7 @@ abstract class BaseControllerTest<T : BaseEntity> : Testable {
 
             @Test
             fun `given invalid id - when PATCH entity - returns NotFound response`() {
-                `when`(service.modify(invalidId, validPatchedFields)).thenThrow(EntityNotFoundException::class.java)
+                doThrow(EntityNotFoundException::class.java).`when`(service).modify(invalidId, validPatchedFields)
 
                 mvc.perform(
                     patch(idUri, invalidId)
@@ -224,7 +220,7 @@ abstract class BaseControllerTest<T : BaseEntity> : Testable {
 
             @Test
             fun `given invalid id - when DELETE entity - returns NotFound response`() {
-                `when`(service.remove(invalidId)).thenThrow(EntityNotFoundException::class.java)
+                doThrow(EntityNotFoundException::class.java).`when`(service).remove(invalidId)
 
                 mvc.perform(
                     delete(idUri, invalidId)
@@ -238,7 +234,7 @@ abstract class BaseControllerTest<T : BaseEntity> : Testable {
         inner class InvalidBody {
             @Test
             fun `given invalid entity - when POST entity - returns BadRequest response`() {
-                `when`(service.create(invalidEntity)).thenThrow(RollbackException::class.java)
+                doThrow(RollbackException::class.java).`when`(service).create(invalidEntity)
 
                 mvc.perform(
                     post(baseUri)
@@ -250,10 +246,10 @@ abstract class BaseControllerTest<T : BaseEntity> : Testable {
 
             @Test
             fun `given invalid entity - when PUT entity - returns BadRequest response`() {
-                `when`(service.replace(validId, invalidEntity)).thenThrow(RollbackException::class.java)
+                doThrow(RollbackException::class.java).`when`(service).replace(validId, invalidEntity)
 
                 mvc.perform(
-                    put(baseUri)
+                    put(idUri, validId)
                         .contentType(MediaType.APPLICATION_JSON)
                         .content(OBJECT_MAPPER.writeValueAsBytes(invalidEntity))
                 )
@@ -262,10 +258,10 @@ abstract class BaseControllerTest<T : BaseEntity> : Testable {
 
             @Test
             fun `given invalid partial entity - when PATCH entity - returns BadRequest response`() {
-                `when`(service.modify(validId, invalidPatchedFields)).thenThrow(RollbackException::class.java)
+                doThrow(RollbackException::class.java).`when`(service).modify(validId, invalidPatchedFields)
 
                 mvc.perform(
-                    put(baseUri)
+                    put(idUri, validId)
                         .contentType(MediaType.APPLICATION_JSON)
                         .content(OBJECT_MAPPER.writeValueAsBytes(invalidPatchedFields))
                 )
@@ -277,7 +273,7 @@ abstract class BaseControllerTest<T : BaseEntity> : Testable {
         inner class InvalidQueryParam {
             @Test
             fun `given invalid page parameter - when GET entities - returns BadRequest response`() {
-                `when`(service.findAll(invalidPageable, validSearch)).thenThrow(RuntimeException::class.java)
+                doThrow(RuntimeException::class.java).`when`(service).findAll(invalidPageable, validSearch)
 
                 mvc.perform(
                     get(baseUri)
@@ -289,7 +285,7 @@ abstract class BaseControllerTest<T : BaseEntity> : Testable {
             // FIXME Look into if there is a way to make sort parameter fail separately
             @Test
             fun `given invalid sort parameter - when GET entities - returns BadRequest response`() {
-                `when`(service.findAll(invalidPageable, validSearch)).thenThrow(RuntimeException::class.java)
+                doThrow(RuntimeException::class.java).`when`(service).findAll(invalidPageable, validSearch)
 
                 mvc.perform(
                     get(baseUri)
@@ -300,7 +296,7 @@ abstract class BaseControllerTest<T : BaseEntity> : Testable {
 
             @Test
             fun `given invalid search parameters - when GET entities - returns BadRequest response`() {
-                `when`(service.findAll(validPageable, invalidSearch)).thenThrow(RuntimeException::class.java)
+                doThrow(RuntimeException::class.java).`when`(service).findAll(validPageable, invalidSearch)
 
                 mvc.perform(
                     get(baseUri)
@@ -311,7 +307,7 @@ abstract class BaseControllerTest<T : BaseEntity> : Testable {
 
             @Test
             fun `given invalid page parameter - when DELETE entities - returns BadRequest response`() {
-                `when`(service.findAll(invalidPageable, validSearch)).thenThrow(RuntimeException::class.java)
+                doThrow(RuntimeException::class.java).`when`(service).findAll(invalidPageable, validSearch)
 
                 mvc.perform(
                     delete(baseUri)
@@ -323,7 +319,7 @@ abstract class BaseControllerTest<T : BaseEntity> : Testable {
             // FIXME Look into if there is a way to make sort parameter fail separately
             @Test
             fun `given invalid sort parameter - when DELETE entities - returns BadRequest response`() {
-                `when`(service.findAll(invalidPageable, validSearch)).thenThrow(RuntimeException::class.java)
+                doThrow(RuntimeException::class.java).`when`(service).findAll(invalidPageable, validSearch)
 
                 mvc.perform(
                     delete(baseUri)
@@ -334,7 +330,7 @@ abstract class BaseControllerTest<T : BaseEntity> : Testable {
 
             @Test
             fun `given invalid search parameters - when DELETE entities - returns BadRequest response`() {
-                `when`(service.removeAll(validPageable, invalidSearch)).thenThrow(RuntimeException::class.java)
+                doThrow(RuntimeException::class.java).`when`(service).removeAll(validPageable, invalidSearch)
 
                 mvc.perform(
                     delete(baseUri)

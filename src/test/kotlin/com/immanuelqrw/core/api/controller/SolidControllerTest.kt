@@ -1,5 +1,6 @@
 package com.immanuelqrw.core.api.controller
 
+import com.immanuelqrw.core.api.test.Application
 import com.immanuelqrw.core.api.test.example.Solid
 import com.immanuelqrw.core.api.test.example.SolidController
 import com.immanuelqrw.core.api.test.example.SolidService
@@ -14,6 +15,7 @@ import org.springframework.boot.test.mock.mockito.MockBean
 import org.springframework.data.domain.Page
 import org.springframework.data.domain.Pageable
 import org.springframework.stereotype.Controller
+import org.springframework.test.context.ContextConfiguration
 import org.springframework.test.context.junit.jupiter.SpringExtension
 import org.springframework.test.web.servlet.MockMvc
 
@@ -21,15 +23,13 @@ import org.springframework.test.web.servlet.MockMvc
  * Unit tests for SolidController
 // */
 @ExtendWith(SpringExtension::class)
+@ContextConfiguration(classes = [Application::class])
 @WebMvcTest(Controller::class)
 @TestInstance(TestInstance.Lifecycle.PER_CLASS)
 internal class SolidControllerTest : BaseControllerTest<Solid>() {
 
     @Autowired
     override lateinit var mvc: MockMvc
-
-    @InjectMocks
-    override lateinit var controller: SolidController
 
     @MockBean
     override lateinit var service: SolidService
