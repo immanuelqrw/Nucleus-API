@@ -6,7 +6,6 @@ import com.immanuelqrw.core.api.model.BaseEntity
 import com.immanuelqrw.core.api.repository.BaseRepository
 import com.immanuelqrw.core.api.service.BaseService
 import com.immanuelqrw.core.api.service.SearchService
-import com.immanuelqrw.core.api.utility.Utility
 import org.amshove.kluent.shouldEqual
 import org.amshove.kluent.shouldNotBeNull
 import org.junit.jupiter.api.*
