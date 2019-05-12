@@ -7,6 +7,7 @@ import com.immanuelqrw.core.api.model.BaseEntity
 import com.immanuelqrw.core.api.test.Testable
 import org.junit.jupiter.api.BeforeAll
 import org.junit.jupiter.api.BeforeEach
+import org.junit.jupiter.api.DisplayName
 import org.junit.jupiter.api.Nested
 import org.junit.jupiter.api.Test
 
@@ -41,7 +42,8 @@ abstract class SearchSpecificationsBuilderTest<T : BaseEntity> : Testable {
     @Nested
     inner class Success {
         @Test
-        fun `given valid search parameters - when Specification built - returns Specification`() {
+        @DisplayName("given valid search parameters - when Specification built - returns Specification")
+        fun testBuildSpecificationWithValidSearchQueryParameters() {
 //            whenever(params.isEmpty()).thenReturn(false)
 //            whenever(SearchSpecification<T>(validSearchCriterion)).thenReturn(searchSpecification)
 //            whenever(searchSpecification.and(searchSpecification)).thenReturn(groupedSpecification)
@@ -51,7 +53,8 @@ abstract class SearchSpecificationsBuilderTest<T : BaseEntity> : Testable {
         }
 
         @Test
-        fun `given no search parameters - when Specification built - returns null`() {
+        @DisplayName("given no search parameters - when Specification built - returns null")
+        fun testBuildSpecificationWithNoSearchQueryParameters() {
 //            whenever(searchSpecifications.reduce<Any, Any>{ _, _ ->}).thenReturn(null)
 //
 //            searchSpecificationsBuilder.build() shouldEqual null
@@ -62,7 +65,8 @@ abstract class SearchSpecificationsBuilderTest<T : BaseEntity> : Testable {
     @Nested
     inner class Failure {
         @Test
-        fun `given invalid search parameters - when Specification built - throws RuntimeException`() {
+        @DisplayName("given invalid search parameters - when Specification built - throws RuntimeException")
+        fun testBuildSpecificationWithInvalidSearchQueryParameters() {
 //            whenever(params.map<SearchCriterion, Any>{}).thenThrow(RuntimeException::class.java)
 //
 //            Assertions.assertThrows(RuntimeException::class.java) {
