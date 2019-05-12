@@ -10,8 +10,4 @@ import org.springframework.stereotype.Service
  * Solid service class
  */
 @Service
-class SolidService
-@Autowired constructor(
-    repository: SolidRepository,
-    searchService: SolidSearchService
-) : BaseService<Solid>(repository, searchService, Solid::class.java)
+class SolidService : BaseService<Solid>()

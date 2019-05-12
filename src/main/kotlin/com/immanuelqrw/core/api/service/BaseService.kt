@@ -14,12 +14,16 @@ import java.time.LocalDateTime
 /**
  * Abstract base service
  */
-abstract class BaseService<T : BaseEntity>
-@Autowired constructor(
-    private val repository: BaseRepository<T>,
-    private val searchService: SearchService<T>,
-    private val classType: Class<T>
-) : FullyControllable<T> {
+abstract class BaseService<T : BaseEntity> : FullyControllable<T> {
+
+    @Autowired
+    private lateinit var repository: BaseRepository<T>
+
+    @Autowired
+    private lateinit var searchService: SearchService<T>
+
+    @Autowired
+    private lateinit var classType: Class<T>
 
     override fun find(id: Long): T {
         return repository.getOne(id)

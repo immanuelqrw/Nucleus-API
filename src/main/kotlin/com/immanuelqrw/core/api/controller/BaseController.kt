@@ -12,14 +12,15 @@ import org.springframework.data.web.PageableDefault
 import org.springframework.data.web.SortDefault
 import org.springframework.http.MediaType
 import org.springframework.web.bind.annotation.*
+import javax.persistence.EntityNotFoundException
 
 /**
  * Abstract controller class
  */
-abstract class BaseController<T : BaseEntity>
-@Autowired constructor(
-    private val service: BaseService<T>
-) : FullyControllable<T> {
+abstract class BaseController<T : BaseEntity> : FullyControllable<T> {
+
+    @Autowired
+    private lateinit var service: BaseService<T>
 
     @GetMapping(path = ["/{id}"], produces = [MediaType.APPLICATION_JSON_VALUE])
     override fun find(@PathVariable("id") id: Long): T {
@@ -45,6 +46,7 @@ abstract class BaseController<T : BaseEntity>
 
     @PutMapping(path = ["/{id}"], produces = [MediaType.APPLICATION_JSON_VALUE], consumes = [MediaType.APPLICATION_JSON_VALUE])
     override fun replace(@PathVariable("id") id: Long, @RequestBody entity: T): T {
+        validateId(id)
         return service.replace(id, entity)
     }
 
@@ -68,5 +70,11 @@ abstract class BaseController<T : BaseEntity>
         search: String?
     ) {
         return service.removeAll(page, search)
+    }
+
+    private fun validateId(id: Long) {
+        if (id < 0) {
+            throw EntityNotFoundException()
+        }
     }
 }
