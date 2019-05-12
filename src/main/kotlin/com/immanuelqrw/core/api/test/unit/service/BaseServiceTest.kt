@@ -1,17 +1,22 @@
 package com.immanuelqrw.core.api.test.unit.service
 
 import com.fasterxml.jackson.databind.ObjectMapper
-import com.immanuelqrw.core.api.test.Testable
 import com.immanuelqrw.core.api.model.BaseEntity
 import com.immanuelqrw.core.api.repository.BaseRepository
 import com.immanuelqrw.core.api.service.BaseService
 import com.immanuelqrw.core.api.service.SearchService
+import com.immanuelqrw.core.api.test.Testable
 import com.nhaarman.mockitokotlin2.doReturn
 import com.nhaarman.mockitokotlin2.doThrow
 import com.nhaarman.mockitokotlin2.whenever
 import org.amshove.kluent.shouldEqual
 import org.amshove.kluent.shouldNotBeNull
-import org.junit.jupiter.api.*
+import org.junit.jupiter.api.BeforeAll
+import org.junit.jupiter.api.BeforeEach
+import org.junit.jupiter.api.DisplayName
+import org.junit.jupiter.api.Nested
+import org.junit.jupiter.api.Test
+import org.junit.jupiter.api.assertThrows
 import org.springframework.data.domain.Page
 import org.springframework.data.domain.PageImpl
 import org.springframework.data.domain.Pageable
@@ -69,14 +74,16 @@ abstract class BaseServiceTest<T : BaseEntity> : Testable {
     @Nested
     inner class Success {
         @Test
-        fun `given valid id - when GET entity - returns entity`() {
+        @DisplayName("given valid id - when GET entity - returns entity")
+        fun testGetEntityWithValidId() {
             whenever(repository.getOne(validId)).thenReturn(validEntity)
 
             service.find(validId) shouldEqual validEntity
         }
 
         @Test
-        fun `given valid page, sort, and search parameters - when GET entities - returns entities`() {
+        @DisplayName("given valid page, sort, and search parameters - when GET entities - returns entities")
+        fun testGetEntitiesWithValidQueryParameters() {
             whenever(searchService.generateSpecification(validSearch)).thenReturn((validSearchSpecification))
             whenever(repository.findAll(validSearchSpecification, validPageable)).thenReturn(validPage)
 
@@ -84,14 +91,16 @@ abstract class BaseServiceTest<T : BaseEntity> : Testable {
         }
 
         @Test
-        fun `given valid entity - when POST entity - persists entity`() {
+        @DisplayName("given valid entity - when POST entity - persists entity")
+        fun testPostValidEntity() {
             whenever(repository.save(validEntity)).thenReturn(validEntity)
 
             service.create(validEntity) shouldEqual validEntity
         }
 
         @Test
-        fun `given valid id and entity to replace - when PUT entity - replaces entity`() {
+        @DisplayName("given valid id and entity to replace - when PUT entity - replaces entity")
+        fun testPutValidEntityWithValidId() {
             whenever(repository.getOne(validId)).thenReturn(validEntity)
             whenever(validEntity.id).thenReturn(validId)
 
@@ -101,7 +110,8 @@ abstract class BaseServiceTest<T : BaseEntity> : Testable {
         }
 
         @Test
-        fun `given valid id and fields to replace - when PATCH entity - modifies entity`() {
+        @DisplayName("given valid id and fields to replace - when PATCH entity - modifies entity")
+        fun testPatchEntityWithValidIdAndFields() {
             whenever(repository.getOne(validId)).thenReturn(validEntity)
 
             whenever(objectMapper.convertValue(validEntity, Map::class.java)).thenReturn(originalFields)
@@ -115,7 +125,8 @@ abstract class BaseServiceTest<T : BaseEntity> : Testable {
         }
 
         @Test
-        fun `given valid id - when DELETE entity - sets entity removedOn to now`() {
+        @DisplayName("given valid id - when DELETE entity - sets entity removedOn to now")
+        fun testDeleteEntityWithValidId() {
             whenever(repository.getOne(validId)).thenReturn(validEntity)
             whenever(validEntity.removedOn).thenReturn(LocalDateTime.now())
             whenever(repository.save(validEntity)).thenReturn(validEntity)
@@ -126,7 +137,8 @@ abstract class BaseServiceTest<T : BaseEntity> : Testable {
         }
 
         @Test
-        fun `given valid page, sort, and search parameters - when DELETE entities - sets entities' removedOn to now`() {
+        @DisplayName("given valid page, sort, and search parameters - when DELETE entities - sets entities' removedOn to now")
+        fun testDeleteEntitiesWithValidQueryParameters() {
             whenever(searchService.generateSpecification(validSearch)).thenReturn((validSearchSpecification))
 
             val validEntities: Page<T> = PageImpl<T>(listOf(validEntity))
@@ -143,7 +155,8 @@ abstract class BaseServiceTest<T : BaseEntity> : Testable {
         @Nested
         inner class InvalidUriPath {
             @Test
-            fun `given invalid id - when GET entity - returns NotFound response`() {
+            @DisplayName("given invalid id - when GET entity - returns NotFound response")
+            fun testGetEntityWithInvalidId() {
                 doThrow(EntityNotFoundException::class).whenever(repository).getOne(invalidId)
 
                 assertThrows<EntityNotFoundException> {
@@ -152,7 +165,8 @@ abstract class BaseServiceTest<T : BaseEntity> : Testable {
             }
 
             @Test
-            fun `given invalid id - when PUT entity - returns NotFound response`() {
+            @DisplayName("given invalid id - when PUT entity - returns NotFound response")
+            fun testPutEntityWithInvalidId() {
                 doThrow(EntityNotFoundException::class).whenever(repository).getOne(invalidId)
 
                 assertThrows<EntityNotFoundException> {
@@ -161,7 +175,8 @@ abstract class BaseServiceTest<T : BaseEntity> : Testable {
             }
 
             @Test
-            fun `given invalid id - when PATCH entity - returns NotFound response`() {
+            @DisplayName("given invalid id - when PATCH entity - returns NotFound response")
+            fun testPatchEntityWithInvalidId() {
                 doThrow(EntityNotFoundException::class).whenever(repository).getOne(invalidId)
 
                 assertThrows<EntityNotFoundException> {
@@ -170,7 +185,8 @@ abstract class BaseServiceTest<T : BaseEntity> : Testable {
             }
 
             @Test
-            fun `given invalid id - when DELETE entity - returns NotFound response`() {
+            @DisplayName("given invalid id - when DELETE entity - returns NotFound response")
+            fun testDeleteEntityWithInvalidId() {
                 doThrow(EntityNotFoundException::class).whenever(repository).getOne(invalidId)
 
                 assertThrows<EntityNotFoundException> {
@@ -182,7 +198,8 @@ abstract class BaseServiceTest<T : BaseEntity> : Testable {
         @Nested
         inner class InvalidBody {
             @Test
-            fun `given invalid entity - when POST entity - returns BadRequest response`() {
+            @DisplayName("given invalid entity - when POST entity - returns BadRequest response")
+            fun testPostInvalidEntity() {
                 doThrow(RollbackException::class).whenever(repository).save(invalidEntity)
 
                 assertThrows<RollbackException> {
@@ -191,7 +208,8 @@ abstract class BaseServiceTest<T : BaseEntity> : Testable {
             }
 
             @Test
-            fun `given invalid entity - when PUT entity - returns BadRequest response`() {
+            @DisplayName("given invalid entity - when PUT entity - returns BadRequest response")
+            fun testPutInvalidEntity() {
                 whenever(repository.getOne(validId)).thenReturn(validEntity)
 
                 whenever(validEntity.id).thenReturn(validId)
@@ -203,7 +221,8 @@ abstract class BaseServiceTest<T : BaseEntity> : Testable {
             }
 
             @Test
-            fun `given invalid partial entity - when PATCH entity - returns BadRequest response`() {
+            @DisplayName("given invalid partial entity - when PATCH entity - returns BadRequest response")
+            fun testPatchEntityWithInvalidFields() {
                 whenever(repository.getOne(validId)).thenReturn(validEntity)
 
                 whenever(objectMapper.convertValue(validEntity, Map::class.java)).thenReturn(originalFields)
@@ -218,11 +237,12 @@ abstract class BaseServiceTest<T : BaseEntity> : Testable {
             }
         }
 
-        // FIXME Find which error thrown by bad request
+        // ! Find which error thrown by bad request
         @Nested
         inner class InvalidQueryParam {
             @Test
-            fun `given invalid page parameter - when GET entities - returns BadRequest response`() {
+            @DisplayName("given invalid page parameter - when GET entities - returns BadRequest response")
+            fun testGetEntitiesWithInvalidPageParameter() {
                 whenever(searchService.generateSpecification(validSearch)).thenReturn((validSearchSpecification))
                 doThrow(RuntimeException::class).whenever(repository).findAll(validSearchSpecification, invalidPageable)
 
@@ -231,9 +251,10 @@ abstract class BaseServiceTest<T : BaseEntity> : Testable {
                 }
             }
 
-            // FIXME Look into if there is a way to make sort parameter fail separately
+            // ? Look into if there is a way to make sort parameter fail separately
             @Test
-            fun `given invalid sort parameter - when GET entities - returns BadRequest response`() {
+            @DisplayName("given invalid sort parameter - when GET entities - returns BadRequest response")
+            fun testGetEntitiesWithInvalidSortParameter() {
                 whenever(searchService.generateSpecification(validSearch)).thenReturn((validSearchSpecification))
                 doThrow(RuntimeException::class).whenever(repository).findAll(validSearchSpecification, invalidPageable)
 
@@ -242,9 +263,10 @@ abstract class BaseServiceTest<T : BaseEntity> : Testable {
                 }
             }
 
-            // TODO Consider splitting into invalid search key, operation, value
+            // - Consider splitting into invalid search key, operation, value
             @Test
-            fun `given invalid search parameters - when GET entities - returns BadRequest response`() {
+            @DisplayName("given invalid search parameters - when GET entities - returns BadRequest response")
+            fun testGetEntitiesWithInvalidSearchParameter() {
                 whenever(searchService.generateSpecification(invalidSearch)).thenReturn((invalidSearchSpecification))
                 doThrow(RuntimeException::class).whenever(repository).findAll(invalidSearchSpecification, invalidPageable)
 
@@ -254,7 +276,8 @@ abstract class BaseServiceTest<T : BaseEntity> : Testable {
             }
 
             @Test
-            fun `given invalid page parameter - when DELETE entities - returns BadRequest response`() {
+            @DisplayName("given invalid page parameter - when DELETE entities - returns BadRequest response")
+            fun testDeleteEntitiesWithInvalidPageParameter() {
                 whenever(searchService.generateSpecification(validSearch)).thenReturn((validSearchSpecification))
                 doThrow(RuntimeException::class).whenever(repository).findAll(validSearchSpecification, invalidPageable)
 
@@ -263,9 +286,10 @@ abstract class BaseServiceTest<T : BaseEntity> : Testable {
                 }
             }
 
-            // FIXME Look into if there is a way to make sort parameter fail separately
+            // ? Look into if there is a way to make sort parameter fail separately
             @Test
-            fun `given invalid sort parameter - when DELETE entities - returns BadRequest response`() {
+            @DisplayName("given invalid sort parameter - when DELETE entities - returns BadRequest response")
+            fun testDeleteEntitiesWithInvalidSortParameter() {
                 whenever(searchService.generateSpecification(validSearch)).thenReturn((validSearchSpecification))
                 doThrow(RuntimeException::class).whenever(repository).findAll(validSearchSpecification, invalidPageable)
 
@@ -275,7 +299,8 @@ abstract class BaseServiceTest<T : BaseEntity> : Testable {
             }
 
             @Test
-            fun `given invalid search parameters - when DELETE entities - returns BadRequest response`() {
+            @DisplayName("given invalid search parameters - when DELETE entities - returns BadRequest response")
+            fun testDeleteEntitiesWithInvalidSearchParameter() {
                 whenever(searchService.generateSpecification(invalidSearch)).thenReturn((invalidSearchSpecification))
                 doThrow(RuntimeException::class).whenever(repository).findAll(invalidSearchSpecification, invalidPageable)
 

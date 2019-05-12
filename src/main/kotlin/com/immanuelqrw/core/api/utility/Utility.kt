@@ -6,7 +6,7 @@ import com.fasterxml.jackson.module.kotlin.readValue
 import com.fasterxml.jackson.module.kotlin.registerKotlinModule
 import java.io.InputStream
 
-// TODO Move into core.utility package
+// - Move into core.utility package
 /**
  * Configuration
  *
@@ -16,7 +16,7 @@ object Utility {
     /**
      * Object Mapper used for parsing JSON into data classes
      */
-    // TODO Fix Expansion of YAML templates -- or write conversion method
+    // - Fix Expansion of YAML templates -- or write conversion method
     val OBJECT_MAPPER = ObjectMapper(YAMLFactory()).registerKotlinModule()
 
     /**

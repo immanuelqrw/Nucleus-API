@@ -37,4 +37,5 @@ internal class SolidSearchSpecificationTest: SearchSpecificationTest<Solid>() {
 
     override val invalidKeySearchCriterion = SearchCriterion("ig", ":", 2)
     override val invalidOperationSearchCriterion = SearchCriterion("id", "^", 2)
+
 }

@@ -1,9 +1,12 @@
 package com.immanuelqrw.core.api.filter
 
-import org.springframework.data.jpa.domain.Specification
-
 import com.immanuelqrw.core.api.model.BaseEntity
-import javax.persistence.criteria.*
+import org.springframework.data.jpa.domain.Specification
+import javax.persistence.criteria.CriteriaBuilder
+import javax.persistence.criteria.CriteriaQuery
+import javax.persistence.criteria.Path
+import javax.persistence.criteria.Predicate
+import javax.persistence.criteria.Root
 
 /**
  * Search Specification class
@@ -25,4 +28,5 @@ open class SearchSpecification<T: BaseEntity>(searchCriterion: SearchCriterion) 
             else -> null
         }
     }
+
 }

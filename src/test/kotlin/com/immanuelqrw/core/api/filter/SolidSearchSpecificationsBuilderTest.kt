@@ -35,4 +35,5 @@ internal class SolidSearchSpecificationsBuilderTest: SearchSpecificationsBuilder
 
     override val validSearchCriterion: SearchCriterion = SearchCriterion("id", ":", 2)
     override val invalidSearchCriterion: SearchCriterion = SearchCriterion("ig", "@", "fire")
+
 }

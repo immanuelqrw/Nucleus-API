@@ -10,10 +10,10 @@ import org.springframework.data.domain.Pageable
 /**
  * Abstract read only controller class
  */
-abstract class ReadController<T : BaseEntity>
-@Autowired constructor(
-    private val service: BaseService<T>
-) : Getable<T> {
+abstract class ReadController<T : BaseEntity> : Getable<T> {
+
+    @Autowired
+    private lateinit var service: BaseService<T>
 
     override fun find(id: Long): T {
         return service.find(id)
@@ -22,4 +22,5 @@ abstract class ReadController<T : BaseEntity>
     override fun findAll(page: Pageable, search: String?): Page<T> {
         return service.findAll(page, search)
     }
+
 }

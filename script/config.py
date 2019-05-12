@@ -9,7 +9,7 @@ from utility import (
     to_camelcase
 )
 
-# TODO Pull configuration from yaml file
+# - Pull configuration from yaml file
 DATABASE_CONNECTION: Dict[str, str] = {
     "host": "localhost",
     "user": "postgres",

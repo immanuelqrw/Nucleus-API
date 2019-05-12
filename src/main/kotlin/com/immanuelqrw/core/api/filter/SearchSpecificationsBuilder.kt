@@ -5,6 +5,7 @@ import org.springframework.data.jpa.domain.Specification
 
 open class SearchSpecificationsBuilder<T : BaseEntity> {
 
+    // ? Can this be injected as DI
     private val params: MutableList<SearchCriterion> = mutableListOf()
 
     fun with(key: String, operation: String, value: Any): SearchSpecificationsBuilder<T> {
@@ -25,4 +26,5 @@ open class SearchSpecificationsBuilder<T : BaseEntity> {
             groupedSpecification.and(specification)
         }
     }
+
 }

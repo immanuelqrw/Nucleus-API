@@ -1,12 +1,13 @@
 package com.immanuelqrw.core.api.test.unit.service
 
-import com.immanuelqrw.core.api.test.Testable
 import com.immanuelqrw.core.api.model.BaseEntity
 import com.immanuelqrw.core.api.service.SearchService
+import com.immanuelqrw.core.api.test.Testable
 import org.amshove.kluent.shouldBeNull
 import org.amshove.kluent.shouldNotBeNull
 import org.junit.jupiter.api.BeforeAll
 import org.junit.jupiter.api.BeforeEach
+import org.junit.jupiter.api.DisplayName
 import org.junit.jupiter.api.Nested
 import org.junit.jupiter.api.Test
 
@@ -34,21 +35,24 @@ abstract class SearchServiceTest<T : BaseEntity> : Testable {
     @Nested
     inner class Success {
         @Test
-        fun `given valid search - when Specification generated - returns Specification`() {
+        @DisplayName("given valid search - when Specification generated - returns Specification")
+        fun testGenerateValidSpecificationWithValidSearchQueryParameter() {
             val validSpecification = searchService.generateSpecification(validSearch)
 
             validSpecification.shouldNotBeNull()
         }
 
         @Test
-        fun `given invalid search - when Specification generated - returns null`() {
+        @DisplayName("given invalid search - when Specification generated - returns null")
+        fun testGenerateNullSpecificationWithInvalidSearchQueryParameter() {
             val invalidSpecification = searchService.generateSpecification(invalidSearch)
 
             invalidSpecification.shouldBeNull()
         }
 
         @Test
-        fun `given null search - when Specification generated - returns null`() {
+        @DisplayName("given null search - when Specification generated - returns null")
+        fun testGenerateNullSpecificationWithNullSearchQueryParameter() {
             val nullSpecification = searchService.generateSpecification(nullSearch)
 
             nullSpecification.shouldBeNull()

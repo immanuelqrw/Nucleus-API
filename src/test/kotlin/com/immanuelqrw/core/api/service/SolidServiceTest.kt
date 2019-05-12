@@ -77,4 +77,5 @@ internal class SolidServiceTest : BaseServiceTest<Solid>() {
 
     @Mock
     override lateinit var objectMapper: ObjectMapper
+
 }

@@ -1,6 +1,6 @@
 package com.immanuelqrw.core.api.utility
 
-// TODO Move into core.utility package
+// - Move into core.utility package
 /**
  * Configuration object which stores DateTime Formatting configuration values
  */

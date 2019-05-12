@@ -2,13 +2,22 @@ package com.immanuelqrw.core.api.test.unit.filter
 
 import com.immanuelqrw.core.api.filter.SearchCriterion
 import com.immanuelqrw.core.api.filter.SearchSpecification
-import com.immanuelqrw.core.api.test.Testable
 import com.immanuelqrw.core.api.model.BaseEntity
+import com.immanuelqrw.core.api.test.Testable
+import com.nhaarman.mockitokotlin2.whenever
 import org.amshove.kluent.shouldBeNull
 import org.amshove.kluent.shouldEqual
-import org.junit.jupiter.api.*
-import org.mockito.Mockito.`when`
-import javax.persistence.criteria.*
+import org.junit.jupiter.api.Assertions
+import org.junit.jupiter.api.BeforeAll
+import org.junit.jupiter.api.BeforeEach
+import org.junit.jupiter.api.DisplayName
+import org.junit.jupiter.api.Nested
+import org.junit.jupiter.api.Test
+import javax.persistence.criteria.CriteriaBuilder
+import javax.persistence.criteria.CriteriaQuery
+import javax.persistence.criteria.Path
+import javax.persistence.criteria.Predicate
+import javax.persistence.criteria.Root
 
 /**
  * Unit tests for SearchSpecification
@@ -44,9 +53,10 @@ abstract class SearchSpecificationTest<T : BaseEntity> : Testable {
     @Nested
     inner class Success {
         @Test
-        fun `given valid greater than search criterion - when values processed - returns Predicate`() {
-            `when`(root.get<String>(validGreaterThanSearchCriterion.key)).thenReturn(key)
-            `when`(builder.greaterThanOrEqualTo(key, validGreaterThanSearchCriterion.value.toString())).thenReturn(validPredicate)
+        @DisplayName("given valid greater than search criterion - when values processed - returns Predicate")
+        fun testProcessValidGreaterThanSearchCriterion() {
+            whenever(root.get<String>(validGreaterThanSearchCriterion.key)).thenReturn(key)
+            whenever(builder.greaterThanOrEqualTo(key, validGreaterThanSearchCriterion.value.toString())).thenReturn(validPredicate)
 
             val searchSpecification: SearchSpecification<T> = SearchSpecification(validGreaterThanSearchCriterion)
 
@@ -56,9 +66,10 @@ abstract class SearchSpecificationTest<T : BaseEntity> : Testable {
         }
 
         @Test
-        fun `given valid less than search criterion - when values processed - returns Predicate`() {
-            `when`(root.get<String>(validLessThanSearchCriterion.key)).thenReturn(key)
-            `when`(builder.lessThanOrEqualTo(key, validLessThanSearchCriterion.value.toString())).thenReturn(validPredicate)
+        @DisplayName("given valid less than search criterion - when values processed - returns Predicate")
+        fun testProcessValidLessThanSearchCriterion() {
+            whenever(root.get<String>(validLessThanSearchCriterion.key)).thenReturn(key)
+            whenever(builder.lessThanOrEqualTo(key, validLessThanSearchCriterion.value.toString())).thenReturn(validPredicate)
 
             val searchSpecification: SearchSpecification<T> = SearchSpecification(validLessThanSearchCriterion)
 
@@ -68,9 +79,10 @@ abstract class SearchSpecificationTest<T : BaseEntity> : Testable {
         }
 
         @Test
-        fun `given valid equality search criterion - when values processed - returns Predicate`() {
-            `when`(root.get<String>(validEqualitySearchCriterion.key)).thenReturn(key)
-            `when`(builder.equal(key, validEqualitySearchCriterion.value)).thenReturn(validPredicate)
+        @DisplayName("given valid equality search criterion - when values processed - returns Predicate")
+        fun testProcessValidEqualitySearchCriterion() {
+            whenever(root.get<String>(validEqualitySearchCriterion.key)).thenReturn(key)
+            whenever(builder.equal(key, validEqualitySearchCriterion.value)).thenReturn(validPredicate)
 
             val searchSpecification: SearchSpecification<T> = SearchSpecification(validEqualitySearchCriterion)
 
@@ -80,9 +92,10 @@ abstract class SearchSpecificationTest<T : BaseEntity> : Testable {
         }
 
         @Test
-        fun `given valid like search criterion - when values processed - returns Predicate`() {
-            `when`(root.get<String>(validLikeSearchCriterion.key)).thenReturn(key)
-            `when`(builder.like(key, validLikeSearchCriterion.value.toString())).thenReturn(validPredicate)
+        @DisplayName("given valid like search criterion - when values processed - returns Predicate")
+        fun testProcessValidLikeSearchCriterion() {
+            whenever(root.get<String>(validLikeSearchCriterion.key)).thenReturn(key)
+            whenever(builder.like(key, validLikeSearchCriterion.value.toString())).thenReturn(validPredicate)
 
             val searchSpecification: SearchSpecification<T> = SearchSpecification(validLikeSearchCriterion)
 
@@ -95,8 +108,9 @@ abstract class SearchSpecificationTest<T : BaseEntity> : Testable {
     @Nested
     inner class Failure {
         @Test
-        fun `given invalid search key - when values processed - throws IllegalArgumentException`() {
-            `when`(root.get<String>(invalidKeySearchCriterion.key)).thenThrow(IllegalArgumentException::class.java)
+        @DisplayName("given invalid search key - when values processed - throws IllegalArgumentException")
+        fun testProcessInvalidKeySearchCriterion() {
+            whenever(root.get<String>(invalidKeySearchCriterion.key)).thenThrow(IllegalArgumentException::class.java)
 
             Assertions.assertThrows(IllegalArgumentException::class.java) {
                 val searchSpecification: SearchSpecification<T> = SearchSpecification(invalidKeySearchCriterion)
@@ -105,9 +119,10 @@ abstract class SearchSpecificationTest<T : BaseEntity> : Testable {
         }
 
         @Test
-        fun `given invalid search operation - when values processed - returns null`() {
-            `when`(root.get<String>(invalidOperationSearchCriterion.key)).thenReturn(key)
-            `when`(builder.equal(key, invalidOperationSearchCriterion.value)).thenReturn(validPredicate)
+        @DisplayName("given invalid search operation - when values processed - returns null")
+        fun testProcessInvalidOperationSearchCriterion() {
+            whenever(root.get<String>(invalidOperationSearchCriterion.key)).thenReturn(key)
+            whenever(builder.equal(key, invalidOperationSearchCriterion.value)).thenReturn(validPredicate)
 
             val searchSpecification: SearchSpecification<T> = SearchSpecification(invalidOperationSearchCriterion)
 
@@ -116,4 +131,5 @@ abstract class SearchSpecificationTest<T : BaseEntity> : Testable {
             predicate.shouldBeNull()
         }
     }
+
 }
