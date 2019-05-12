@@ -1,19 +1,22 @@
 package com.immanuelqrw.core.api.filter
 
 import com.immanuelqrw.core.api.model.BaseEntity
+import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.data.jpa.domain.Specification
+import org.springframework.stereotype.Component
 
-open class SearchSpecificationsBuilder<T : BaseEntity> {
+@Component
+class SearchSpecificationsBuilder<T : BaseEntity> {
 
-    // ? Can this be injected as DI
-    private val params: MutableList<SearchCriterion> = mutableListOf()
+    @Autowired
+    private lateinit var params: MutableList<SearchCriterion>
 
     fun with(key: String, operation: String, value: Any): SearchSpecificationsBuilder<T> {
         params.add(SearchCriterion(key, operation, value))
         return this
     }
 
-    open fun build(): Specification<T>? {
+    fun build(): Specification<T>? {
         if (params.isEmpty()) {
             return null
         }

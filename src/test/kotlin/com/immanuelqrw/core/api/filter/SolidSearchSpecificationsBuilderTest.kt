@@ -4,7 +4,8 @@ import com.immanuelqrw.core.api.test.example.Solid
 import com.immanuelqrw.core.api.test.example.SolidSearchSpecification
 import com.immanuelqrw.core.api.test.example.SolidSearchSpecificationsBuilder
 import com.immanuelqrw.core.api.test.unit.filter.SearchSpecificationsBuilderTest
-import org.junit.jupiter.api.*
+import org.junit.jupiter.api.Disabled
+import org.junit.jupiter.api.TestInstance
 import org.junit.jupiter.api.extension.ExtendWith
 import org.mockito.InjectMocks
 import org.mockito.Mock
@@ -14,6 +15,7 @@ import org.springframework.test.context.junit.jupiter.SpringExtension
 /**
  * Unit tests for SolidSearchSpecification
  */
+@Disabled
 @ExtendWith(SpringExtension::class)
 @TestInstance(TestInstance.Lifecycle.PER_CLASS)
 internal class SolidSearchSpecificationsBuilderTest: SearchSpecificationsBuilderTest<Solid>() {

@@ -4,7 +4,6 @@ import com.immanuelqrw.core.api.model.BaseEntity
 import org.springframework.data.jpa.repository.support.SimpleJpaRepository
 import javax.persistence.EntityManager
 
-// - Look into non-Spring DI
 /**
  * Base Repository implementation class
  *

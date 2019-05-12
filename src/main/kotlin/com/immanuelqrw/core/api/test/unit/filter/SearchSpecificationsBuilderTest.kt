@@ -5,11 +5,14 @@ import com.immanuelqrw.core.api.filter.SearchSpecification
 import com.immanuelqrw.core.api.filter.SearchSpecificationsBuilder
 import com.immanuelqrw.core.api.model.BaseEntity
 import com.immanuelqrw.core.api.test.Testable
+import com.nhaarman.mockitokotlin2.whenever
+import org.amshove.kluent.shouldEqual
 import org.junit.jupiter.api.BeforeAll
 import org.junit.jupiter.api.BeforeEach
 import org.junit.jupiter.api.DisplayName
 import org.junit.jupiter.api.Nested
 import org.junit.jupiter.api.Test
+import org.junit.jupiter.api.assertThrows
 
 /**
  * Unit tests for SearchSpecification
@@ -44,21 +47,19 @@ abstract class SearchSpecificationsBuilderTest<T : BaseEntity> : Testable {
         @Test
         @DisplayName("given valid search parameters - when Specification built - returns Specification")
         fun testBuildSpecificationWithValidSearchQueryParameters() {
-//            whenever(params.isEmpty()).thenReturn(false)
-//            whenever(SearchSpecification<T>(validSearchCriterion)).thenReturn(searchSpecification)
-//            whenever(searchSpecification.and(searchSpecification)).thenReturn(groupedSpecification)
-//
-//            searchSpecificationsBuilder.build() shouldEqual searchSpecification
-            assert(true)
+            whenever(params.isEmpty()).thenReturn(false)
+            whenever(SearchSpecification<T>(validSearchCriterion)).thenReturn(searchSpecification)
+            whenever(searchSpecification.and(searchSpecification)).thenReturn(groupedSpecification)
+
+            searchSpecificationsBuilder.build() shouldEqual searchSpecification
         }
 
         @Test
         @DisplayName("given no search parameters - when Specification built - returns null")
         fun testBuildSpecificationWithNoSearchQueryParameters() {
-//            whenever(searchSpecifications.reduce<Any, Any>{ _, _ ->}).thenReturn(null)
-//
-//            searchSpecificationsBuilder.build() shouldEqual null
-            assert(true)
+            whenever(searchSpecifications.reduce<Any, Any>{ _, _ ->}).thenReturn(null)
+
+            searchSpecificationsBuilder.build() shouldEqual null
         }
     }
 
@@ -67,12 +68,11 @@ abstract class SearchSpecificationsBuilderTest<T : BaseEntity> : Testable {
         @Test
         @DisplayName("given invalid search parameters - when Specification built - throws RuntimeException")
         fun testBuildSpecificationWithInvalidSearchQueryParameters() {
-//            whenever(params.map<SearchCriterion, Any>{}).thenThrow(RuntimeException::class.java)
-//
-//            Assertions.assertThrows(RuntimeException::class.java) {
-//                searchSpecificationsBuilder.build()
-//            }
-            assert(true)
+            whenever(params.map<SearchCriterion, Any>{}).thenThrow(RuntimeException::class.java)
+
+            assertThrows<RuntimeException> {
+                searchSpecificationsBuilder.build()
+            }
         }
     }
 
