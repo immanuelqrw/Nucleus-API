@@ -1,6 +1,6 @@
 package com.immanuelqrw.core.api.filter
 
-import com.immanuelqrw.core.api.model.BaseEntity
+import com.immanuelqrw.core.entity.BaseEntity
 import org.springframework.data.jpa.domain.Specification
 import org.springframework.stereotype.Component
 

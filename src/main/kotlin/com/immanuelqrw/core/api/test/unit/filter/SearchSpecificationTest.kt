@@ -2,11 +2,13 @@ package com.immanuelqrw.core.api.test.unit.filter
 
 import com.immanuelqrw.core.api.filter.SearchCriterion
 import com.immanuelqrw.core.api.filter.SearchSpecification
-import com.immanuelqrw.core.api.model.BaseEntity
-import com.immanuelqrw.core.api.test.Testable
+import com.immanuelqrw.core.entity.BaseEntity
+import com.immanuelqrw.core.test.Testable
 import com.nhaarman.mockitokotlin2.whenever
 import org.amshove.kluent.shouldBeNull
 import org.amshove.kluent.shouldEqual
+import org.junit.jupiter.api.AfterAll
+import org.junit.jupiter.api.AfterEach
 import org.junit.jupiter.api.Assertions
 import org.junit.jupiter.api.BeforeAll
 import org.junit.jupiter.api.BeforeEach
@@ -41,7 +43,7 @@ abstract class SearchSpecificationTest<T : BaseEntity> : Testable {
     protected abstract val invalidOperationSearchCriterion: SearchCriterion
 
     @BeforeAll
-    override fun prepare() {
+    override fun preSetUp() {
         // Subclass implementation
     }
 
@@ -49,6 +51,12 @@ abstract class SearchSpecificationTest<T : BaseEntity> : Testable {
     override fun setUp() {
         // Subclass implementation
     }
+
+    @AfterEach
+    override fun tearDown() {}
+
+    @AfterAll
+    override fun postTearDown() {}
 
     @Nested
     inner class Success {

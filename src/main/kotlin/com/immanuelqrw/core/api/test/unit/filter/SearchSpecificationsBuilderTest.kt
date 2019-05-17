@@ -3,10 +3,12 @@ package com.immanuelqrw.core.api.test.unit.filter
 import com.immanuelqrw.core.api.filter.SearchCriterion
 import com.immanuelqrw.core.api.filter.SearchSpecification
 import com.immanuelqrw.core.api.filter.SearchSpecificationsBuilder
-import com.immanuelqrw.core.api.model.BaseEntity
-import com.immanuelqrw.core.api.test.Testable
+import com.immanuelqrw.core.entity.BaseEntity
+import com.immanuelqrw.core.test.Testable
 import com.nhaarman.mockitokotlin2.whenever
 import org.amshove.kluent.shouldEqual
+import org.junit.jupiter.api.AfterAll
+import org.junit.jupiter.api.AfterEach
 import org.junit.jupiter.api.BeforeAll
 import org.junit.jupiter.api.BeforeEach
 import org.junit.jupiter.api.DisplayName
@@ -31,7 +33,7 @@ abstract class SearchSpecificationsBuilderTest<T : BaseEntity> : Testable {
     protected abstract val invalidSearchCriterion: SearchCriterion
 
     @BeforeAll
-    override fun prepare() {
+    override fun preSetUp() {
         // Subclass implementation
     }
 
@@ -39,6 +41,12 @@ abstract class SearchSpecificationsBuilderTest<T : BaseEntity> : Testable {
     override fun setUp() {
         // Subclass implementation
     }
+
+    @AfterEach
+    override fun tearDown() {}
+
+    @AfterAll
+    override fun postTearDown() {}
 
     // ! Modify class or tests to actually use mocks
 

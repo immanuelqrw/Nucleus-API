@@ -1,5 +1,5 @@
-import org.jetbrains.kotlin.gradle.tasks.KotlinCompile
 import org.jetbrains.dokka.gradle.DokkaTask
+import org.jetbrains.kotlin.gradle.tasks.KotlinCompile
 
 group = "com.immanuelqrw.core"
 version = "0.0.1-pre-alpha"
@@ -21,6 +21,7 @@ plugins {
 repositories {
     mavenCentral()
     jcenter()
+    maven(url = "http://localhost:8081/repository/maven-public/")
 }
 
 
@@ -99,6 +100,6 @@ sonarqube {
 val sonar: Task = tasks["sonarqube"]
 
 val check by tasks.getting {
-    dependsOn(integrationTest)
-    dependsOn(sonar)
+//    dependsOn(integrationTest)
+//    dependsOn(sonar)
 }

@@ -2,9 +2,9 @@ package com.immanuelqrw.core.api.service
 
 import com.fasterxml.jackson.module.kotlin.convertValue
 import com.immanuelqrw.core.api.FullyControllable
-import com.immanuelqrw.core.api.model.BaseEntity
 import com.immanuelqrw.core.api.repository.BaseRepository
-import com.immanuelqrw.core.api.utility.Utility
+import com.immanuelqrw.core.entity.BaseEntity
+import com.immanuelqrw.core.util.Resource
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.data.domain.Page
 import org.springframework.data.domain.Pageable
@@ -47,7 +47,7 @@ abstract class BaseService<T : BaseEntity> : FullyControllable<T> {
     override fun modify(id: Long, patchedFields: Map<String, Any>): T {
         val originalEntity: T = repository.getOne(id)
 
-        val objectMapper = Utility.OBJECT_MAPPER
+        val objectMapper = Resource.OBJECT_MAPPER
         val originalMap: Map<String, Any> = objectMapper.convertValue(originalEntity)
         val patchedMap: Map<String, Any> = originalMap.plus(patchedFields)
 

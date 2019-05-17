@@ -1,8 +1,8 @@
 package com.immanuelqrw.core.api.test.unit.controller
 
-import com.immanuelqrw.core.api.model.BaseEntity
 import com.immanuelqrw.core.api.service.BaseService
-import com.immanuelqrw.core.api.test.Testable
+import com.immanuelqrw.core.entity.BaseEntity
+import com.immanuelqrw.core.test.Testable
 import com.nhaarman.mockitokotlin2.any
 import com.nhaarman.mockitokotlin2.doNothing
 import com.nhaarman.mockitokotlin2.doThrow
@@ -10,6 +10,8 @@ import com.nhaarman.mockitokotlin2.eq
 import com.nhaarman.mockitokotlin2.whenever
 import org.amshove.kluent.shouldBeBlank
 import org.amshove.kluent.shouldNotBeBlank
+import org.junit.jupiter.api.AfterAll
+import org.junit.jupiter.api.AfterEach
 import org.junit.jupiter.api.BeforeAll
 import org.junit.jupiter.api.BeforeEach
 import org.junit.jupiter.api.DisplayName
@@ -28,7 +30,6 @@ import org.springframework.test.web.servlet.result.MockMvcResultHandlers
 import org.springframework.test.web.servlet.result.MockMvcResultMatchers.status
 import javax.persistence.EntityNotFoundException
 import javax.persistence.RollbackException
-
 
 /**
  * Unit tests for Controller
@@ -66,7 +67,7 @@ abstract class BaseControllerTest<T : BaseEntity> : Testable {
     // - Instantiate param blocks for get and find all
 
     @BeforeAll
-    override fun prepare() {
+    override fun preSetUp() {
         baseUri = "/$entityName"
         idUri = "$baseUri/{id}"
     }
@@ -75,6 +76,12 @@ abstract class BaseControllerTest<T : BaseEntity> : Testable {
     override fun setUp() {
         // Subclass implementation
     }
+
+    @AfterEach
+    override fun tearDown() {}
+
+    @AfterAll
+    override fun postTearDown() {}
 
 
     @Nested

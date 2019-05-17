@@ -1,10 +1,10 @@
 package com.immanuelqrw.core.api.controller
 
 import com.immanuelqrw.core.api.FullyControllable
-import com.immanuelqrw.core.api.model.BaseEntity
 import com.immanuelqrw.core.api.service.BaseService
 import com.immanuelqrw.core.api.utility.Utility.DEFAULT_PAGE_SIZE
 import com.immanuelqrw.core.api.utility.Utility.DEFAULT_SORT_FIELD
+import com.immanuelqrw.core.entity.BaseEntity
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.data.domain.Page
 import org.springframework.data.domain.Pageable

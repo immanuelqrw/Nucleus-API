@@ -1,16 +1,18 @@
 package com.immanuelqrw.core.api.test.unit.service
 
 import com.fasterxml.jackson.databind.ObjectMapper
-import com.immanuelqrw.core.api.model.BaseEntity
 import com.immanuelqrw.core.api.repository.BaseRepository
 import com.immanuelqrw.core.api.service.BaseService
 import com.immanuelqrw.core.api.service.SearchService
-import com.immanuelqrw.core.api.test.Testable
+import com.immanuelqrw.core.entity.BaseEntity
+import com.immanuelqrw.core.test.Testable
 import com.nhaarman.mockitokotlin2.doReturn
 import com.nhaarman.mockitokotlin2.doThrow
 import com.nhaarman.mockitokotlin2.whenever
 import org.amshove.kluent.shouldEqual
 import org.amshove.kluent.shouldNotBeNull
+import org.junit.jupiter.api.AfterAll
+import org.junit.jupiter.api.AfterEach
 import org.junit.jupiter.api.BeforeAll
 import org.junit.jupiter.api.BeforeEach
 import org.junit.jupiter.api.Disabled
@@ -63,7 +65,7 @@ abstract class BaseServiceTest<T : BaseEntity> : Testable {
     protected abstract val objectMapper: ObjectMapper
 
     @BeforeAll
-    override fun prepare() {
+    override fun preSetUp() {
         // Subclass implementation
     }
 
@@ -71,6 +73,12 @@ abstract class BaseServiceTest<T : BaseEntity> : Testable {
     override fun setUp() {
         // Subclass implementation
     }
+
+    @AfterEach
+    override fun tearDown() {}
+
+    @AfterAll
+    override fun postTearDown() {}
 
     @Nested
     inner class Success {

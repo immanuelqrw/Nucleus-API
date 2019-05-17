@@ -1,10 +1,12 @@
 package com.immanuelqrw.core.api.test.unit.service
 
-import com.immanuelqrw.core.api.model.BaseEntity
 import com.immanuelqrw.core.api.service.SearchService
-import com.immanuelqrw.core.api.test.Testable
+import com.immanuelqrw.core.entity.BaseEntity
+import com.immanuelqrw.core.test.Testable
 import org.amshove.kluent.shouldBeNull
 import org.amshove.kluent.shouldNotBeNull
+import org.junit.jupiter.api.AfterAll
+import org.junit.jupiter.api.AfterEach
 import org.junit.jupiter.api.BeforeAll
 import org.junit.jupiter.api.BeforeEach
 import org.junit.jupiter.api.DisplayName
@@ -23,7 +25,7 @@ abstract class SearchServiceTest<T : BaseEntity> : Testable {
     protected abstract val nullSearch: String?
 
     @BeforeAll
-    override fun prepare() {
+    override fun preSetUp() {
         // Subclass implementation
     }
 
@@ -31,6 +33,12 @@ abstract class SearchServiceTest<T : BaseEntity> : Testable {
     override fun setUp() {
         // Subclass implementation
     }
+
+    @AfterEach
+    override fun tearDown() {}
+
+    @AfterAll
+    override fun postTearDown() {}
 
     @Nested
     inner class Success {

@@ -12,11 +12,22 @@ val springDataVersion : String by extra
 val springBootVersion: String by extra
 val springVersion: String by extra
 val dokkaVersion : String by extra
+val nucleusVersion: String by extra
 
 data class Package(
     val groupId: String,
     val artifactId: String,
     val version: String
+)
+
+
+val nucleusPackages: Array<Package> = arrayOf(
+    Package("com.immanuelqrw.core", "nucleus-util", nucleusVersion),
+    Package("com.immanuelqrw.core", "nucleus-test", nucleusVersion),
+    Package("com.immanuelqrw.core", "nucleus-entity", nucleusVersion)
+)
+
+val nucleusTestPackages: Array<Package> = arrayOf(
 )
 
 val jacksonPackages: Array<Package> = arrayOf(
@@ -61,6 +72,7 @@ val springTestPackages: Array<Package> = arrayOf(
 val packages: Array<Package> = arrayOf(
     Package("org.jetbrains.kotlin", "kotlin-reflect", kotlinVersion),
     Package("org.jetbrains.dokka", "dokka-gradle-plugin", dokkaVersion),
+    *nucleusPackages,
     *jacksonPackages,
     *springPackages,
     *springBootPackages,
@@ -72,7 +84,8 @@ val packages: Array<Package> = arrayOf(
 val testPackages: Array<Package> = arrayOf(
     Package("org.hibernate", "hibernate-testing", "5.3.7.Final"),
     *jUnitPackages,
-    *springTestPackages
+    *springTestPackages,
+    *nucleusTestPackages
 )
 
 dependencies {
