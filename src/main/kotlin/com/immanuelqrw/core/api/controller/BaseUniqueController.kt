@@ -1,10 +1,10 @@
 package com.immanuelqrw.core.api.controller
 
-import com.immanuelqrw.core.api.FullyControllable
-import com.immanuelqrw.core.api.service.BaseService
+import com.immanuelqrw.core.api.FullyUniqueControllable
+import com.immanuelqrw.core.api.service.BaseUniqueService
 import com.immanuelqrw.core.api.utility.Utility.DEFAULT_PAGE_SIZE
 import com.immanuelqrw.core.api.utility.Utility.DEFAULT_SORT_FIELD
-import com.immanuelqrw.core.entity.BaseEntity
+import com.immanuelqrw.core.entity.UniqueEntityable
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.data.domain.Page
 import org.springframework.data.domain.Pageable
@@ -19,18 +19,18 @@ import org.springframework.web.bind.annotation.PostMapping
 import org.springframework.web.bind.annotation.PutMapping
 import org.springframework.web.bind.annotation.RequestBody
 import org.springframework.web.bind.annotation.RequestParam
-import javax.persistence.EntityNotFoundException
+import java.util.*
 
 /**
  * Abstract controller class
  */
-abstract class BaseUniqueController<T : BaseEntity> : FullyControllable<T> {
+abstract class BaseUniqueController<T : UniqueEntityable> : FullyUniqueControllable<T> {
 
     @Autowired
-    private lateinit var service: BaseService<T>
+    private lateinit var service: BaseUniqueService<T>
 
     @GetMapping(path = ["/{id}"], produces = [MediaType.APPLICATION_JSON_VALUE])
-    override fun find(@PathVariable("id") id: Long): T {
+    override fun find(@PathVariable("id") id: UUID): T {
         return service.find(id)
     }
 
@@ -52,18 +52,17 @@ abstract class BaseUniqueController<T : BaseEntity> : FullyControllable<T> {
     }
 
     @PutMapping(path = ["/{id}"], produces = [MediaType.APPLICATION_JSON_VALUE], consumes = [MediaType.APPLICATION_JSON_VALUE])
-    override fun replace(@PathVariable("id") id: Long, @RequestBody entity: T): T {
-        validateId(id)
+    override fun replace(@PathVariable("id") id: UUID, @RequestBody entity: T): T {
         return service.replace(id, entity)
     }
 
     @PatchMapping(path = ["/{id}"], produces = [MediaType.APPLICATION_JSON_VALUE], consumes = [MediaType.APPLICATION_JSON_VALUE])
-    override fun modify(@PathVariable("id") id: Long, @RequestBody patchedFields: Map<String, Any>): T {
+    override fun modify(@PathVariable("id") id: UUID, @RequestBody patchedFields: Map<String, Any>): T {
         return service.modify(id, patchedFields)
     }
 
     @DeleteMapping(path = ["/{id}"], produces = [MediaType.APPLICATION_JSON_VALUE])
-    override fun remove(@PathVariable("id") id: Long) {
+    override fun remove(@PathVariable("id") id: UUID) {
         return service.remove(id)
     }
 
@@ -77,12 +76,6 @@ abstract class BaseUniqueController<T : BaseEntity> : FullyControllable<T> {
         search: String?
     ) {
         return service.removeAll(page, search)
-    }
-
-    private fun validateId(id: Long) {
-        if (id < 0) {
-            throw EntityNotFoundException()
-        }
     }
 
 }

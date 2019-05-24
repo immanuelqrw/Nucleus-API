@@ -1,10 +1,10 @@
 package com.immanuelqrw.core.api.test.unit.service
 
 import com.fasterxml.jackson.databind.ObjectMapper
-import com.immanuelqrw.core.api.repository.BaseRepository
-import com.immanuelqrw.core.api.service.BaseService
+import com.immanuelqrw.core.api.repository.BaseSerialRepository
+import com.immanuelqrw.core.api.service.BaseSerialService
 import com.immanuelqrw.core.api.service.SearchService
-import com.immanuelqrw.core.entity.BaseEntity
+import com.immanuelqrw.core.entity.SerialEntityable
 import com.immanuelqrw.core.test.Testable
 import com.nhaarman.mockitokotlin2.doReturn
 import com.nhaarman.mockitokotlin2.doThrow
@@ -31,13 +31,13 @@ import javax.persistence.RollbackException
 /**
  * Unit tests for Service
  */
-abstract class BaseServiceTest<T : BaseEntity> : Testable {
+abstract class BaseSerialServiceTest<T : SerialEntityable> : Testable {
 
     protected abstract val classType: Class<T>
 
-    protected abstract val service: BaseService<T>
+    protected abstract val service: BaseSerialService<T>
 
-    protected abstract val repository: BaseRepository<T>
+    protected abstract val repository: BaseSerialRepository<T>
     protected abstract val searchService: SearchService<T>
 
     protected abstract val validId: Long

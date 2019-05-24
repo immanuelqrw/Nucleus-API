@@ -1,23 +1,24 @@
 package com.immanuelqrw.core.api.service
 
 import com.fasterxml.jackson.module.kotlin.convertValue
-import com.immanuelqrw.core.api.FullyControllable
-import com.immanuelqrw.core.api.repository.BaseRepository
-import com.immanuelqrw.core.entity.BaseEntity
+import com.immanuelqrw.core.api.FullyUniqueControllable
+import com.immanuelqrw.core.api.repository.BaseUniqueRepository
+import com.immanuelqrw.core.entity.UniqueEntityable
 import com.immanuelqrw.core.util.Resource
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.data.domain.Page
 import org.springframework.data.domain.Pageable
 import org.springframework.data.jpa.domain.Specification
 import java.time.LocalDateTime
+import java.util.*
 
 /**
  * Abstract base service
  */
-abstract class BaseUniqueService<T : BaseEntity> : FullyControllable<T> {
+abstract class BaseUniqueService<T : UniqueEntityable> : FullyUniqueControllable<T> {
 
     @Autowired
-    private lateinit var repository: BaseRepository<T>
+    private lateinit var repository: BaseUniqueRepository<T>
 
     @Autowired
     private lateinit var searchService: SearchService<T>
@@ -25,7 +26,7 @@ abstract class BaseUniqueService<T : BaseEntity> : FullyControllable<T> {
     @Autowired
     private lateinit var classType: Class<T>
 
-    override fun find(id: Long): T {
+    override fun find(id: UUID): T {
         return repository.getOne(id)
     }
 
@@ -38,13 +39,13 @@ abstract class BaseUniqueService<T : BaseEntity> : FullyControllable<T> {
         return repository.save(entity)
     }
 
-    override fun replace(id: Long, entity: T): T {
+    override fun replace(id: UUID, entity: T): T {
         val originalEntity: T = repository.getOne(id)
         entity.id = originalEntity.id
         return repository.save(entity)
     }
 
-    override fun modify(id: Long, patchedFields: Map<String, Any>): T {
+    override fun modify(id: UUID, patchedFields: Map<String, Any>): T {
         val originalEntity: T = repository.getOne(id)
 
         val objectMapper = Resource.OBJECT_MAPPER
@@ -63,7 +64,7 @@ abstract class BaseUniqueService<T : BaseEntity> : FullyControllable<T> {
         }
     }
 
-    override fun remove(id: Long) {
+    override fun remove(id: UUID) {
         val removableEntity: T = repository.getOne(id)
         removeEntity(removableEntity)
     }

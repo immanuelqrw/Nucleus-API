@@ -1,7 +1,7 @@
 package com.immanuelqrw.core.api.test.unit.controller
 
 import com.immanuelqrw.core.api.service.BaseSerialService
-import com.immanuelqrw.core.entity.BaseEntity
+import com.immanuelqrw.core.entity.SerialEntityable
 import com.immanuelqrw.core.test.Testable
 import com.nhaarman.mockitokotlin2.any
 import com.nhaarman.mockitokotlin2.doNothing
@@ -34,7 +34,7 @@ import javax.persistence.RollbackException
 /**
  * Unit tests for Controller
  */
-abstract class BaseControllerTest<T : BaseEntity> : Testable {
+abstract class BaseSerialControllerTest<T : SerialEntityable> : Testable {
 
     protected abstract val mvc: MockMvc
 

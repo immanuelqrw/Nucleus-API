@@ -1,6 +1,6 @@
 package com.immanuelqrw.core.api.controller
 
-import com.immanuelqrw.core.api.FullyControllable
+import com.immanuelqrw.core.api.FullySerialControllable
 import com.immanuelqrw.core.api.service.BaseSerialService
 import com.immanuelqrw.core.api.utility.Utility.DEFAULT_PAGE_SIZE
 import com.immanuelqrw.core.api.utility.Utility.DEFAULT_SORT_FIELD
@@ -24,7 +24,7 @@ import javax.persistence.EntityNotFoundException
 /**
  * Abstract controller class
  */
-abstract class BaseController<T : SerialEntityable> : FullyControllable<T> {
+abstract class BaseSerialController<T : SerialEntityable> : FullySerialControllable<T> {
 
     @Autowired
     private lateinit var service: BaseSerialService<T>

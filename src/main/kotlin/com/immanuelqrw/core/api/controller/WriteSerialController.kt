@@ -1,17 +1,17 @@
 package com.immanuelqrw.core.api.controller
 
-import com.immanuelqrw.core.api.Writable
-import com.immanuelqrw.core.api.service.BaseService
+import com.immanuelqrw.core.api.SerialWritable
+import com.immanuelqrw.core.api.service.BaseSerialService
 import com.immanuelqrw.core.entity.SerialEntityable
 import org.springframework.beans.factory.annotation.Autowired
 
 /**
  * Abstract write only controller class
  */
-abstract class WriteController<T : SerialEntityable> : Writable<T> {
+abstract class WriteSerialController<T : SerialEntityable> : SerialWritable<T> {
 
     @Autowired
-    private lateinit var service: BaseService<T>
+    private lateinit var service: BaseSerialService<T>
 
     override fun create(entity: T): T {
         return service.create(entity)

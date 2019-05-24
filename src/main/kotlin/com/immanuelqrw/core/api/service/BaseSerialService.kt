@@ -1,9 +1,10 @@
 package com.immanuelqrw.core.api.service
 
 import com.fasterxml.jackson.module.kotlin.convertValue
-import com.immanuelqrw.core.api.FullyControllable
+import com.immanuelqrw.core.api.FullySerialControllable
 import com.immanuelqrw.core.api.repository.BaseRepository
-import com.immanuelqrw.core.entity.BaseEntity
+import com.immanuelqrw.core.api.repository.BaseSerialRepository
+import com.immanuelqrw.core.entity.SerialEntityable
 import com.immanuelqrw.core.util.Resource
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.data.domain.Page
@@ -14,10 +15,10 @@ import java.time.LocalDateTime
 /**
  * Abstract base service
  */
-abstract class BaseService<T : BaseEntity> : FullyControllable<T> {
+abstract class BaseSerialService<T : SerialEntityable> : FullySerialControllable<T> {
 
     @Autowired
-    private lateinit var repository: BaseRepository<T>
+    private lateinit var repository: BaseSerialRepository<T>
 
     @Autowired
     private lateinit var searchService: SearchService<T>
