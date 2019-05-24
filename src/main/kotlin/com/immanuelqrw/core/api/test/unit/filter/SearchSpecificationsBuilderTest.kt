@@ -3,7 +3,7 @@ package com.immanuelqrw.core.api.test.unit.filter
 import com.immanuelqrw.core.api.filter.SearchCriterion
 import com.immanuelqrw.core.api.filter.SearchSpecification
 import com.immanuelqrw.core.api.filter.SearchSpecificationsBuilder
-import com.immanuelqrw.core.entity.BaseEntity
+import com.immanuelqrw.core.entity.Entityable
 import com.immanuelqrw.core.test.Testable
 import com.nhaarman.mockitokotlin2.whenever
 import org.amshove.kluent.shouldEqual
@@ -19,7 +19,7 @@ import org.junit.jupiter.api.assertThrows
 /**
  * Unit tests for SearchSpecification
  */
-abstract class SearchSpecificationsBuilderTest<T : BaseEntity> : Testable {
+abstract class SearchSpecificationsBuilderTest<T : Entityable> : Testable {
 
     protected abstract val searchSpecificationsBuilder: SearchSpecificationsBuilder<T>
 

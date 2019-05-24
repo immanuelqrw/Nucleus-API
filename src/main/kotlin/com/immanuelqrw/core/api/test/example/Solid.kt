@@ -1,6 +1,6 @@
 package com.immanuelqrw.core.api.test.example
 
-import com.immanuelqrw.core.entity.BaseEntity
+import com.immanuelqrw.core.entity.BaseSerialEntity
 import javax.persistence.Entity
 import javax.persistence.Table
 
@@ -14,4 +14,4 @@ import javax.persistence.Table
  */
 @Entity
 @Table(name = "`Solid`")
-class Solid : BaseEntity()
+class Solid : BaseSerialEntity()

@@ -1,6 +1,6 @@
 package com.immanuelqrw.core.api.test.unit.exception
 
-import com.immanuelqrw.core.entity.BaseEntity
+import com.immanuelqrw.core.entity.Entityable
 import com.immanuelqrw.core.test.Testable
 import org.junit.jupiter.api.AfterAll
 import org.junit.jupiter.api.AfterEach
@@ -12,7 +12,7 @@ import org.junit.jupiter.api.Test
 /**
  * Unit tests for ExceptionHandler
  */
-abstract class BaseResponseEntityExceptionHandlerTest<T : BaseEntity> : Testable {
+abstract class BaseResponseEntityExceptionHandlerTest<T : Entityable> : Testable {
 
     // - Look into how to test ExceptionHandler
 

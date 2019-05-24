@@ -2,13 +2,13 @@ package com.immanuelqrw.core.api.controller
 
 import com.immanuelqrw.core.api.Writable
 import com.immanuelqrw.core.api.service.BaseService
-import com.immanuelqrw.core.entity.BaseEntity
+import com.immanuelqrw.core.entity.SerialEntityable
 import org.springframework.beans.factory.annotation.Autowired
 
 /**
  * Abstract write only controller class
  */
-abstract class WriteController<T : BaseEntity> : Writable<T> {
+abstract class WriteController<T : SerialEntityable> : Writable<T> {
 
     @Autowired
     private lateinit var service: BaseService<T>

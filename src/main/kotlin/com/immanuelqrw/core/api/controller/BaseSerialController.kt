@@ -1,10 +1,10 @@
 package com.immanuelqrw.core.api.controller
 
 import com.immanuelqrw.core.api.FullyControllable
-import com.immanuelqrw.core.api.service.BaseService
+import com.immanuelqrw.core.api.service.BaseSerialService
 import com.immanuelqrw.core.api.utility.Utility.DEFAULT_PAGE_SIZE
 import com.immanuelqrw.core.api.utility.Utility.DEFAULT_SORT_FIELD
-import com.immanuelqrw.core.entity.BaseEntity
+import com.immanuelqrw.core.entity.SerialEntityable
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.data.domain.Page
 import org.springframework.data.domain.Pageable
@@ -24,10 +24,10 @@ import javax.persistence.EntityNotFoundException
 /**
  * Abstract controller class
  */
-abstract class BaseController<T : BaseEntity> : FullyControllable<T> {
+abstract class BaseController<T : SerialEntityable> : FullyControllable<T> {
 
     @Autowired
-    private lateinit var service: BaseService<T>
+    private lateinit var service: BaseSerialService<T>
 
     @GetMapping(path = ["/{id}"], produces = [MediaType.APPLICATION_JSON_VALUE])
     override fun find(@PathVariable("id") id: Long): T {

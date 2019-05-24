@@ -1,8 +1,8 @@
 package com.immanuelqrw.core.api.test.example
 
-import com.immanuelqrw.core.api.repository.BaseRepository
+import com.immanuelqrw.core.api.repository.BaseSerialRepository
 
 /**
  * Solid Repository interface
  */
-interface SolidRepository : BaseRepository<Solid>
+interface SolidRepository : BaseSerialRepository<Solid>

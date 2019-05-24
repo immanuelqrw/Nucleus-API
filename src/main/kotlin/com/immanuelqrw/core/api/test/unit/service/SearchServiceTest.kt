@@ -1,7 +1,7 @@
 package com.immanuelqrw.core.api.test.unit.service
 
 import com.immanuelqrw.core.api.service.SearchService
-import com.immanuelqrw.core.entity.BaseEntity
+import com.immanuelqrw.core.entity.Entityable
 import com.immanuelqrw.core.test.Testable
 import org.amshove.kluent.shouldBeNull
 import org.amshove.kluent.shouldNotBeNull
@@ -16,7 +16,7 @@ import org.junit.jupiter.api.Test
 /**
  * Unit tests for SearchService
  */
-abstract class SearchServiceTest<T : BaseEntity> : Testable {
+abstract class SearchServiceTest<T : Entityable> : Testable {
 
     protected abstract val searchService: SearchService<T>
 

@@ -1,11 +1,11 @@
 package com.immanuelqrw.core.api.filter
 
-import com.immanuelqrw.core.entity.BaseEntity
+import com.immanuelqrw.core.entity.Entityable
 import org.springframework.data.jpa.domain.Specification
 import org.springframework.stereotype.Component
 
 @Component
-class SearchSpecificationsBuilder<T : BaseEntity> {
+class SearchSpecificationsBuilder<T : Entityable> {
 
     private val params: MutableList<SearchCriterion> = mutableListOf()
 

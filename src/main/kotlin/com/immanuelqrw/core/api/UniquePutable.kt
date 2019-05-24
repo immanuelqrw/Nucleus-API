@@ -1,11 +1,14 @@
 package com.immanuelqrw.core.api
 
+import com.immanuelqrw.core.entity.UniqueEntityable
+import java.util.*
+
 /**
- * Methods which allow PUT on endpoint
+ * Methods which allow PUT on endpoint for unique id entities
  *
  * @property T Type of entity
  */
-interface Putable<T> {
+interface UniquePutable<T : UniqueEntityable> {
     /**
      * Replaces entity with [id]
      *
@@ -13,5 +16,5 @@ interface Putable<T> {
      * @param entity Entity
      * @return Replaced entity
      */
-    fun replace(id: Long, entity: T) : T
+    fun replace(id: UUID, entity: T) : T
 }

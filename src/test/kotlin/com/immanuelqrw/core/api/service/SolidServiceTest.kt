@@ -5,7 +5,7 @@ import com.immanuelqrw.core.api.test.example.Solid
 import com.immanuelqrw.core.api.test.example.SolidRepository
 import com.immanuelqrw.core.api.test.example.SolidSearchService
 import com.immanuelqrw.core.api.test.example.SolidService
-import com.immanuelqrw.core.api.test.unit.service.BaseServiceTest
+import com.immanuelqrw.core.api.test.unit.service.BaseSerialServiceTest
 import org.junit.jupiter.api.TestInstance
 import org.junit.jupiter.api.extension.ExtendWith
 import org.mockito.InjectMocks
@@ -20,7 +20,7 @@ import org.springframework.test.context.junit.jupiter.SpringExtension
  */
 @ExtendWith(SpringExtension::class)
 @TestInstance(TestInstance.Lifecycle.PER_CLASS)
-internal class SolidServiceTest : BaseServiceTest<Solid>() {
+internal class SolidServiceTest : BaseSerialServiceTest<Solid>() {
 
     override val classType: Class<Solid> = Solid::class.java
 

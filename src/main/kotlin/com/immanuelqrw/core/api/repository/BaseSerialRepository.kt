@@ -1,6 +1,6 @@
 package com.immanuelqrw.core.api.repository
 
-import com.immanuelqrw.core.entity.Entityable
+import com.immanuelqrw.core.entity.BaseEntity
 import org.springframework.data.jpa.repository.support.JpaRepositoryImplementation
 
 /**
@@ -8,4 +8,4 @@ import org.springframework.data.jpa.repository.support.JpaRepositoryImplementati
  *
  * @property T Entity type being manipulated
  */
-interface BaseRepository<T : Entityable, V: Any> : JpaRepositoryImplementation<T, V>
+interface BaseSerialRepository<T : BaseEntity> : JpaRepositoryImplementation<T, Long>

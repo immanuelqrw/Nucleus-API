@@ -1,0 +1,20 @@
+package com.immanuelqrw.core.api
+
+import com.immanuelqrw.core.entity.UniqueEntityable
+import java.util.*
+
+/**
+ * Methods which allow PATCH on endpoint for unique id entities
+ *
+ * @property T Type of entity
+ */
+interface UniquePatchable<T : UniqueEntityable> {
+    /**
+     * Modifies fields on entity with [id]
+     *
+     * @param id ID of entity to modify
+     * @param patchedFields Map of fields to change
+     * @return Modified entity
+     */
+    fun modify(id: UUID, patchedFields: Map<String, Any>): T
+}

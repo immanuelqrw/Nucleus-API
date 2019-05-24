@@ -2,7 +2,7 @@ package com.immanuelqrw.core.api.test.unit.filter
 
 import com.immanuelqrw.core.api.filter.SearchCriterion
 import com.immanuelqrw.core.api.filter.SearchSpecification
-import com.immanuelqrw.core.entity.BaseEntity
+import com.immanuelqrw.core.entity.Entityable
 import com.immanuelqrw.core.test.Testable
 import com.nhaarman.mockitokotlin2.whenever
 import org.amshove.kluent.shouldBeNull
@@ -24,7 +24,7 @@ import javax.persistence.criteria.Root
 /**
  * Unit tests for SearchSpecification
  */
-abstract class SearchSpecificationTest<T : BaseEntity> : Testable {
+abstract class SearchSpecificationTest<T : Entityable> : Testable {
 
     protected abstract val root: Root<T>
     protected abstract val query: CriteriaQuery<*>

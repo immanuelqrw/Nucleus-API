@@ -1,6 +1,6 @@
 package com.immanuelqrw.core.api.test.unit.controller
 
-import com.immanuelqrw.core.api.service.BaseService
+import com.immanuelqrw.core.api.service.BaseSerialService
 import com.immanuelqrw.core.entity.BaseEntity
 import com.immanuelqrw.core.test.Testable
 import com.nhaarman.mockitokotlin2.any
@@ -38,7 +38,7 @@ abstract class BaseControllerTest<T : BaseEntity> : Testable {
 
     protected abstract val mvc: MockMvc
 
-    protected abstract val service: BaseService<T>
+    protected abstract val service: BaseSerialService<T>
 
     protected abstract val entityName: String
 

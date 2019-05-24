@@ -1,13 +1,14 @@
 package com.immanuelqrw.core.api
 
+import com.immanuelqrw.core.entity.SerialEntityable
 import org.springframework.data.domain.Pageable
 
 /**
- * Methods which allow DELETE on endpoint
+ * Methods which allow DELETE on endpoint for serial entities
  *
  * @property T Type of entity
  */
-interface Deletable<T> {
+interface SerialDeletable<T : SerialEntityable> {
     /**
      * Removes Entity with [id] by setting removedOn field to a datetime
      *

@@ -2,7 +2,7 @@ package com.immanuelqrw.core.api.controller
 
 import com.immanuelqrw.core.api.Getable
 import com.immanuelqrw.core.api.service.BaseService
-import com.immanuelqrw.core.entity.BaseEntity
+import com.immanuelqrw.core.entity.SerialEntityable
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.data.domain.Page
 import org.springframework.data.domain.Pageable
@@ -10,7 +10,7 @@ import org.springframework.data.domain.Pageable
 /**
  * Abstract read only controller class
  */
-abstract class ReadController<T : BaseEntity> : Getable<T> {
+abstract class ReadController<T : SerialEntityable> : Getable<T> {
 
     @Autowired
     private lateinit var service: BaseService<T>

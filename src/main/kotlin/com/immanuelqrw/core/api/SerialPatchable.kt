@@ -1,11 +1,13 @@
 package com.immanuelqrw.core.api
 
+import com.immanuelqrw.core.entity.SerialEntityable
+
 /**
  * Methods which allow PATCH on endpoint
  *
- * @property T Type of entity
+ * @property T Type of entity for serial entities
  */
-interface Patchable<T> {
+interface SerialPatchable<T : SerialEntityable> {
     /**
      * Modifies fields on entity with [id]
      *

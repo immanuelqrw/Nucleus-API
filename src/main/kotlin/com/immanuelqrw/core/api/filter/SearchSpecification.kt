@@ -1,6 +1,6 @@
 package com.immanuelqrw.core.api.filter
 
-import com.immanuelqrw.core.entity.BaseEntity
+import com.immanuelqrw.core.entity.Entityable
 import org.springframework.data.jpa.domain.Specification
 import javax.persistence.criteria.CriteriaBuilder
 import javax.persistence.criteria.CriteriaQuery
@@ -11,7 +11,7 @@ import javax.persistence.criteria.Root
 /**
  * Search Specification class
  */
-open class SearchSpecification<T: BaseEntity>(searchCriterion: SearchCriterion) : Specification<T> {
+open class SearchSpecification<T: Entityable>(searchCriterion: SearchCriterion) : Specification<T> {
 
     private val criterion: SearchCriterion = searchCriterion
 
