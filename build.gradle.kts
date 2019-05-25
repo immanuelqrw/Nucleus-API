@@ -1,21 +1,26 @@
 import org.jetbrains.dokka.gradle.DokkaTask
 import org.jetbrains.kotlin.gradle.tasks.KotlinCompile
 
-group = "com.immanuelqrw.core"
-version = "0.0.1-pre-alpha"
+val projectGroup = "com.immanuelqrw.core"
+val projectArtifact = "nucleus-api"
+val projectVersion = "0.0.1-pre-alpha"
+
+group = projectGroup
+version = projectVersion
 
 apply(from = "gradle/constants.gradle.kts")
 
 plugins {
     java
-    kotlin("jvm") version "1.3.11"
-    id("org.jetbrains.kotlin.plugin.noarg") version "1.3.11"
-    id("org.jetbrains.kotlin.plugin.allopen") version "1.3.11"
-    id("org.jetbrains.kotlin.plugin.spring") version "1.3.11"
+    kotlin("jvm") version "1.3.31"
+    id("org.jetbrains.kotlin.plugin.noarg") version "1.3.31"
+    id("org.jetbrains.kotlin.plugin.allopen") version "1.3.31"
+    id("org.jetbrains.kotlin.plugin.spring") version "1.3.31"
     id("io.spring.dependency-management") version "1.0.6.RELEASE"
     id("org.sonarqube") version "2.6"
     id("org.jetbrains.dokka") version "0.9.17"
     idea
+    `maven-publish`
 }
 
 repositories {
@@ -102,4 +107,31 @@ val sonar: Task = tasks["sonarqube"]
 val check by tasks.getting {
 //    dependsOn(integrationTest)
 //    dependsOn(sonar)
+}
+
+
+val sourcesJar by tasks.registering(Jar::class) {
+    classifier = "sources"
+    from(sourceSets["main"].allSource)
+}
+
+publishing {
+    repositories {
+        maven {
+            url = uri("http://localhost:8081/repository/maven-releases/")
+            credentials {
+                username = "admin"
+                password = "admin"
+            }
+        }
+    }
+    publications {
+        register("mavenJava", MavenPublication::class) {
+            groupId = projectGroup
+            artifactId = projectArtifact
+            version = projectVersion
+            from(components["java"])
+            artifact(sourcesJar.get())
+        }
+    }
 }
