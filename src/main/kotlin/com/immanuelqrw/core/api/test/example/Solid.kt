@@ -14,4 +14,4 @@ import javax.persistence.Table
  */
 @Entity
 @Table(name = "`Solid`")
-class Solid : BaseSerialEntity()
+data class Solid(private val name: String = "Rock") : BaseSerialEntity()
