@@ -18,13 +18,21 @@ open class SearchSpecification<T: Entityable>(searchCriterion: SearchCriterion) 
     override fun toPredicate(root: Root<T>, query: CriteriaQuery<*>, builder: CriteriaBuilder): Predicate? {
         val key: Path<String> = root.get(criterion.key)
         val operation = criterion.operation
-        val value = criterion.value.toString()
+        val value: String? = criterion.value.let { value ->
+            val regexValue = value.toString()
+
+            if (regexValue.isNotBlank()) {
+                regexValue
+            } else {
+                null
+            }
+        }
 
         return when (operation) {
-            ">" -> builder.greaterThanOrEqualTo(key, value)
-            "<" -> builder.lessThanOrEqualTo(key, value)
+            ">" -> builder.greaterThanOrEqualTo(key, value!!)
+            "<" -> builder.lessThanOrEqualTo(key, value!!)
             ":" -> builder.equal(key, criterion.value)
-            "~" -> builder.like(key, value.replace("*", "%"))
+            "~" -> builder.like(key, value!!.replace("*", "%"))
             else -> null
         }
     }
