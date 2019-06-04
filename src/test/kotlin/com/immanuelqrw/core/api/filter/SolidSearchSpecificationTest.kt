@@ -2,11 +2,15 @@ package com.immanuelqrw.core.api.filter
 
 import com.immanuelqrw.core.api.test.example.Solid
 import com.immanuelqrw.core.api.test.unit.filter.SearchSpecificationTest
-import org.junit.jupiter.api.*
+import org.junit.jupiter.api.TestInstance
 import org.junit.jupiter.api.extension.ExtendWith
 import org.mockito.Mock
 import org.springframework.test.context.junit.jupiter.SpringExtension
-import javax.persistence.criteria.*
+import javax.persistence.criteria.CriteriaBuilder
+import javax.persistence.criteria.CriteriaQuery
+import javax.persistence.criteria.Path
+import javax.persistence.criteria.Predicate
+import javax.persistence.criteria.Root
 
 /**
  * Unit tests for SolidSearchSpecification
@@ -36,6 +40,6 @@ internal class SolidSearchSpecificationTest: SearchSpecificationTest<Solid>() {
     override val validLikeSearchCriterion = SearchCriterion("id", "~", 2)
 
     override val invalidKeySearchCriterion = SearchCriterion("ig", ":", 2)
-    override val invalidOperationSearchCriterion = SearchCriterion("id", "^", 2)
+    override val invalidOperationSearchCriterion = SearchCriterion("id", "`", 2)
 
 }

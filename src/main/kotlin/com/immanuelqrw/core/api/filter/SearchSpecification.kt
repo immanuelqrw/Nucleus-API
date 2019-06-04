@@ -33,6 +33,8 @@ open class SearchSpecification<T: Entityable>(searchCriterion: SearchCriterion) 
             "<" -> builder.lessThanOrEqualTo(key, value!!)
             ":" -> builder.equal(key, criterion.value)
             "~" -> builder.like(key, value!!.replace("*", "%"))
+            "!" -> builder.notEqual(key, criterion.value)
+            "^" -> builder.notLike(key, value!!.replace("*", "%"))
             else -> null
         }
     }

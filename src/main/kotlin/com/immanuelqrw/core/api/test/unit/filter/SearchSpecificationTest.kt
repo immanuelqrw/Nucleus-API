@@ -111,6 +111,32 @@ abstract class SearchSpecificationTest<T : Entityable> : Testable {
 
             predicate shouldEqual validPredicate
         }
+
+        @Test
+        @DisplayName("given valid inequality search criterion - when values processed - returns Predicate")
+        fun testProcessValidInequalitySearchCriterion() {
+            whenever(root.get<String>(validEqualitySearchCriterion.key)).thenReturn(key)
+            whenever(builder.notEqual(key, validEqualitySearchCriterion.value)).thenReturn(validPredicate)
+
+            val searchSpecification: SearchSpecification<T> = SearchSpecification(validEqualitySearchCriterion)
+
+            val predicate: Predicate? = searchSpecification.toPredicate(root, query, builder)
+
+            predicate shouldEqual validPredicate
+        }
+
+        @Test
+        @DisplayName("given valid not like search criterion - when values processed - returns Predicate")
+        fun testProcessValidNotLikeSearchCriterion() {
+            whenever(root.get<String>(validLikeSearchCriterion.key)).thenReturn(key)
+            whenever(builder.notLike(key, validLikeSearchCriterion.value.toString())).thenReturn(validPredicate)
+
+            val searchSpecification: SearchSpecification<T> = SearchSpecification(validLikeSearchCriterion)
+
+            val predicate: Predicate? = searchSpecification.toPredicate(root, query, builder)
+
+            predicate shouldEqual validPredicate
+        }
     }
 
     @Nested
