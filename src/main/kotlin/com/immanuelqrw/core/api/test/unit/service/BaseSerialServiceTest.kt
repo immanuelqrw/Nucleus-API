@@ -21,7 +21,6 @@ import org.junit.jupiter.api.Nested
 import org.junit.jupiter.api.Test
 import org.junit.jupiter.api.assertThrows
 import org.springframework.data.domain.Page
-import org.springframework.data.domain.PageImpl
 import org.springframework.data.domain.Pageable
 import org.springframework.data.jpa.domain.Specification
 import java.time.LocalDateTime
@@ -180,16 +179,16 @@ abstract class BaseSerialServiceTest<T : SerialEntityable> : Testable {
         }
 
         @Test
-        @DisplayName("given valid page, sort, and search parameters - when DELETE entities - sets entities' removedOn to now")
-        fun testDeleteEntitiesWithValidQueryParameters() {
+        @DisplayName("given valid search parameters - when DELETE entities - sets entities' removedOn to now")
+        fun testDeleteEntitiesWithValidSearchParameters() {
             whenever(searchService.generateSpecification(validSearch)).thenReturn((validSearchSpecification))
 
-            val validEntities: Page<T> = PageImpl<T>(listOf(validEntity))
-            whenever(repository.findAll(validSearchSpecification, validPageable)).thenReturn(validEntities)
+            val validEntities: List<T> = listOf(validEntity)
+            whenever(repository.findAll(validSearchSpecification)).thenReturn(validEntities)
 
             whenever(repository.save(validEntity)).thenReturn(validEntity)
 
-            service.removeAll(validPageable, validSearch)
+            service.removeAll(validSearch)
         }
     }
 
@@ -354,36 +353,13 @@ abstract class BaseSerialServiceTest<T : SerialEntityable> : Testable {
             }
 
             @Test
-            @DisplayName("given invalid page parameter - when DELETE entities - returns BadRequest response")
-            fun testDeleteEntitiesWithInvalidPageParameter() {
-                whenever(searchService.generateSpecification(validSearch)).thenReturn((validSearchSpecification))
-                doThrow(RuntimeException::class).whenever(repository).findAll(validSearchSpecification, invalidPageable)
-
-                assertThrows<RuntimeException> {
-                    service.findAll(invalidPageable, validSearch)
-                }
-            }
-
-            // ? Look into if there is a way to make sort parameter fail separately
-            @Test
-            @DisplayName("given invalid sort parameter - when DELETE entities - returns BadRequest response")
-            fun testDeleteEntitiesWithInvalidSortParameter() {
-                whenever(searchService.generateSpecification(validSearch)).thenReturn((validSearchSpecification))
-                doThrow(RuntimeException::class).whenever(repository).findAll(validSearchSpecification, invalidPageable)
-
-                assertThrows<RuntimeException> {
-                    service.findAll(invalidPageable, validSearch)
-                }
-            }
-
-            @Test
             @DisplayName("given invalid search parameters - when DELETE entities - returns BadRequest response")
             fun testDeleteEntitiesWithInvalidSearchParameter() {
                 whenever(searchService.generateSpecification(invalidSearch)).thenReturn((invalidSearchSpecification))
-                doThrow(RuntimeException::class).whenever(repository).findAll(invalidSearchSpecification, invalidPageable)
+                doThrow(RuntimeException::class).whenever(repository).findAll(invalidSearchSpecification)
 
                 assertThrows<RuntimeException> {
-                    service.findAll(invalidPageable, validSearch)
+                    service.removeAll(invalidSearch)
                 }
             }
         }

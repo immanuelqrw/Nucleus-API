@@ -222,11 +222,10 @@ abstract class BaseSerialControllerTest<T : SerialEntityable> : Testable {
         @Test
         @DisplayName("given valid page, sort, and search parameters - when DELETE entities - sets entities' removedOn to now")
         fun testDeleteEntitiesWithValidQueryParameters() {
-            doNothing().whenever(service).removeAll(any(), eq(validSearchParam))
+            doNothing().whenever(service).removeAll(eq(validSearchParam))
 
             val mvcResult: MvcResult = mvc.perform(
                 delete(baseUri)
-                    .param("page", validPageParam)
                     .param("search", validSearchParam)
                     .contentType(MediaType.APPLICATION_JSON_UTF8)
             )
@@ -406,39 +405,10 @@ abstract class BaseSerialControllerTest<T : SerialEntityable> : Testable {
                     .andExpect(status().isBadRequest)
             }
 
-
-            @Test
-            @DisplayName("given invalid page parameter - when DELETE entities - returns BadRequest response")
-            fun testDeleteEntitiesWithInvalidPageParameter() {
-                doThrow(RuntimeException::class).whenever(service).findAll(any(), validSearchParam)
-
-                mvc.perform(
-                    delete(baseUri)
-                        .param("page", invalidPageParam)
-                        .param("search", validSearchParam)
-                        .contentType(MediaType.APPLICATION_JSON_UTF8)
-                )
-                    .andExpect(status().isBadRequest)
-            }
-
-            @Test
-            @DisplayName("given invalid sort parameter - when DELETE entities - returns BadRequest response")
-            fun testDeleteEntitiesWithInvalidSortParameter() {
-                doThrow(RuntimeException::class).whenever(service).findAll(any(), validSearchParam)
-
-                mvc.perform(
-                    delete(baseUri)
-                        .param("page", invalidPageParam)
-                        .param("search", validSearchParam)
-                        .contentType(MediaType.APPLICATION_JSON_UTF8)
-                )
-                    .andExpect(status().isBadRequest)
-            }
-
             @Test
             @DisplayName("given invalid search parameters - when DELETE entities - returns BadRequest response")
             fun testDeleteEntitiesWithInvalidSearchParameter() {
-                doThrow(RuntimeException::class).whenever(service).removeAll(any(), invalidSearchParam)
+                doThrow(RuntimeException::class).whenever(service).removeAll(invalidSearchParam)
 
                 mvc.perform(
                     delete(baseUri)

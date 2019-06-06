@@ -1,7 +1,6 @@
 package com.immanuelqrw.core.api
 
 import com.immanuelqrw.core.entity.UniqueEntityable
-import org.springframework.data.domain.Pageable
 import java.util.UUID
 
 /**
@@ -20,8 +19,7 @@ interface UniqueDeletable<T : UniqueEntityable> {
     /**
      * Removes all entities by setting removedOn field to a datetime
      *
-     * @param page [Pageable] instance that allows pagination and sorting
      * @param search Used for specifying entities to remove
      */
-    fun removeAll(page: Pageable, search: String?)
+    fun removeAll(search: String?)
 }

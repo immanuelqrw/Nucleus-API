@@ -91,9 +91,9 @@ abstract class BaseUniqueService<T : UniqueEntityable> : FullyUniqueControllable
         removeEntity(removableEntity)
     }
 
-    override fun removeAll(page: Pageable, search: String?) {
+    override fun removeAll(search: String?) {
         val searchSpecification: Specification<T>? = searchService.generateSpecification(search)
-        val removableEntities: Page<T> = repository.findAll(searchSpecification, page)
+        val removableEntities: Iterable<T> = repository.findAll(searchSpecification)
         removableEntities.forEach { removableEntity ->
             removeEntity(removableEntity)
         }

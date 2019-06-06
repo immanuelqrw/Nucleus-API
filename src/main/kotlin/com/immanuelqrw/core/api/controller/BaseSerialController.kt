@@ -99,14 +99,10 @@ abstract class BaseSerialController<T : SerialEntityable> : FullySerialControlla
 
     @DeleteMapping(produces = [MediaType.APPLICATION_JSON_VALUE])
     override fun removeAll(
-        @RequestParam("page")
-        @PageableDefault(size = DEFAULT_PAGE_SIZE)
-        @SortDefault(sort = [DEFAULT_SORT_FIELD])
-        page: Pageable,
         @RequestParam("search")
         search: String?
     ) {
-        return service.removeAll(page, search)
+        return service.removeAll(search)
     }
 
     private fun validateId(id: Long) {
