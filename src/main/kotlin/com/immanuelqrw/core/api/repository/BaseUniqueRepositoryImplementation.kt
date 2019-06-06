@@ -2,7 +2,7 @@ package com.immanuelqrw.core.api.repository
 
 import com.immanuelqrw.core.entity.UniqueEntityable
 import org.springframework.data.jpa.repository.support.SimpleJpaRepository
-import java.util.*
+import java.util.UUID
 import javax.persistence.EntityManager
 
 /**

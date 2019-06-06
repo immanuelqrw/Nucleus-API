@@ -1,7 +1,7 @@
 package com.immanuelqrw.core.api
 
 import com.immanuelqrw.core.entity.UniqueEntityable
-import java.util.*
+import java.util.UUID
 
 /**
  * Methods which allow PATCH on endpoint for unique id entities

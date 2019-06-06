@@ -66,6 +66,11 @@ internal class SolidControllerTest : BaseSerialControllerTest<Solid>() {
     @Mock
     override lateinit var validPage: Page<Solid>
 
+    @Mock
+    override lateinit var validEntities: List<Solid>
+
+    override val validCount: Long = 2L
+
     override val validSearchParam: String = "id:2"
     override val invalidSearchParam: String = "id@2"
 

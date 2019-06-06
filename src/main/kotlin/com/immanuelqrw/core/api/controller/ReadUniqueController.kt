@@ -1,27 +1,70 @@
 package com.immanuelqrw.core.api.controller
 
+import com.immanuelqrw.core.api.Countable
 import com.immanuelqrw.core.api.UniqueGetable
 import com.immanuelqrw.core.api.service.BaseUniqueService
+import com.immanuelqrw.core.api.utility.Utility
 import com.immanuelqrw.core.entity.UniqueEntityable
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.data.domain.Page
 import org.springframework.data.domain.Pageable
-import java.util.*
+import org.springframework.data.web.PageableDefault
+import org.springframework.data.web.SortDefault
+import org.springframework.http.MediaType
+import org.springframework.web.bind.annotation.GetMapping
+import org.springframework.web.bind.annotation.PathVariable
+import org.springframework.web.bind.annotation.RequestParam
+import java.util.UUID
 
 /**
  * Abstract read only controller class
  */
-abstract class ReadUniqueController<T : UniqueEntityable> : UniqueGetable<T> {
+abstract class ReadUniqueController<T : UniqueEntityable> : UniqueGetable<T>, Countable {
 
     @Autowired
     private lateinit var service: BaseUniqueService<T>
 
-    override fun find(id: UUID): T {
+    @GetMapping(path = ["/{id}"], produces = [MediaType.APPLICATION_JSON_VALUE])
+    override fun find(@PathVariable("id") id: UUID): T {
         return service.find(id)
     }
 
-    override fun findAll(page: Pageable, search: String?): Page<T> {
+    @GetMapping(produces = [MediaType.APPLICATION_JSON_VALUE])
+    override fun findAll(): List<T> {
+        return service.findAll()
+    }
+
+    @GetMapping(produces = [MediaType.APPLICATION_JSON_VALUE])
+    override fun findAll(
+        @RequestParam("search")
+        search: String
+    ): List<T> {
+        return service.findAll(search)
+    }
+
+    @GetMapping(produces = [MediaType.APPLICATION_JSON_VALUE])
+    override fun findAll(
+        @RequestParam("page")
+        @PageableDefault(size = Utility.DEFAULT_PAGE_SIZE)
+        @SortDefault(sort = [Utility.DEFAULT_SORT_FIELD])
+        page: Pageable,
+        @RequestParam("search")
+        search: String?
+    ): Page<T> {
         return service.findAll(page, search)
+    }
+
+    @GetMapping(path = ["/count"], produces = [MediaType.APPLICATION_JSON_VALUE])
+    override fun count(): Long {
+        return service.count()
+    }
+
+    @GetMapping(path = ["/count"], produces = [MediaType.APPLICATION_JSON_VALUE])
+    override fun count(
+        @RequestParam("search")
+        search: String
+    ): Long {
+        return service.count(search)
     }
 
 }

@@ -4,7 +4,7 @@ import com.immanuelqrw.core.api.UniqueWritable
 import com.immanuelqrw.core.api.service.BaseUniqueService
 import com.immanuelqrw.core.entity.UniqueEntityable
 import org.springframework.beans.factory.annotation.Autowired
-import java.util.*
+import java.util.UUID
 
 /**
  * Abstract write only controller class

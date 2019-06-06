@@ -35,6 +35,23 @@ abstract class BaseSerialController<T : SerialEntityable> : FullySerialControlla
     }
 
     @GetMapping(produces = [MediaType.APPLICATION_JSON_VALUE])
+    override fun findAll(): List<T> {
+        return service.findAll()
+    }
+
+    override fun findAllById(ids: Iterable<Long>): List<T> {
+        TODO("not implemented")
+    }
+
+    @GetMapping(produces = [MediaType.APPLICATION_JSON_VALUE])
+    override fun findAll(
+        @RequestParam("search")
+        search: String
+    ): List<T> {
+        return service.findAll(search)
+    }
+
+    @GetMapping(produces = [MediaType.APPLICATION_JSON_VALUE])
     override fun findAll(
         @RequestParam("page")
         @PageableDefault(size = DEFAULT_PAGE_SIZE)
@@ -44,6 +61,19 @@ abstract class BaseSerialController<T : SerialEntityable> : FullySerialControlla
         search: String?
     ): Page<T> {
         return service.findAll(page, search)
+    }
+
+    @GetMapping(path = ["/count"], produces = [MediaType.APPLICATION_JSON_VALUE])
+    override fun count(): Long {
+        return service.count()
+    }
+
+    @GetMapping(path = ["/count"], produces = [MediaType.APPLICATION_JSON_VALUE])
+    override fun count(
+        @RequestParam("search")
+        search: String
+    ): Long {
+        return service.count(search)
     }
 
     @PostMapping(produces = [MediaType.APPLICATION_JSON_VALUE], consumes = [MediaType.APPLICATION_JSON_VALUE])

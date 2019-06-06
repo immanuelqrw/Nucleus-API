@@ -1,7 +1,7 @@
 package com.immanuelqrw.core.api.repository
 
 import com.immanuelqrw.core.entity.UniqueEntityable
-import java.util.*
+import java.util.UUID
 
 /**
  * Base Repository interface

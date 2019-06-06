@@ -25,7 +25,7 @@ import org.springframework.data.domain.PageImpl
 import org.springframework.data.domain.Pageable
 import org.springframework.data.jpa.domain.Specification
 import java.time.LocalDateTime
-import java.util.*
+import java.util.UUID
 import javax.persistence.EntityNotFoundException
 import javax.persistence.RollbackException
 
@@ -57,8 +57,15 @@ abstract class BaseUniqueServiceTest<T : UniqueEntityable> : Testable {
     protected abstract val invalidPageable: Pageable
     protected abstract val validPage: Page<T>
 
+    protected abstract val validEntityIds: Iterable<UUID>
+    protected abstract val invalidEntityIds: Iterable<UUID>
+
+    protected abstract val validEntities: List<T>
+
     protected abstract val validSearch: String
     protected abstract val invalidSearch: String
+
+    protected abstract val validCount: Long
 
     protected abstract val validSearchSpecification: Specification<T>?
     protected abstract val invalidSearchSpecification: Specification<T>?
@@ -92,12 +99,38 @@ abstract class BaseUniqueServiceTest<T : UniqueEntityable> : Testable {
         }
 
         @Test
+        @DisplayName("given valid ids - when GET entities - returns entities")
+        fun testGetEntitiesByIds() {
+            whenever(repository.findAllById(validEntityIds)).thenReturn(validEntities)
+
+            service.findAll(validSearch) shouldEqual validEntities
+        }
+
+        @Test
+        @DisplayName("given search parameters - when GET entities - returns entities")
+        fun testCountEntitiesWithValidSearchParameters() {
+            whenever(searchService.generateSpecification(validSearch)).thenReturn((validSearchSpecification))
+            whenever(repository.count(validSearchSpecification)).thenReturn(validCount)
+
+            service.count(validSearch) shouldEqual validCount
+        }
+
+        @Test
         @DisplayName("given valid page, sort, and search parameters - when GET entities - returns entities")
         fun testGetEntitiesWithValidQueryParameters() {
             whenever(searchService.generateSpecification(validSearch)).thenReturn((validSearchSpecification))
             whenever(repository.findAll(validSearchSpecification, validPageable)).thenReturn(validPage)
 
             service.findAll(validPageable, validSearch) shouldEqual validPage
+        }
+
+        @Test
+        @DisplayName("given search parameters - when COUNT entities - returns count")
+        fun testGetEntitiesWithValidSearchParameters() {
+            whenever(searchService.generateSpecification(validSearch)).thenReturn((validSearchSpecification))
+            whenever(repository.findAll(validSearchSpecification)).thenReturn(validEntities)
+
+            service.findAll(validSearch) shouldEqual validEntities
         }
 
         @Test
@@ -172,6 +205,16 @@ abstract class BaseUniqueServiceTest<T : UniqueEntityable> : Testable {
 
                 assertThrows<EntityNotFoundException> {
                     service.find(invalidId)
+                }
+            }
+
+            @Test
+            @DisplayName("given invalid ids - when GET entities - returns NotFound response")
+            fun testGetAllEntitiesWithInvalidId() {
+                doThrow(EntityNotFoundException::class).whenever(repository).findAllById(invalidEntityIds)
+
+                assertThrows<EntityNotFoundException> {
+                    service.findAllById(invalidEntityIds)
                 }
             }
 
@@ -283,7 +326,31 @@ abstract class BaseUniqueServiceTest<T : UniqueEntityable> : Testable {
                 doThrow(RuntimeException::class).whenever(repository).findAll(invalidSearchSpecification, invalidPageable)
 
                 assertThrows<RuntimeException> {
-                    service.findAll(invalidPageable, validSearch)
+                    service.findAll(validPageable, invalidSearch)
+                }
+            }
+
+            // - Consider splitting into invalid search key, operation, value
+            @Test
+            @DisplayName("given invalid search parameters - when GET entities - returns BadRequest response")
+            fun testGetEntitiesWithOnlyInvalidSearchParameter() {
+                whenever(searchService.generateSpecification(invalidSearch)).thenReturn((invalidSearchSpecification))
+                doThrow(RuntimeException::class).whenever(repository).findAll(invalidSearchSpecification)
+
+                assertThrows<RuntimeException> {
+                    service.findAll(invalidSearch)
+                }
+            }
+
+            // - Consider splitting into invalid search key, operation, value
+            @Test
+            @DisplayName("given ONLY invalid search parameters - when COUNT entities - returns BadRequest response")
+            fun testCountEntitiesWithOnlyInvalidSearchParameter() {
+                whenever(searchService.generateSpecification(invalidSearch)).thenReturn((invalidSearchSpecification))
+                doThrow(RuntimeException::class).whenever(repository).count(invalidSearchSpecification)
+
+                assertThrows<RuntimeException> {
+                    service.count(invalidSearch)
                 }
             }
 

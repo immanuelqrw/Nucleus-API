@@ -66,8 +66,19 @@ internal class SolidServiceTest : BaseSerialServiceTest<Solid>() {
     @Mock
     override lateinit var validPage: Page<Solid>
 
+    @Mock
+    override lateinit var validEntities: List<Solid>
+
+    @Mock
+    override lateinit var validEntityIds: Iterable<Long>
+
+    @Mock
+    override lateinit var invalidEntityIds: Iterable<Long>
+
     override val validSearch: String = "id:2"
     override val invalidSearch: String = "id@2"
+
+    override val validCount: Long = 2L
 
     @Mock
     override lateinit var validSearchSpecification: Specification<Solid>

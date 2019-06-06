@@ -19,7 +19,7 @@ import org.springframework.web.bind.annotation.PostMapping
 import org.springframework.web.bind.annotation.PutMapping
 import org.springframework.web.bind.annotation.RequestBody
 import org.springframework.web.bind.annotation.RequestParam
-import java.util.*
+import java.util.UUID
 
 /**
  * Abstract controller class
@@ -34,6 +34,23 @@ abstract class BaseUniqueController<T : UniqueEntityable> : FullyUniqueControlla
         return service.find(id)
     }
 
+    override fun findAllById(ids: Iterable<UUID>): List<T> {
+        TODO("not implemented")
+    }
+
+    @GetMapping(produces = [MediaType.APPLICATION_JSON_VALUE])
+    override fun findAll(): List<T> {
+        return service.findAll()
+    }
+
+    @GetMapping(produces = [MediaType.APPLICATION_JSON_VALUE])
+    override fun findAll(
+        @RequestParam("search")
+        search: String
+    ): List<T> {
+        return service.findAll(search)
+    }
+
     @GetMapping(produces = [MediaType.APPLICATION_JSON_VALUE])
     override fun findAll(
         @RequestParam("page")
@@ -44,6 +61,19 @@ abstract class BaseUniqueController<T : UniqueEntityable> : FullyUniqueControlla
         search: String?
     ): Page<T> {
         return service.findAll(page, search)
+    }
+
+    @GetMapping(path = ["/count"], produces = [MediaType.APPLICATION_JSON_VALUE])
+    override fun count(): Long {
+        return service.count()
+    }
+
+    @GetMapping(path = ["/count"], produces = [MediaType.APPLICATION_JSON_VALUE])
+    override fun count(
+        @RequestParam("search")
+        search: String
+    ): Long {
+        return service.count(search)
     }
 
     @PostMapping(produces = [MediaType.APPLICATION_JSON_VALUE], consumes = [MediaType.APPLICATION_JSON_VALUE])

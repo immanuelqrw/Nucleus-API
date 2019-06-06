@@ -10,7 +10,7 @@ import org.springframework.data.domain.Page
 import org.springframework.data.domain.Pageable
 import org.springframework.data.jpa.domain.Specification
 import java.time.LocalDateTime
-import java.util.*
+import java.util.UUID
 
 /**
  * Abstract base service
@@ -30,9 +30,31 @@ abstract class BaseUniqueService<T : UniqueEntityable> : FullyUniqueControllable
         return repository.getOne(id)
     }
 
+    override fun findAllById(ids: Iterable<UUID>): List<T> {
+        return repository.findAllById(ids)
+    }
+
+    override fun findAll(): List<T> {
+        return repository.findAll()
+    }
+
+    override fun findAll(search: String): List<T> {
+        val searchSpecification: Specification<T>? = searchService.generateSpecification(search)
+        return repository.findAll(searchSpecification)
+    }
+
     override fun findAll(page: Pageable, search: String?): Page<T> {
         val searchSpecification: Specification<T>? = searchService.generateSpecification(search)
         return repository.findAll(searchSpecification, page)
+    }
+
+    override fun count(): Long {
+        return repository.count()
+    }
+
+    override fun count(search: String): Long {
+        val searchSpecification: Specification<T>? = searchService.generateSpecification(search)
+        return repository.count(searchSpecification)
     }
 
     override fun create(entity: T): T {

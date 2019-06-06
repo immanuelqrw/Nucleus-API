@@ -2,7 +2,7 @@ package com.immanuelqrw.core.api
 
 import com.immanuelqrw.core.entity.UniqueEntityable
 import org.springframework.data.domain.Pageable
-import java.util.*
+import java.util.UUID
 
 /**
  * Methods which allow DELETE on endpoint for unique id entities

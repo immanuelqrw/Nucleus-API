@@ -55,14 +55,19 @@ abstract class BaseSerialControllerTest<T : SerialEntityable> : Testable {
 
     protected abstract val validPage: Page<T>
 
+    protected abstract val validEntities: List<T>
+
     protected abstract val validSearchParam: String
     protected abstract val invalidSearchParam: String
+
+    protected abstract val validCount: Long
 
     protected abstract val validPageParam: String
     protected abstract val invalidPageParam: String
 
     private lateinit var baseUri: String
     private lateinit var idUri: String
+    private lateinit var countUri: String
 
     // - Instantiate param blocks for get and find all
 
@@ -70,6 +75,7 @@ abstract class BaseSerialControllerTest<T : SerialEntityable> : Testable {
     override fun preSetUp() {
         baseUri = "/$entityName"
         idUri = "$baseUri/{id}"
+        countUri = "$baseUri/count"
     }
 
     @BeforeEach
@@ -102,6 +108,22 @@ abstract class BaseSerialControllerTest<T : SerialEntityable> : Testable {
         }
 
         @Test
+        @DisplayName("given search parameters - when GET entities - returns entities")
+        fun testGetEntitiesWithValidSearchParameters() {
+            whenever(service.findAll(eq(validSearchParam))).thenReturn(validEntities)
+
+            val mvcResult: MvcResult = mvc.perform(
+                get(baseUri)
+                    .param("search", validSearchParam)
+                    .contentType(MediaType.APPLICATION_JSON_UTF8)
+            )
+                .andExpect(status().isOk)
+                .andReturn()
+
+            mvcResult.response.contentAsString.shouldNotBeBlank()
+        }
+
+        @Test
         @DisplayName("given valid page, sort, and search parameters - when GET entities - returns entities")
         fun testGetEntitiesWithValidQueryParameters() {
             whenever(service.findAll(any(), eq(validSearchParam))).thenReturn(validPage)
@@ -109,6 +131,22 @@ abstract class BaseSerialControllerTest<T : SerialEntityable> : Testable {
             val mvcResult: MvcResult = mvc.perform(
                 get(baseUri)
                     .param("page", validPageParam)
+                    .param("search", validSearchParam)
+                    .contentType(MediaType.APPLICATION_JSON_UTF8)
+            )
+                .andExpect(status().isOk)
+                .andReturn()
+
+            mvcResult.response.contentAsString.shouldNotBeBlank()
+        }
+
+        @Test
+        @DisplayName("given search parameters - when COUNT entities - returns count")
+        fun testCountEntitiesWithValidSearchParameters() {
+            whenever(service.count(eq(validSearchParam))).thenReturn(validCount)
+
+            val mvcResult: MvcResult = mvc.perform(
+                get(countUri)
                     .param("search", validSearchParam)
                     .contentType(MediaType.APPLICATION_JSON_UTF8)
             )
@@ -307,6 +345,8 @@ abstract class BaseSerialControllerTest<T : SerialEntityable> : Testable {
 
                 mvc.perform(
                     get(baseUri)
+                        .param("page", invalidPageParam)
+                        .param("search", validSearchParam)
                         .contentType(MediaType.APPLICATION_JSON_UTF8)
                 )
                     .andExpect(status().isBadRequest)
@@ -319,6 +359,8 @@ abstract class BaseSerialControllerTest<T : SerialEntityable> : Testable {
 
                 mvc.perform(
                     get(baseUri)
+                        .param("page", invalidPageParam)
+                        .param("search", validSearchParam)
                         .contentType(MediaType.APPLICATION_JSON_UTF8)
                 )
                     .andExpect(status().isBadRequest)
@@ -331,10 +373,39 @@ abstract class BaseSerialControllerTest<T : SerialEntityable> : Testable {
 
                 mvc.perform(
                     get(baseUri)
+                        .param("page", validPageParam)
+                        .param("search", invalidSearchParam)
                         .contentType(MediaType.APPLICATION_JSON_UTF8)
                 )
                     .andExpect(status().isBadRequest)
             }
+
+            @Test
+            @DisplayName("given invalid search parameters - when GET entities - returns BadRequest response")
+            fun testGetEntitiesWithOnlyInvalidSearchParameter() {
+                doThrow(RuntimeException::class).whenever(service).findAll(invalidSearchParam)
+
+                mvc.perform(
+                    get(baseUri)
+                        .param("search", invalidSearchParam)
+                        .contentType(MediaType.APPLICATION_JSON_UTF8)
+                )
+                    .andExpect(status().isBadRequest)
+            }
+
+            @Test
+            @DisplayName("given ONLY invalid search parameters - when COUNT entities - returns BadRequest response")
+            fun testCountEntitiesWithOnlyInvalidSearchParameter() {
+                doThrow(RuntimeException::class).whenever(service).count(invalidSearchParam)
+
+                mvc.perform(
+                    get(countUri)
+                        .param("search", invalidSearchParam)
+                        .contentType(MediaType.APPLICATION_JSON_UTF8)
+                )
+                    .andExpect(status().isBadRequest)
+            }
+
 
             @Test
             @DisplayName("given invalid page parameter - when DELETE entities - returns BadRequest response")
@@ -343,6 +414,8 @@ abstract class BaseSerialControllerTest<T : SerialEntityable> : Testable {
 
                 mvc.perform(
                     delete(baseUri)
+                        .param("page", invalidPageParam)
+                        .param("search", validSearchParam)
                         .contentType(MediaType.APPLICATION_JSON_UTF8)
                 )
                     .andExpect(status().isBadRequest)
@@ -355,6 +428,8 @@ abstract class BaseSerialControllerTest<T : SerialEntityable> : Testable {
 
                 mvc.perform(
                     delete(baseUri)
+                        .param("page", invalidPageParam)
+                        .param("search", validSearchParam)
                         .contentType(MediaType.APPLICATION_JSON_UTF8)
                 )
                     .andExpect(status().isBadRequest)
@@ -367,6 +442,8 @@ abstract class BaseSerialControllerTest<T : SerialEntityable> : Testable {
 
                 mvc.perform(
                     delete(baseUri)
+                        .param("page", validPageParam)
+                        .param("search", invalidSearchParam)
                         .contentType(MediaType.APPLICATION_JSON_UTF8)
                 )
                     .andExpect(status().isBadRequest)
