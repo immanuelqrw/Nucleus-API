@@ -72,7 +72,7 @@ internal class SolidControllerTest : BaseSerialControllerTest<Solid>() {
     override val validCount: Long = 2L
 
     override val validSearchParam: String = "id:2"
-    override val invalidSearchParam: String = "id@2"
+    override val invalidSearchParam: String = "id`2"
 
     override val validPageParam: String = "1"
     override val invalidPageParam: String = "a"

@@ -76,7 +76,7 @@ internal class SolidServiceTest : BaseSerialServiceTest<Solid>() {
     override lateinit var invalidEntityIds: Iterable<Long>
 
     override val validSearch: String = "id:2"
-    override val invalidSearch: String = "id@2"
+    override val invalidSearch: String = "id`2"
 
     override val validCount: Long = 2L
 

@@ -38,6 +38,9 @@ abstract class SearchSpecificationTest<T : Entityable> : Testable {
     protected abstract val validLessThanSearchCriterion: SearchCriterion
     protected abstract val validEqualitySearchCriterion: SearchCriterion
     protected abstract val validLikeSearchCriterion: SearchCriterion
+    protected abstract val validInequalitySearchCriterion: SearchCriterion
+    protected abstract val validNotLikeSearchCriterion: SearchCriterion
+    protected abstract val validInSearchCriterion: SearchCriterion
 
     protected abstract val invalidKeySearchCriterion: SearchCriterion
     protected abstract val invalidOperationSearchCriterion: SearchCriterion
@@ -103,7 +106,7 @@ abstract class SearchSpecificationTest<T : Entityable> : Testable {
         @DisplayName("given valid like search criterion - when values processed - returns Predicate")
         fun testProcessValidLikeSearchCriterion() {
             whenever(root.get<String>(validLikeSearchCriterion.key)).thenReturn(key)
-            whenever(builder.like(key, validLikeSearchCriterion.value.toString())).thenReturn(validPredicate)
+            whenever(builder.like(key, validLikeSearchCriterion.value.toString().replace("*", "%"))).thenReturn(validPredicate)
 
             val searchSpecification: SearchSpecification<T> = SearchSpecification(validLikeSearchCriterion)
 
@@ -115,10 +118,10 @@ abstract class SearchSpecificationTest<T : Entityable> : Testable {
         @Test
         @DisplayName("given valid inequality search criterion - when values processed - returns Predicate")
         fun testProcessValidInequalitySearchCriterion() {
-            whenever(root.get<String>(validEqualitySearchCriterion.key)).thenReturn(key)
-            whenever(builder.notEqual(key, validEqualitySearchCriterion.value)).thenReturn(validPredicate)
+            whenever(root.get<String>(validInequalitySearchCriterion.key)).thenReturn(key)
+            whenever(builder.notEqual(key, validInequalitySearchCriterion.value)).thenReturn(validPredicate)
 
-            val searchSpecification: SearchSpecification<T> = SearchSpecification(validEqualitySearchCriterion)
+            val searchSpecification: SearchSpecification<T> = SearchSpecification(validInequalitySearchCriterion)
 
             val predicate: Predicate? = searchSpecification.toPredicate(root, query, builder)
 
@@ -128,10 +131,23 @@ abstract class SearchSpecificationTest<T : Entityable> : Testable {
         @Test
         @DisplayName("given valid not like search criterion - when values processed - returns Predicate")
         fun testProcessValidNotLikeSearchCriterion() {
-            whenever(root.get<String>(validLikeSearchCriterion.key)).thenReturn(key)
-            whenever(builder.notLike(key, validLikeSearchCriterion.value.toString())).thenReturn(validPredicate)
+            whenever(root.get<String>(validNotLikeSearchCriterion.key)).thenReturn(key)
+            whenever(builder.notLike(key, validNotLikeSearchCriterion.value.toString().replace("*", "%"))).thenReturn(validPredicate)
 
-            val searchSpecification: SearchSpecification<T> = SearchSpecification(validLikeSearchCriterion)
+            val searchSpecification: SearchSpecification<T> = SearchSpecification(validNotLikeSearchCriterion)
+
+            val predicate: Predicate? = searchSpecification.toPredicate(root, query, builder)
+
+            predicate shouldEqual validPredicate
+        }
+
+        @Test
+        @DisplayName("given valid in search criterion - when values processed - returns Predicate")
+        fun testProcessValidInSearchCriterion() {
+            whenever(root.get<String>(validInSearchCriterion.key)).thenReturn(key)
+            whenever(key.`in`(validInSearchCriterion.value.toString().split(","))).thenReturn(validPredicate)
+
+            val searchSpecification: SearchSpecification<T> = SearchSpecification(validInSearchCriterion)
 
             val predicate: Predicate? = searchSpecification.toPredicate(root, query, builder)
 

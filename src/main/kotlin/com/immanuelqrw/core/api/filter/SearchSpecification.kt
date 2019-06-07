@@ -35,6 +35,10 @@ open class SearchSpecification<T: Entityable>(searchCriterion: SearchCriterion) 
             "~" -> builder.like(key, value!!.replace("*", "%"))
             "!" -> builder.notEqual(key, criterion.value)
             "^" -> builder.notLike(key, value!!.replace("*", "%"))
+            "|" -> {
+                val values = value?.split(",")
+                key.`in`(values)
+            }
             else -> null
         }
     }
