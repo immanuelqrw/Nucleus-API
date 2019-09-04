@@ -111,7 +111,7 @@ abstract class BaseUniqueControllerTest<T : UniqueEntityable> : Testable {
         @Test
         @DisplayName("given search parameters - when GET entities - returns entities")
         fun testGetEntitiesWithValidSearchParameters() {
-            whenever(service.findAll(search=eq(validSearchParam))).thenReturn(validEntities)
+            whenever(service.findAll(search = eq(validSearchParam))).thenReturn(validEntities)
 
             val mvcResult: MvcResult = mvc.perform(
                 get(baseUri)
@@ -383,7 +383,7 @@ abstract class BaseUniqueControllerTest<T : UniqueEntityable> : Testable {
             @Test
             @DisplayName("given ONLY invalid search parameters - when GET entities - returns BadRequest response")
             fun testGetEntitiesWithOnlyInvalidSearchParameter() {
-                doThrow(RuntimeException::class).whenever(service).findAll(search=invalidSearchParam)
+                doThrow(RuntimeException::class).whenever(service).findAll(search = invalidSearchParam)
 
                 mvc.perform(
                     get(baseUri)

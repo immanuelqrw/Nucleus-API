@@ -101,7 +101,7 @@ abstract class BaseSerialServiceTest<T : SerialEntityable> : Testable {
         fun testGetEntitiesByIds() {
             whenever(repository.findAllById(validEntityIds)).thenReturn(validEntities)
 
-            service.findAll(search=validSearch) shouldEqual validEntities
+            service.findAll(search = validSearch) shouldEqual validEntities
         }
 
         @Test
@@ -128,7 +128,7 @@ abstract class BaseSerialServiceTest<T : SerialEntityable> : Testable {
             whenever(searchService.generateSpecification(validSearch)).thenReturn((validSearchSpecification))
             whenever(repository.findAll(validSearchSpecification)).thenReturn(validEntities)
 
-            service.findAll(search=validSearch) shouldEqual validEntities
+            service.findAll(search = validSearch) shouldEqual validEntities
         }
 
         @Test
@@ -336,7 +336,7 @@ abstract class BaseSerialServiceTest<T : SerialEntityable> : Testable {
                 doThrow(RuntimeException::class).whenever(repository).findAll(invalidSearchSpecification)
 
                 assertThrows<RuntimeException> {
-                    service.findAll(search=invalidSearch)
+                    service.findAll(search = invalidSearch)
                 }
             }
 
