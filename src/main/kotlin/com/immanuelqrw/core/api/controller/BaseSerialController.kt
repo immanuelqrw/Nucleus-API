@@ -64,16 +64,15 @@ abstract class BaseSerialController<T : SerialEntityable> : FullySerialControlla
     }
 
     @GetMapping(path = ["/count"], produces = [MediaType.APPLICATION_JSON_VALUE])
-    override fun count(): Long {
-        return service.count()
-    }
-
-    @GetMapping(path = ["/count"], produces = [MediaType.APPLICATION_JSON_VALUE])
     override fun count(
         @RequestParam("search")
-        search: String
+        search: String?
     ): Long {
-        return service.count(search)
+        return search?.let {
+            return service.count(it)
+        } ?: run {
+            service.count()
+        }
     }
 
     @PostMapping(produces = [MediaType.APPLICATION_JSON_VALUE], consumes = [MediaType.APPLICATION_JSON_VALUE])

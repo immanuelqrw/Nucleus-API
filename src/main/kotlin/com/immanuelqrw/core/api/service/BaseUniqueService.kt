@@ -45,13 +45,13 @@ abstract class BaseUniqueService<T : UniqueEntityable>(private val classType: Cl
         return repository.findAll(searchSpecification, page)
     }
 
-    override fun count(): Long {
-        return repository.count()
-    }
-
-    override fun count(search: String): Long {
-        val searchSpecification: Specification<T>? = searchService.generateSpecification(search)
-        return repository.count(searchSpecification)
+    override fun count(search: String?): Long {
+        return search?.let {
+            val searchSpecification: Specification<T>? = searchService.generateSpecification(it)
+            repository.count(searchSpecification)
+        } ?: run {
+            repository.count()
+        }
     }
 
     override fun create(entity: T): T {

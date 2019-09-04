@@ -53,16 +53,15 @@ abstract class ReadSerialController<T : SerialEntityable> : SerialGetable<T>, Co
     }
 
     @GetMapping(path = ["/count"], produces = [MediaType.APPLICATION_JSON_VALUE])
-    override fun count(): Long {
-        return service.count()
-    }
-
-    @GetMapping(path = ["/count"], produces = [MediaType.APPLICATION_JSON_VALUE])
     override fun count(
         @RequestParam("search")
-        search: String
+        search: String?
     ): Long {
-        return service.count(search)
+        return search?.let {
+            return service.count(it)
+        } ?: run {
+            service.count()
+        }
     }
 
 }
