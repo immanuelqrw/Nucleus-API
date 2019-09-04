@@ -6,7 +6,6 @@ import com.immanuelqrw.core.api.service.BaseSerialService
 import com.immanuelqrw.core.api.utility.Utility
 import com.immanuelqrw.core.entity.SerialEntityable
 import org.springframework.beans.factory.annotation.Autowired
-import org.springframework.data.domain.Page
 import org.springframework.data.domain.Pageable
 import org.springframework.data.web.PageableDefault
 import org.springframework.data.web.SortDefault
@@ -28,27 +27,14 @@ abstract class ReadSerialController<T : SerialEntityable> : SerialGetable<T>, Co
     }
 
     @GetMapping(produces = [MediaType.APPLICATION_JSON_VALUE])
-    override fun findAll(): List<T> {
-        return service.findAll()
-    }
-
-    @GetMapping(produces = [MediaType.APPLICATION_JSON_VALUE])
-    override fun findAll(
-        @RequestParam("search")
-        search: String
-    ): List<T> {
-        return service.findAll(search)
-    }
-
-    @GetMapping(produces = [MediaType.APPLICATION_JSON_VALUE])
     override fun findAll(
         @RequestParam("page")
         @PageableDefault(size = Utility.DEFAULT_PAGE_SIZE)
         @SortDefault(sort = [Utility.DEFAULT_SORT_FIELD])
-        page: Pageable,
+        page: Pageable?,
         @RequestParam("search")
         search: String?
-    ): Page<T> {
+    ): Iterable<T> {
         return service.findAll(page, search)
     }
 
@@ -57,11 +43,7 @@ abstract class ReadSerialController<T : SerialEntityable> : SerialGetable<T>, Co
         @RequestParam("search")
         search: String?
     ): Long {
-        return search?.let {
-            return service.count(it)
-        } ?: run {
-            service.count()
-        }
+        return service.count(search)
     }
 
 }

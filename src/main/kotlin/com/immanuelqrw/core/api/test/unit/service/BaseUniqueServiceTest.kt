@@ -102,7 +102,7 @@ abstract class BaseUniqueServiceTest<T : UniqueEntityable> : Testable {
         fun testGetEntitiesByIds() {
             whenever(repository.findAllById(validEntityIds)).thenReturn(validEntities)
 
-            service.findAll(validSearch) shouldEqual validEntities
+            service.findAll(search=validSearch) shouldEqual validEntities
         }
 
         @Test
@@ -129,7 +129,7 @@ abstract class BaseUniqueServiceTest<T : UniqueEntityable> : Testable {
             whenever(searchService.generateSpecification(validSearch)).thenReturn((validSearchSpecification))
             whenever(repository.findAll(validSearchSpecification)).thenReturn(validEntities)
 
-            service.findAll(validSearch) shouldEqual validEntities
+            service.findAll(search=validSearch) shouldEqual validEntities
         }
 
         @Test
@@ -337,7 +337,7 @@ abstract class BaseUniqueServiceTest<T : UniqueEntityable> : Testable {
                 doThrow(RuntimeException::class).whenever(repository).findAll(invalidSearchSpecification)
 
                 assertThrows<RuntimeException> {
-                    service.findAll(invalidSearch)
+                    service.findAll(search=invalidSearch)
                 }
             }
 

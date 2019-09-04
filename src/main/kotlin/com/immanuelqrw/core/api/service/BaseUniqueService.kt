@@ -6,7 +6,6 @@ import com.immanuelqrw.core.api.repository.BaseUniqueRepository
 import com.immanuelqrw.core.entity.UniqueEntityable
 import com.immanuelqrw.core.util.Resource
 import org.springframework.beans.factory.annotation.Autowired
-import org.springframework.data.domain.Page
 import org.springframework.data.domain.Pageable
 import org.springframework.data.jpa.domain.Specification
 import java.time.LocalDateTime
@@ -31,18 +30,17 @@ abstract class BaseUniqueService<T : UniqueEntityable>(private val classType: Cl
         return repository.findAllById(ids)
     }
 
-    override fun findAll(): List<T> {
-        return repository.findAll()
-    }
-
-    override fun findAll(search: String): List<T> {
-        val searchSpecification: Specification<T>? = searchService.generateSpecification(search)
-        return repository.findAll(searchSpecification)
-    }
-
-    override fun findAll(page: Pageable, search: String?): Page<T> {
-        val searchSpecification: Specification<T>? = searchService.generateSpecification(search)
-        return repository.findAll(searchSpecification, page)
+    override fun findAll(page: Pageable?, search: String?): Iterable<T> {
+        return search?.let { _search ->
+            val searchSpecification: Specification<T>? = searchService.generateSpecification(_search)
+            page?.let { _page ->
+                repository.findAll(searchSpecification, _page)
+            } ?: run {
+                repository.findAll(searchSpecification)
+            }
+        } ?: run {
+            repository.findAll()
+        }
     }
 
     override fun count(search: String?): Long {

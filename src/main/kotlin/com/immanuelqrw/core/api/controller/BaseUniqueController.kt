@@ -6,7 +6,6 @@ import com.immanuelqrw.core.api.utility.Utility.DEFAULT_PAGE_SIZE
 import com.immanuelqrw.core.api.utility.Utility.DEFAULT_SORT_FIELD
 import com.immanuelqrw.core.entity.UniqueEntityable
 import org.springframework.beans.factory.annotation.Autowired
-import org.springframework.data.domain.Page
 import org.springframework.data.domain.Pageable
 import org.springframework.data.web.PageableDefault
 import org.springframework.data.web.SortDefault
@@ -39,27 +38,14 @@ abstract class BaseUniqueController<T : UniqueEntityable> : FullyUniqueControlla
     }
 
     @GetMapping(produces = [MediaType.APPLICATION_JSON_VALUE])
-    override fun findAll(): List<T> {
-        return service.findAll()
-    }
-
-    @GetMapping(produces = [MediaType.APPLICATION_JSON_VALUE])
-    override fun findAll(
-        @RequestParam("search")
-        search: String
-    ): List<T> {
-        return service.findAll(search)
-    }
-
-    @GetMapping(produces = [MediaType.APPLICATION_JSON_VALUE])
     override fun findAll(
         @RequestParam("page")
         @PageableDefault(size = DEFAULT_PAGE_SIZE)
         @SortDefault(sort = [DEFAULT_SORT_FIELD])
-        page: Pageable,
+        page: Pageable?,
         @RequestParam("search")
         search: String?
-    ): Page<T> {
+    ): Iterable<T> {
         return service.findAll(page, search)
     }
 
@@ -68,11 +54,7 @@ abstract class BaseUniqueController<T : UniqueEntityable> : FullyUniqueControlla
         @RequestParam("search")
         search: String?
     ): Long {
-        return search?.let {
-            return service.count(it)
-        } ?: run {
-            service.count()
-        }
+        return service.count(search)
     }
 
     @PostMapping(produces = [MediaType.APPLICATION_JSON_VALUE], consumes = [MediaType.APPLICATION_JSON_VALUE])

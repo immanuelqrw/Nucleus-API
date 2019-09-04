@@ -34,21 +34,8 @@ abstract class BaseSerialController<T : SerialEntityable> : FullySerialControlla
         return service.find(id)
     }
 
-    @GetMapping(produces = [MediaType.APPLICATION_JSON_VALUE])
-    override fun findAll(): List<T> {
-        return service.findAll()
-    }
-
     override fun findAllById(ids: Iterable<Long>): List<T> {
         TODO("not implemented")
-    }
-
-    @GetMapping(produces = [MediaType.APPLICATION_JSON_VALUE])
-    override fun findAll(
-        @RequestParam("search")
-        search: String
-    ): List<T> {
-        return service.findAll(search)
     }
 
     @GetMapping(produces = [MediaType.APPLICATION_JSON_VALUE])
@@ -56,10 +43,10 @@ abstract class BaseSerialController<T : SerialEntityable> : FullySerialControlla
         @RequestParam("page")
         @PageableDefault(size = DEFAULT_PAGE_SIZE)
         @SortDefault(sort = [DEFAULT_SORT_FIELD])
-        page: Pageable,
+        page: Pageable?,
         @RequestParam("search")
         search: String?
-    ): Page<T> {
+    ): Iterable<T> {
         return service.findAll(page, search)
     }
 
@@ -68,11 +55,7 @@ abstract class BaseSerialController<T : SerialEntityable> : FullySerialControlla
         @RequestParam("search")
         search: String?
     ): Long {
-        return search?.let {
-            return service.count(it)
-        } ?: run {
-            service.count()
-        }
+        return service.count(search)
     }
 
     @PostMapping(produces = [MediaType.APPLICATION_JSON_VALUE], consumes = [MediaType.APPLICATION_JSON_VALUE])

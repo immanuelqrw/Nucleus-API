@@ -31,18 +31,17 @@ abstract class BaseSerialService<T : SerialEntityable>(private val classType: Cl
         return repository.findAllById(ids)
     }
 
-    override fun findAll(): List<T> {
-        return repository.findAll()
-    }
-
-    override fun findAll(search: String): List<T> {
-        val searchSpecification: Specification<T>? = searchService.generateSpecification(search)
-        return repository.findAll(searchSpecification)
-    }
-
-    override fun findAll(page: Pageable, search: String?): Page<T> {
-        val searchSpecification: Specification<T>? = searchService.generateSpecification(search)
-        return repository.findAll(searchSpecification, page)
+    override fun findAll(page: Pageable?, search: String?): Iterable<T> {
+        return search?.let { _search ->
+            val searchSpecification: Specification<T>? = searchService.generateSpecification(_search)
+            page?.let { _page ->
+                repository.findAll(searchSpecification, _page)
+            } ?: run {
+                repository.findAll(searchSpecification)
+            }
+        } ?: run {
+            repository.findAll()
+        }
     }
 
     override fun count(search: String?): Long {
