@@ -15,16 +15,13 @@ import java.util.UUID
 /**
  * Abstract base service
  */
-abstract class BaseUniqueService<T : UniqueEntityable> : FullyUniqueControllable<T> {
+abstract class BaseUniqueService<T : UniqueEntityable>(private val classType: Class<T>) : FullyUniqueControllable<T> {
 
     @Autowired
     private lateinit var repository: BaseUniqueRepository<T>
 
     @Autowired
     private lateinit var searchService: SearchService<T>
-
-    @Autowired
-    private lateinit var classType: Class<T>
 
     override fun find(id: UUID): T {
         return repository.getOne(id)

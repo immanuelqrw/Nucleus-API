@@ -15,16 +15,13 @@ import java.time.LocalDateTime
 /**
  * Abstract base service
  */
-abstract class BaseSerialService<T : SerialEntityable> : FullySerialControllable<T> {
+abstract class BaseSerialService<T : SerialEntityable>(private val classType: Class<T>) : FullySerialControllable<T> {
 
     @Autowired
     private lateinit var repository: BaseSerialRepository<T>
 
     @Autowired
     private lateinit var searchService: SearchService<T>
-
-    @Autowired
-    private lateinit var classType: Class<T>
 
     override fun find(id: Long): T {
         return repository.getOne(id)

@@ -7,4 +7,4 @@ import org.springframework.stereotype.Service
  * Solid service class
  */
 @Service
-class SolidService : BaseSerialService<Solid>()
+class SolidService : BaseSerialService<Solid>(Solid::class.java)
