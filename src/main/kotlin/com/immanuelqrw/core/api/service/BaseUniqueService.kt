@@ -58,7 +58,7 @@ abstract class BaseUniqueService<T : UniqueEntityable>(private val classType: Cl
 
     override fun replace(id: UUID, entity: T): T {
         val originalEntity: T = repository.getOne(id)
-        entity.id = originalEntity.id
+        entity._id = originalEntity.id
         return repository.save(entity)
     }
 
