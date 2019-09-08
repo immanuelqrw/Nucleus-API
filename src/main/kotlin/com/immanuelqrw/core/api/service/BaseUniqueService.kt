@@ -56,12 +56,14 @@ abstract class BaseUniqueService<T : UniqueEntityable>(private val classType: Cl
         return repository.save(entity)
     }
 
+    @Deprecated("PUT doesn't work generically")
     override fun replace(id: UUID, entity: T): T {
         val originalEntity: T = repository.getOne(id)
         entity._id = originalEntity.id
         return repository.save(entity)
     }
 
+    @Deprecated("PATCH doesn't work generically")
     override fun modify(id: UUID, patchedFields: Map<String, Any>): T {
         val originalEntity: T = repository.getOne(id)
 

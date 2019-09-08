@@ -17,10 +17,12 @@ abstract class WriteSerialController<T : SerialEntityable> : SerialWritable<T> {
         return service.create(entity)
     }
 
+    @Deprecated("PUT doesn't work generically")
     override fun replace(id: Long, entity: T): T {
         return service.replace(id, entity)
     }
 
+    @Deprecated("PATCH doesn't work generically")
     override fun modify(id: Long, patchedFields: Map<String, Any>): T {
         return service.modify(id, patchedFields)
     }

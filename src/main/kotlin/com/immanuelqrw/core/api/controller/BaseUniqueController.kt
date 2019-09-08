@@ -62,11 +62,13 @@ abstract class BaseUniqueController<T : UniqueEntityable> : FullyUniqueControlla
         return service.create(entity)
     }
 
+    @Deprecated("PUT doesn't work generically")
     @PutMapping(path = ["/{id}"], produces = [MediaType.APPLICATION_JSON_VALUE], consumes = [MediaType.APPLICATION_JSON_VALUE])
     override fun replace(@PathVariable("id") id: UUID, @RequestBody entity: T): T {
         return service.replace(id, entity)
     }
 
+    @Deprecated("PATCH doesn't work generically")
     @PatchMapping(path = ["/{id}"], produces = [MediaType.APPLICATION_JSON_VALUE], consumes = [MediaType.APPLICATION_JSON_VALUE])
     override fun modify(@PathVariable("id") id: UUID, @RequestBody patchedFields: Map<String, Any>): T {
         return service.modify(id, patchedFields)

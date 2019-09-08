@@ -63,12 +63,14 @@ abstract class BaseSerialController<T : SerialEntityable> : FullySerialControlla
         return service.create(entity)
     }
 
+    @Deprecated("PUT doesn't work generically")
     @PutMapping(path = ["/{id}"], produces = [MediaType.APPLICATION_JSON_VALUE], consumes = [MediaType.APPLICATION_JSON_VALUE])
     override fun replace(@PathVariable("id") id: Long, @RequestBody entity: T): T {
         validateId(id)
         return service.replace(id, entity)
     }
 
+    @Deprecated("PATCH doesn't work generically")
     @PatchMapping(path = ["/{id}"], produces = [MediaType.APPLICATION_JSON_VALUE], consumes = [MediaType.APPLICATION_JSON_VALUE])
     override fun modify(@PathVariable("id") id: Long, @RequestBody patchedFields: Map<String, Any>): T {
         return service.modify(id, patchedFields)
