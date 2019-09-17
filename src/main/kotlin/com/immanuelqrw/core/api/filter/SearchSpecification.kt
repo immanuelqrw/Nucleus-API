@@ -16,7 +16,15 @@ open class SearchSpecification<T: Entityable>(searchCriterion: SearchCriterion) 
     private val criterion: SearchCriterion = searchCriterion
 
     override fun toPredicate(root: Root<T>, query: CriteriaQuery<*>, builder: CriteriaBuilder): Predicate? {
-        val key: Path<String> = root.get(criterion.key)
+        val criterionKeys: List<String> = criterion.key.split(".")
+        var key: Path<String> = root.get(criterionKeys.first())
+
+        val partialCriterionKeys: List<String> = criterionKeys.drop(1)
+
+        partialCriterionKeys.forEach { partialCriterionKey ->
+            key = key.get(partialCriterionKey)
+        }
+
         val operation = criterion.operation
         val value: String? = criterion.value.let { value ->
             val regexValue = value.toString()
