@@ -40,6 +40,18 @@ abstract class ReadUniqueController<T : UniqueEntityable> : UniqueGetable<T>, Co
         return service.findAll(page, search)
     }
 
+    @GetMapping(produces = [MediaType.APPLICATION_JSON_VALUE])
+    override fun findAllActive(
+        @RequestParam("page")
+        @PageableDefault(size = Utility.DEFAULT_PAGE_SIZE)
+        @SortDefault(sort = [Utility.DEFAULT_SORT_FIELD])
+        page: Pageable?,
+        @RequestParam("search")
+        search: String?
+    ): Iterable<T> {
+        return service.findAllActive(page, search)
+    }
+
     @GetMapping(path = ["/count"], produces = [MediaType.APPLICATION_JSON_VALUE])
     override fun count(
         @RequestParam("search")

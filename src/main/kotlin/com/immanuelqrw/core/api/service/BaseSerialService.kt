@@ -2,12 +2,10 @@ package com.immanuelqrw.core.api.service
 
 import com.fasterxml.jackson.module.kotlin.convertValue
 import com.immanuelqrw.core.api.FullySerialControllable
-import com.immanuelqrw.core.api.repository.BaseRepository
 import com.immanuelqrw.core.api.repository.BaseSerialRepository
 import com.immanuelqrw.core.entity.SerialEntityable
 import com.immanuelqrw.core.util.Resource
 import org.springframework.beans.factory.annotation.Autowired
-import org.springframework.data.domain.Page
 import org.springframework.data.domain.Pageable
 import org.springframework.data.jpa.domain.Specification
 import java.time.LocalDateTime
@@ -42,6 +40,12 @@ abstract class BaseSerialService<T : SerialEntityable>(private val classType: Cl
         } ?: run {
             repository.findAll()
         }
+    }
+
+    override fun findAllActive(page: Pageable?, search: String?): Iterable<T> {
+        val allEntities: Iterable<T> = findAll(page, search)
+
+        return allEntities.filter { entity -> entity.removedOn == null }
     }
 
     override fun count(search: String?): Long {
@@ -90,8 +94,7 @@ abstract class BaseSerialService<T : SerialEntityable>(private val classType: Cl
     }
 
     override fun removeAll(search: String?) {
-        val searchSpecification: Specification<T>? = searchService.generateSpecification(search)
-        val removableEntities: Iterable<T> = repository.findAll(searchSpecification)
+        val removableEntities: Iterable<T> = findAllActive(search = search)
         removableEntities.forEach { removableEntity ->
             removeEntity(removableEntity)
         }

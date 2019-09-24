@@ -43,6 +43,12 @@ abstract class BaseUniqueService<T : UniqueEntityable>(private val classType: Cl
         }
     }
 
+    override fun findAllActive(page: Pageable?, search: String?): Iterable<T> {
+        val allEntities: Iterable<T> = findAll(page, search)
+
+        return allEntities.filter { entity -> entity.removedOn == null }
+    }
+
     override fun count(search: String?): Long {
         return search?.let {
             val searchSpecification: Specification<T>? = searchService.generateSpecification(it)
@@ -89,8 +95,7 @@ abstract class BaseUniqueService<T : UniqueEntityable>(private val classType: Cl
     }
 
     override fun removeAll(search: String?) {
-        val searchSpecification: Specification<T>? = searchService.generateSpecification(search)
-        val removableEntities: Iterable<T> = repository.findAll(searchSpecification)
+        val removableEntities: Iterable<T> = findAllActive(search = search)
         removableEntities.forEach { removableEntity ->
             removeEntity(removableEntity)
         }

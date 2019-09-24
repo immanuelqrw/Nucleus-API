@@ -25,7 +25,6 @@ interface SerialGetable<T : SerialEntityable> {
      */
     fun findAllById(ids: Iterable<Long>): List<T>
 
-
     /**
      * Get all filtered entities
      *
@@ -34,4 +33,13 @@ interface SerialGetable<T : SerialEntityable> {
      * @return [Page] of filtered entities
      */
     fun findAll(page: Pageable? = null, search: String? = null): Iterable<T>
+
+    /**
+     * Get all filtered entities that have not been removed
+     *
+     * @param page [Pageable] instance that allows pagination and sorting
+     * @param search Used for specifying entities to retrieve
+     * @return [Page] of filtered entities
+     */
+    fun findAllActive(page: Pageable? = null, search: String? = null): Iterable<T>
 }

@@ -101,11 +101,11 @@ abstract class BaseSerialServiceTest<T : SerialEntityable> : Testable {
         fun testGetEntitiesByIds() {
             whenever(repository.findAllById(validEntityIds)).thenReturn(validEntities)
 
-            service.findAll(search = validSearch) shouldEqual validEntities
+            service.findAllById(validEntityIds) shouldEqual validEntities
         }
 
         @Test
-        @DisplayName("given search parameters - when GET entities - returns entities")
+        @DisplayName("given search parameters - when COUNT entities - returns count")
         fun testCountEntitiesWithValidSearchParameters() {
             whenever(searchService.generateSpecification(validSearch)).thenReturn((validSearchSpecification))
             whenever(repository.count(validSearchSpecification)).thenReturn(validCount)
@@ -123,7 +123,7 @@ abstract class BaseSerialServiceTest<T : SerialEntityable> : Testable {
         }
 
         @Test
-        @DisplayName("given search parameters - when COUNT entities - returns count")
+        @DisplayName("given search parameters - when GET entities - returns entities")
         fun testGetEntitiesWithValidSearchParameters() {
             whenever(searchService.generateSpecification(validSearch)).thenReturn((validSearchSpecification))
             whenever(repository.findAll(validSearchSpecification)).thenReturn(validEntities)
