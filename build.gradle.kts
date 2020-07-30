@@ -3,7 +3,7 @@ import org.jetbrains.kotlin.gradle.tasks.KotlinCompile
 
 val projectGroup = "com.immanuelqrw.core"
 val projectArtifact = "nucleus-api"
-val projectVersion = "0.0.26-pre-alpha"
+val projectVersion = "0.0.27-pre-alpha"
 
 group = projectGroup
 version = projectVersion
@@ -12,10 +12,10 @@ apply(from = "gradle/constants.gradle.kts")
 
 plugins {
     java
-    kotlin("jvm") version "1.3.61"
-    id("org.jetbrains.kotlin.plugin.noarg") version "1.3.61"
-    id("org.jetbrains.kotlin.plugin.allopen") version "1.3.61"
-    id("org.jetbrains.kotlin.plugin.spring") version "1.3.61"
+    kotlin("jvm") version "1.3.70"
+    id("org.jetbrains.kotlin.plugin.noarg") version "1.3.70"
+    id("org.jetbrains.kotlin.plugin.allopen") version "1.3.70"
+    id("org.jetbrains.kotlin.plugin.spring") version "1.3.70"
     id("io.spring.dependency-management") version "1.0.6.RELEASE"
     id("org.sonarqube") version "2.6"
     id("org.jetbrains.dokka") version "0.9.17"
