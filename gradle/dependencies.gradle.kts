@@ -12,7 +12,6 @@ val springDataVersion : String by extra
 val springBootVersion: String by extra
 val springVersion: String by extra
 val dokkaVersion : String by extra
-val nucleusVersion: String by extra
 
 data class Package(
     val groupId: String,
@@ -22,9 +21,9 @@ data class Package(
 
 
 val nucleusPackages: Array<Package> = arrayOf(
-    Package("com.immanuelqrw.core", "nucleus-util", nucleusVersion),
-    Package("com.immanuelqrw.core", "nucleus-test", nucleusVersion),
-    Package("com.immanuelqrw.core", "nucleus-entity", "0.0.15-pre-alpha")
+    Package("com.immanuelqrw.core", "nucleus-util", "0.0.1-pre-alpha"),
+    Package("com.immanuelqrw.core", "nucleus-test", "0.0.1-pre-alpha"),
+    Package("com.immanuelqrw.core", "nucleus-entity", "0.0.1-pre-alpha")
 )
 
 val nucleusTestPackages: Array<Package> = arrayOf(
