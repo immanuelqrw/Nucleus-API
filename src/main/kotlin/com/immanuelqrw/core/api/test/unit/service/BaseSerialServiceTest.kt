@@ -1,16 +1,18 @@
 package com.immanuelqrw.core.api.test.unit.service
 
 import com.fasterxml.jackson.databind.ObjectMapper
-import com.immanuelqrw.core.api.model.BaseEntity
-import com.immanuelqrw.core.api.repository.BaseRepository
-import com.immanuelqrw.core.api.service.BaseService
+import com.immanuelqrw.core.api.repository.BaseSerialRepository
+import com.immanuelqrw.core.api.service.BaseSerialService
 import com.immanuelqrw.core.api.service.SearchService
-import com.immanuelqrw.core.api.test.Testable
+import com.immanuelqrw.core.entity.SerialEntityable
+import com.immanuelqrw.core.test.Testable
 import com.nhaarman.mockitokotlin2.doReturn
 import com.nhaarman.mockitokotlin2.doThrow
 import com.nhaarman.mockitokotlin2.whenever
 import org.amshove.kluent.shouldEqual
 import org.amshove.kluent.shouldNotBeNull
+import org.junit.jupiter.api.AfterAll
+import org.junit.jupiter.api.AfterEach
 import org.junit.jupiter.api.BeforeAll
 import org.junit.jupiter.api.BeforeEach
 import org.junit.jupiter.api.Disabled
@@ -19,7 +21,6 @@ import org.junit.jupiter.api.Nested
 import org.junit.jupiter.api.Test
 import org.junit.jupiter.api.assertThrows
 import org.springframework.data.domain.Page
-import org.springframework.data.domain.PageImpl
 import org.springframework.data.domain.Pageable
 import org.springframework.data.jpa.domain.Specification
 import java.time.LocalDateTime
@@ -29,13 +30,13 @@ import javax.persistence.RollbackException
 /**
  * Unit tests for Service
  */
-abstract class BaseServiceTest<T : BaseEntity> : Testable {
+abstract class BaseSerialServiceTest<T : SerialEntityable> : Testable {
 
     protected abstract val classType: Class<T>
 
-    protected abstract val service: BaseService<T>
+    protected abstract val service: BaseSerialService<T>
 
-    protected abstract val repository: BaseRepository<T>
+    protected abstract val repository: BaseSerialRepository<T>
     protected abstract val searchService: SearchService<T>
 
     protected abstract val validId: Long
@@ -54,8 +55,15 @@ abstract class BaseServiceTest<T : BaseEntity> : Testable {
     protected abstract val invalidPageable: Pageable
     protected abstract val validPage: Page<T>
 
+    protected abstract val validEntityIds: Iterable<Long>
+    protected abstract val invalidEntityIds: Iterable<Long>
+
+    protected abstract val validEntities: List<T>
+
     protected abstract val validSearch: String
     protected abstract val invalidSearch: String
+
+    protected abstract val validCount: Long
 
     protected abstract val validSearchSpecification: Specification<T>?
     protected abstract val invalidSearchSpecification: Specification<T>?
@@ -63,7 +71,7 @@ abstract class BaseServiceTest<T : BaseEntity> : Testable {
     protected abstract val objectMapper: ObjectMapper
 
     @BeforeAll
-    override fun prepare() {
+    override fun preSetUp() {
         // Subclass implementation
     }
 
@@ -71,6 +79,12 @@ abstract class BaseServiceTest<T : BaseEntity> : Testable {
     override fun setUp() {
         // Subclass implementation
     }
+
+    @AfterEach
+    override fun tearDown() {}
+
+    @AfterAll
+    override fun postTearDown() {}
 
     @Nested
     inner class Success {
@@ -83,12 +97,38 @@ abstract class BaseServiceTest<T : BaseEntity> : Testable {
         }
 
         @Test
+        @DisplayName("given valid ids - when GET entities - returns entities")
+        fun testGetEntitiesByIds() {
+            whenever(repository.findAllById(validEntityIds)).thenReturn(validEntities)
+
+            service.findAllById(validEntityIds) shouldEqual validEntities
+        }
+
+        @Test
+        @DisplayName("given search parameters - when COUNT entities - returns count")
+        fun testCountEntitiesWithValidSearchParameters() {
+            whenever(searchService.generateSpecification(validSearch)).thenReturn((validSearchSpecification))
+            whenever(repository.count(validSearchSpecification)).thenReturn(validCount)
+
+            service.count(validSearch) shouldEqual validCount
+        }
+
+        @Test
         @DisplayName("given valid page, sort, and search parameters - when GET entities - returns entities")
         fun testGetEntitiesWithValidQueryParameters() {
             whenever(searchService.generateSpecification(validSearch)).thenReturn((validSearchSpecification))
             whenever(repository.findAll(validSearchSpecification, validPageable)).thenReturn(validPage)
 
             service.findAll(validPageable, validSearch) shouldEqual validPage
+        }
+
+        @Test
+        @DisplayName("given search parameters - when GET entities - returns entities")
+        fun testGetEntitiesWithValidSearchParameters() {
+            whenever(searchService.generateSpecification(validSearch)).thenReturn((validSearchSpecification))
+            whenever(repository.findAll(validSearchSpecification)).thenReturn(validEntities)
+
+            service.findAll(search = validSearch) shouldEqual validEntities
         }
 
         @Test
@@ -139,16 +179,16 @@ abstract class BaseServiceTest<T : BaseEntity> : Testable {
         }
 
         @Test
-        @DisplayName("given valid page, sort, and search parameters - when DELETE entities - sets entities' removedOn to now")
-        fun testDeleteEntitiesWithValidQueryParameters() {
+        @DisplayName("given valid search parameters - when DELETE entities - sets entities' removedOn to now")
+        fun testDeleteEntitiesWithValidSearchParameters() {
             whenever(searchService.generateSpecification(validSearch)).thenReturn((validSearchSpecification))
 
-            val validEntities: Page<T> = PageImpl<T>(listOf(validEntity))
-            whenever(repository.findAll(validSearchSpecification, validPageable)).thenReturn(validEntities)
+            val validEntities: List<T> = listOf(validEntity)
+            whenever(repository.findAll(validSearchSpecification)).thenReturn(validEntities)
 
             whenever(repository.save(validEntity)).thenReturn(validEntity)
 
-            service.removeAll(validPageable, validSearch)
+            service.removeAll(validSearch)
         }
     }
 
@@ -163,6 +203,16 @@ abstract class BaseServiceTest<T : BaseEntity> : Testable {
 
                 assertThrows<EntityNotFoundException> {
                     service.find(invalidId)
+                }
+            }
+
+            @Test
+            @DisplayName("given invalid ids - when GET entities - returns NotFound response")
+            fun testGetAllEntitiesWithInvalidId() {
+                doThrow(EntityNotFoundException::class).whenever(repository).findAllById(invalidEntityIds)
+
+                assertThrows<EntityNotFoundException> {
+                    service.findAllById(invalidEntityIds)
                 }
             }
 
@@ -274,30 +324,31 @@ abstract class BaseServiceTest<T : BaseEntity> : Testable {
                 doThrow(RuntimeException::class).whenever(repository).findAll(invalidSearchSpecification, invalidPageable)
 
                 assertThrows<RuntimeException> {
-                    service.findAll(invalidPageable, validSearch)
+                    service.findAll(validPageable, invalidSearch)
                 }
             }
 
+            // - Consider splitting into invalid search key, operation, value
             @Test
-            @DisplayName("given invalid page parameter - when DELETE entities - returns BadRequest response")
-            fun testDeleteEntitiesWithInvalidPageParameter() {
-                whenever(searchService.generateSpecification(validSearch)).thenReturn((validSearchSpecification))
-                doThrow(RuntimeException::class).whenever(repository).findAll(validSearchSpecification, invalidPageable)
+            @DisplayName("given ONLY invalid search parameters - when GET entities - returns BadRequest response")
+            fun testGetEntitiesWithOnlyInvalidSearchParameter() {
+                whenever(searchService.generateSpecification(invalidSearch)).thenReturn((invalidSearchSpecification))
+                doThrow(RuntimeException::class).whenever(repository).findAll(invalidSearchSpecification)
 
                 assertThrows<RuntimeException> {
-                    service.findAll(invalidPageable, validSearch)
+                    service.findAll(search = invalidSearch)
                 }
             }
 
-            // ? Look into if there is a way to make sort parameter fail separately
+            // - Consider splitting into invalid search key, operation, value
             @Test
-            @DisplayName("given invalid sort parameter - when DELETE entities - returns BadRequest response")
-            fun testDeleteEntitiesWithInvalidSortParameter() {
-                whenever(searchService.generateSpecification(validSearch)).thenReturn((validSearchSpecification))
-                doThrow(RuntimeException::class).whenever(repository).findAll(validSearchSpecification, invalidPageable)
+            @DisplayName("given invalid search parameters - when COUNT entities - returns BadRequest response")
+            fun testCountEntitiesWithOnlyInvalidSearchParameter() {
+                whenever(searchService.generateSpecification(invalidSearch)).thenReturn((invalidSearchSpecification))
+                doThrow(RuntimeException::class).whenever(repository).count(invalidSearchSpecification)
 
                 assertThrows<RuntimeException> {
-                    service.findAll(invalidPageable, validSearch)
+                    service.count(invalidSearch)
                 }
             }
 
@@ -305,10 +356,10 @@ abstract class BaseServiceTest<T : BaseEntity> : Testable {
             @DisplayName("given invalid search parameters - when DELETE entities - returns BadRequest response")
             fun testDeleteEntitiesWithInvalidSearchParameter() {
                 whenever(searchService.generateSpecification(invalidSearch)).thenReturn((invalidSearchSpecification))
-                doThrow(RuntimeException::class).whenever(repository).findAll(invalidSearchSpecification, invalidPageable)
+                doThrow(RuntimeException::class).whenever(repository).findAll(invalidSearchSpecification)
 
                 assertThrows<RuntimeException> {
-                    service.findAll(invalidPageable, validSearch)
+                    service.removeAll(invalidSearch)
                 }
             }
         }

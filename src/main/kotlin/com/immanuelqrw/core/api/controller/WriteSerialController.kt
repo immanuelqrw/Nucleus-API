@@ -1,26 +1,28 @@
 package com.immanuelqrw.core.api.controller
 
-import com.immanuelqrw.core.api.Writable
-import com.immanuelqrw.core.api.model.BaseEntity
-import com.immanuelqrw.core.api.service.BaseService
+import com.immanuelqrw.core.api.SerialWritable
+import com.immanuelqrw.core.api.service.BaseSerialService
+import com.immanuelqrw.core.entity.SerialEntityable
 import org.springframework.beans.factory.annotation.Autowired
 
 /**
  * Abstract write only controller class
  */
-abstract class WriteController<T : BaseEntity> : Writable<T> {
+abstract class WriteSerialController<T : SerialEntityable> : SerialWritable<T> {
 
     @Autowired
-    private lateinit var service: BaseService<T>
+    private lateinit var service: BaseSerialService<T>
 
     override fun create(entity: T): T {
         return service.create(entity)
     }
 
+    @Deprecated("PUT doesn't work generically")
     override fun replace(id: Long, entity: T): T {
         return service.replace(id, entity)
     }
 
+    @Deprecated("PATCH doesn't work generically")
     override fun modify(id: Long, patchedFields: Map<String, Any>): T {
         return service.modify(id, patchedFields)
     }

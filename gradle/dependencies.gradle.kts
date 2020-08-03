@@ -19,6 +19,16 @@ data class Package(
     val version: String
 )
 
+
+val nucleusPackages: Array<Package> = arrayOf(
+    Package("com.immanuelqrw.core", "nucleus-util", "0.0.1-pre-alpha"),
+    Package("com.immanuelqrw.core", "nucleus-test", "0.0.1-pre-alpha"),
+    Package("com.immanuelqrw.core", "nucleus-entity", "0.0.1-pre-alpha")
+)
+
+val nucleusTestPackages: Array<Package> = arrayOf(
+)
+
 val jacksonPackages: Array<Package> = arrayOf(
     Package("com.fasterxml.jackson.module", "jackson-module-kotlin", jacksonVersion),
     Package("com.fasterxml.jackson.dataformat", "jackson-dataformat-yaml", jacksonVersion)
@@ -49,7 +59,8 @@ val jUnitPackages: Array<Package> = arrayOf(
     Package("org.junit.jupiter", "junit-jupiter-engine", junitVersion),
 
     Package("io.mockk", "mockk", "1.8.13"),
-    Package("org.amshove.kluent", "kluent", "1.49")
+    Package("org.amshove.kluent", "kluent", "1.49"),
+    Package("com.nhaarman.mockitokotlin2", "mockito-kotlin", "2.2.0")
 )
 
 val springTestPackages: Array<Package> = arrayOf(
@@ -61,6 +72,7 @@ val springTestPackages: Array<Package> = arrayOf(
 val packages: Array<Package> = arrayOf(
     Package("org.jetbrains.kotlin", "kotlin-reflect", kotlinVersion),
     Package("org.jetbrains.dokka", "dokka-gradle-plugin", dokkaVersion),
+    *nucleusPackages,
     *jacksonPackages,
     *springPackages,
     *springBootPackages,
@@ -72,7 +84,8 @@ val packages: Array<Package> = arrayOf(
 val testPackages: Array<Package> = arrayOf(
     Package("org.hibernate", "hibernate-testing", "5.3.7.Final"),
     *jUnitPackages,
-    *springTestPackages
+    *springTestPackages,
+    *nucleusTestPackages
 )
 
 dependencies {

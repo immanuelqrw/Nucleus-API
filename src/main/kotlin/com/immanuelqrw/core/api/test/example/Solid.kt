@@ -1,14 +1,8 @@
 package com.immanuelqrw.core.api.test.example
 
-import com.immanuelqrw.core.api.model.BaseEntity
-import com.immanuelqrw.core.api.utility.DateTimeFormatter
-import org.hibernate.annotations.CreationTimestamp
-import org.hibernate.annotations.UpdateTimestamp
-import org.springframework.data.annotation.CreatedDate
-import org.springframework.data.annotation.LastModifiedDate
-import org.springframework.format.annotation.DateTimeFormat
-import java.time.LocalDateTime
-import javax.persistence.*
+import com.immanuelqrw.core.entity.BaseSerialEntity
+import javax.persistence.Entity
+import javax.persistence.Table
 
 /**
  * Solid entity class
@@ -20,4 +14,4 @@ import javax.persistence.*
  */
 @Entity
 @Table(name = "`Solid`")
-class Solid : BaseEntity()
+data class Solid(private val name: String = "Rock") : BaseSerialEntity()

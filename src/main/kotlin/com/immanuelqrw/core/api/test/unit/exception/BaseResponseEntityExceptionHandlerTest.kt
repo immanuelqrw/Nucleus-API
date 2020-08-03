@@ -1,7 +1,9 @@
 package com.immanuelqrw.core.api.test.unit.exception
 
-import com.immanuelqrw.core.api.model.BaseEntity
-import com.immanuelqrw.core.api.test.Testable
+import com.immanuelqrw.core.entity.Entityable
+import com.immanuelqrw.core.test.Testable
+import org.junit.jupiter.api.AfterAll
+import org.junit.jupiter.api.AfterEach
 import org.junit.jupiter.api.BeforeAll
 import org.junit.jupiter.api.BeforeEach
 import org.junit.jupiter.api.DisplayName
@@ -10,12 +12,12 @@ import org.junit.jupiter.api.Test
 /**
  * Unit tests for ExceptionHandler
  */
-abstract class BaseResponseEntityExceptionHandlerTest<T : BaseEntity> : Testable {
+abstract class BaseResponseEntityExceptionHandlerTest<T : Entityable> : Testable {
 
     // - Look into how to test ExceptionHandler
 
     @BeforeAll
-    override fun prepare() {
+    override fun preSetUp() {
         // Subclass implementation
     }
 
@@ -23,6 +25,12 @@ abstract class BaseResponseEntityExceptionHandlerTest<T : BaseEntity> : Testable
     override fun setUp() {
         // Subclass implementation
     }
+
+    @AfterEach
+    override fun tearDown() {}
+
+    @AfterAll
+    override fun postTearDown() {}
 
     @Test
     @DisplayName("given invalid request on entity - when EntityNotFoundException thrown - returns NotFound response")

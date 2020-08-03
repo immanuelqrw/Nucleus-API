@@ -19,7 +19,7 @@ internal class SolidSearchServiceTest : SearchServiceTest<Solid>() {
     override lateinit var searchService: SolidSearchService
 
     override val validSearch: String? = "id:2"
-    override val invalidSearch: String? = "id@2"
+    override val invalidSearch: String? = "id`2"
     override val nullSearch: String? = null
 
 }

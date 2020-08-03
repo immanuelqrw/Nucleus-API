@@ -3,7 +3,7 @@ package com.immanuelqrw.core.api.controller
 import com.immanuelqrw.core.api.test.Application
 import com.immanuelqrw.core.api.test.example.Solid
 import com.immanuelqrw.core.api.test.example.SolidService
-import com.immanuelqrw.core.api.test.unit.controller.BaseControllerTest
+import com.immanuelqrw.core.api.test.unit.controller.BaseSerialControllerTest
 import org.junit.jupiter.api.Disabled
 import org.junit.jupiter.api.TestInstance
 import org.junit.jupiter.api.extension.ExtendWith
@@ -25,7 +25,7 @@ import org.springframework.test.web.servlet.MockMvc
 @ContextConfiguration(classes = [Application::class])
 @WebMvcTest(Controller::class)
 @TestInstance(TestInstance.Lifecycle.PER_CLASS)
-internal class SolidControllerTest : BaseControllerTest<Solid>() {
+internal class SolidControllerTest : BaseSerialControllerTest<Solid>() {
 
     @Autowired
     override lateinit var mvc: MockMvc
@@ -66,8 +66,13 @@ internal class SolidControllerTest : BaseControllerTest<Solid>() {
     @Mock
     override lateinit var validPage: Page<Solid>
 
+    @Mock
+    override lateinit var validEntities: List<Solid>
+
+    override val validCount: Long = 2L
+
     override val validSearchParam: String = "id:2"
-    override val invalidSearchParam: String = "id@2"
+    override val invalidSearchParam: String = "id`2"
 
     override val validPageParam: String = "1"
     override val invalidPageParam: String = "a"

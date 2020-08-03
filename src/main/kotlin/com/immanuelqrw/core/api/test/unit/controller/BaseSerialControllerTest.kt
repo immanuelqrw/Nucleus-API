@@ -1,8 +1,8 @@
 package com.immanuelqrw.core.api.test.unit.controller
 
-import com.immanuelqrw.core.api.model.BaseEntity
-import com.immanuelqrw.core.api.service.BaseService
-import com.immanuelqrw.core.api.test.Testable
+import com.immanuelqrw.core.api.service.BaseSerialService
+import com.immanuelqrw.core.entity.SerialEntityable
+import com.immanuelqrw.core.test.Testable
 import com.nhaarman.mockitokotlin2.any
 import com.nhaarman.mockitokotlin2.doNothing
 import com.nhaarman.mockitokotlin2.doThrow
@@ -10,6 +10,8 @@ import com.nhaarman.mockitokotlin2.eq
 import com.nhaarman.mockitokotlin2.whenever
 import org.amshove.kluent.shouldBeBlank
 import org.amshove.kluent.shouldNotBeBlank
+import org.junit.jupiter.api.AfterAll
+import org.junit.jupiter.api.AfterEach
 import org.junit.jupiter.api.BeforeAll
 import org.junit.jupiter.api.BeforeEach
 import org.junit.jupiter.api.DisplayName
@@ -29,15 +31,14 @@ import org.springframework.test.web.servlet.result.MockMvcResultMatchers.status
 import javax.persistence.EntityNotFoundException
 import javax.persistence.RollbackException
 
-
 /**
  * Unit tests for Controller
  */
-abstract class BaseControllerTest<T : BaseEntity> : Testable {
+abstract class BaseSerialControllerTest<T : SerialEntityable> : Testable {
 
     protected abstract val mvc: MockMvc
 
-    protected abstract val service: BaseService<T>
+    protected abstract val service: BaseSerialService<T>
 
     protected abstract val entityName: String
 
@@ -54,27 +55,39 @@ abstract class BaseControllerTest<T : BaseEntity> : Testable {
 
     protected abstract val validPage: Page<T>
 
+    protected abstract val validEntities: List<T>
+
     protected abstract val validSearchParam: String
     protected abstract val invalidSearchParam: String
+
+    protected abstract val validCount: Long
 
     protected abstract val validPageParam: String
     protected abstract val invalidPageParam: String
 
     private lateinit var baseUri: String
     private lateinit var idUri: String
+    private lateinit var countUri: String
 
     // - Instantiate param blocks for get and find all
 
     @BeforeAll
-    override fun prepare() {
+    override fun preSetUp() {
         baseUri = "/$entityName"
         idUri = "$baseUri/{id}"
+        countUri = "$baseUri/count"
     }
 
     @BeforeEach
     override fun setUp() {
         // Subclass implementation
     }
+
+    @AfterEach
+    override fun tearDown() {}
+
+    @AfterAll
+    override fun postTearDown() {}
 
 
     @Nested
@@ -95,6 +108,22 @@ abstract class BaseControllerTest<T : BaseEntity> : Testable {
         }
 
         @Test
+        @DisplayName("given search parameters - when GET entities - returns entities")
+        fun testGetEntitiesWithValidSearchParameters() {
+            whenever(service.findAll(search = eq(validSearchParam))).thenReturn(validEntities)
+
+            val mvcResult: MvcResult = mvc.perform(
+                get(baseUri)
+                    .param("search", validSearchParam)
+                    .contentType(MediaType.APPLICATION_JSON_UTF8)
+            )
+                .andExpect(status().isOk)
+                .andReturn()
+
+            mvcResult.response.contentAsString.shouldNotBeBlank()
+        }
+
+        @Test
         @DisplayName("given valid page, sort, and search parameters - when GET entities - returns entities")
         fun testGetEntitiesWithValidQueryParameters() {
             whenever(service.findAll(any(), eq(validSearchParam))).thenReturn(validPage)
@@ -102,6 +131,22 @@ abstract class BaseControllerTest<T : BaseEntity> : Testable {
             val mvcResult: MvcResult = mvc.perform(
                 get(baseUri)
                     .param("page", validPageParam)
+                    .param("search", validSearchParam)
+                    .contentType(MediaType.APPLICATION_JSON_UTF8)
+            )
+                .andExpect(status().isOk)
+                .andReturn()
+
+            mvcResult.response.contentAsString.shouldNotBeBlank()
+        }
+
+        @Test
+        @DisplayName("given search parameters - when COUNT entities - returns count")
+        fun testCountEntitiesWithValidSearchParameters() {
+            whenever(service.count(eq(validSearchParam))).thenReturn(validCount)
+
+            val mvcResult: MvcResult = mvc.perform(
+                get(countUri)
                     .param("search", validSearchParam)
                     .contentType(MediaType.APPLICATION_JSON_UTF8)
             )
@@ -177,11 +222,10 @@ abstract class BaseControllerTest<T : BaseEntity> : Testable {
         @Test
         @DisplayName("given valid page, sort, and search parameters - when DELETE entities - sets entities' removedOn to now")
         fun testDeleteEntitiesWithValidQueryParameters() {
-            doNothing().whenever(service).removeAll(any(), eq(validSearchParam))
+            doNothing().whenever(service).removeAll(eq(validSearchParam))
 
             val mvcResult: MvcResult = mvc.perform(
                 delete(baseUri)
-                    .param("page", validPageParam)
                     .param("search", validSearchParam)
                     .contentType(MediaType.APPLICATION_JSON_UTF8)
             )
@@ -300,6 +344,8 @@ abstract class BaseControllerTest<T : BaseEntity> : Testable {
 
                 mvc.perform(
                     get(baseUri)
+                        .param("page", invalidPageParam)
+                        .param("search", validSearchParam)
                         .contentType(MediaType.APPLICATION_JSON_UTF8)
                 )
                     .andExpect(status().isBadRequest)
@@ -312,6 +358,8 @@ abstract class BaseControllerTest<T : BaseEntity> : Testable {
 
                 mvc.perform(
                     get(baseUri)
+                        .param("page", invalidPageParam)
+                        .param("search", validSearchParam)
                         .contentType(MediaType.APPLICATION_JSON_UTF8)
                 )
                     .andExpect(status().isBadRequest)
@@ -324,30 +372,34 @@ abstract class BaseControllerTest<T : BaseEntity> : Testable {
 
                 mvc.perform(
                     get(baseUri)
+                        .param("page", validPageParam)
+                        .param("search", invalidSearchParam)
                         .contentType(MediaType.APPLICATION_JSON_UTF8)
                 )
                     .andExpect(status().isBadRequest)
             }
 
             @Test
-            @DisplayName("given invalid page parameter - when DELETE entities - returns BadRequest response")
-            fun testDeleteEntitiesWithInvalidPageParameter() {
-                doThrow(RuntimeException::class).whenever(service).findAll(any(), validSearchParam)
+            @DisplayName("given invalid search parameters - when GET entities - returns BadRequest response")
+            fun testGetEntitiesWithOnlyInvalidSearchParameter() {
+                doThrow(RuntimeException::class).whenever(service).findAll(search = invalidSearchParam)
 
                 mvc.perform(
-                    delete(baseUri)
+                    get(baseUri)
+                        .param("search", invalidSearchParam)
                         .contentType(MediaType.APPLICATION_JSON_UTF8)
                 )
                     .andExpect(status().isBadRequest)
             }
 
             @Test
-            @DisplayName("given invalid sort parameter - when DELETE entities - returns BadRequest response")
-            fun testDeleteEntitiesWithInvalidSortParameter() {
-                doThrow(RuntimeException::class).whenever(service).findAll(any(), validSearchParam)
+            @DisplayName("given ONLY invalid search parameters - when COUNT entities - returns BadRequest response")
+            fun testCountEntitiesWithOnlyInvalidSearchParameter() {
+                doThrow(RuntimeException::class).whenever(service).count(invalidSearchParam)
 
                 mvc.perform(
-                    delete(baseUri)
+                    get(countUri)
+                        .param("search", invalidSearchParam)
                         .contentType(MediaType.APPLICATION_JSON_UTF8)
                 )
                     .andExpect(status().isBadRequest)
@@ -356,10 +408,12 @@ abstract class BaseControllerTest<T : BaseEntity> : Testable {
             @Test
             @DisplayName("given invalid search parameters - when DELETE entities - returns BadRequest response")
             fun testDeleteEntitiesWithInvalidSearchParameter() {
-                doThrow(RuntimeException::class).whenever(service).removeAll(any(), invalidSearchParam)
+                doThrow(RuntimeException::class).whenever(service).removeAll(invalidSearchParam)
 
                 mvc.perform(
                     delete(baseUri)
+                        .param("page", validPageParam)
+                        .param("search", invalidSearchParam)
                         .contentType(MediaType.APPLICATION_JSON_UTF8)
                 )
                     .andExpect(status().isBadRequest)
