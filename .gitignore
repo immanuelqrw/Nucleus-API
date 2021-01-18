@@ -27,3 +27,5 @@
 \.DS_Store
 
 transaction\.log
+
+gradle.properties

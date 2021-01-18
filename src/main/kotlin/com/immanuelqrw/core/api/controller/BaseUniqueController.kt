@@ -19,6 +19,9 @@ import org.springframework.web.bind.annotation.PutMapping
 import org.springframework.web.bind.annotation.RequestBody
 import org.springframework.web.bind.annotation.RequestParam
 import java.util.UUID
+import mu.KotlinLogging
+
+private val logger = KotlinLogging.logger {}
 
 /**
  * Abstract controller class
@@ -30,6 +33,8 @@ abstract class BaseUniqueController<T : UniqueEntityable> : FullyUniqueControlla
 
     @GetMapping(path = ["/{id}"], produces = [MediaType.APPLICATION_JSON_VALUE])
     override fun find(@PathVariable("id") id: UUID): T {
+        logger.debug { "ID: $id" }
+
         return service.find(id)
     }
 
@@ -46,6 +51,8 @@ abstract class BaseUniqueController<T : UniqueEntityable> : FullyUniqueControlla
         @RequestParam("search")
         search: String?
     ): Iterable<T> {
+        logger.debug { "Search Query: $search" }
+
         return service.findAll(page, search)
     }
 
@@ -58,6 +65,8 @@ abstract class BaseUniqueController<T : UniqueEntityable> : FullyUniqueControlla
         @RequestParam("search")
         search: String?
     ): Iterable<T> {
+        logger.debug { "Search Query: $search" }
+
         return service.findAllActive(page, search)
     }
 
@@ -66,28 +75,39 @@ abstract class BaseUniqueController<T : UniqueEntityable> : FullyUniqueControlla
         @RequestParam("search")
         search: String?
     ): Long {
+        logger.debug { "Search Query: $search" }
+
         return service.count(search)
     }
 
     @PostMapping(produces = [MediaType.APPLICATION_JSON_VALUE], consumes = [MediaType.APPLICATION_JSON_VALUE])
     override fun create(@RequestBody entity: T): T {
+        logger.debug { "Entity: $entity" }
+
         return service.create(entity)
     }
 
     @Deprecated("PUT doesn't work generically")
     @PutMapping(path = ["/{id}"], produces = [MediaType.APPLICATION_JSON_VALUE], consumes = [MediaType.APPLICATION_JSON_VALUE])
     override fun replace(@PathVariable("id") id: UUID, @RequestBody entity: T): T {
+        logger.debug { "ID: $id" }
+        logger.debug { "Entity: $entity" }
+
         return service.replace(id, entity)
     }
 
     @Deprecated("PATCH doesn't work generically")
     @PatchMapping(path = ["/{id}"], produces = [MediaType.APPLICATION_JSON_VALUE], consumes = [MediaType.APPLICATION_JSON_VALUE])
     override fun modify(@PathVariable("id") id: UUID, @RequestBody patchedFields: Map<String, Any>): T {
+        logger.debug { "ID: $id" }
+
         return service.modify(id, patchedFields)
     }
 
     @DeleteMapping(path = ["/{id}"], produces = [MediaType.APPLICATION_JSON_VALUE])
     override fun remove(@PathVariable("id") id: UUID) {
+        logger.debug { "ID: $id" }
+
         return service.remove(id)
     }
 
@@ -96,6 +116,8 @@ abstract class BaseUniqueController<T : UniqueEntityable> : FullyUniqueControlla
         @RequestParam("search")
         search: String?
     ) {
+        logger.debug { "Search Query: $search" }
+
         return service.removeAll(search)
     }
 
